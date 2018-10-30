@@ -12,15 +12,16 @@ const onSwitchToSignUp = (event) => {
   ui.showSignUp()
 }
 
-const onSignIn {
-
+const onSignIn = event => {
 }
 
-const onSignUp {
+const onSignUp = event => {
 
 }
 
 module.exports = {
   onSwitchToSignIn,
-  onSwitchToSignUp
+  onSwitchToSignUp,
+  onSignIn,
+  onSignUp
 }

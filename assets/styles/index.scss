@@ -1,16 +1,79 @@
 @import '~bootstrap/scss/bootstrap';
 
+$blue: #00f;
+$red: #f00;
+$black: #000;
+$fadedblack: rgba(0, 0, 0, .75);
+$white: #fff;
+
 body {
+}
+
+.board {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Nanum Brush Script', cursive;
+  font-size: 200px;
+  height: 500px;
+  margin: 0 auto;
+  width: 500px;
+}
+
+div > .row > div  {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 33.3%;
+}
+
+div {
+  &.div0 {
+    border-bottom: 10px solid $black;
+    border-right: 10px solid $black;
+  }
+
+  &.div1 {
+    border-bottom: 10px solid $black;
+    border-right: 10px solid $black;
+  }
+
+  &.div2 {
+    border-bottom: 10px solid $black;
+  }
+
+  &.div3 {
+    border-bottom: 10px solid $black;
+    border-right: 10px solid $black;
+  }
+
+  &.div4 {
+    border-bottom: 10px solid $black;
+    border-right: 10px solid $black;
+  }
+
+  &.div5 {
+    border-bottom: 10px solid $black;
+  }
+
+  &.div6 {
+    border-right: 10px solid $black;
+  }
+
+  &.div7 {
+    border-right: 10px solid $black;
+  }
 }
 
 
 header {
-  background-color: black;
+  background-color: $black;
 }
 
 header > div {
   align-items: center;
-  color: white;
+  color: $white;
   display: flex;
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 100px;
@@ -18,12 +81,15 @@ header > div {
   justify-content: center;
   margin: 0 auto;
   width: 750px;
-  margin: 0 auto;
+}
+
+main {
+  margin-top: 100px;
 }
 
 nav {
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
+  background-color: $fadedblack;
+  color: $white;
   display: flex;
   flex-direction: row;
   font-family: 'Nanum Gothic', sans-serif;
@@ -44,18 +110,6 @@ nav > ul > li {
   list-style: none;
 }
 
-main {
-  margin-top: 100px;
-}
-
-div.row > div  {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 33.3%;
-}
-
 .header-o {
   font-family: 'Nanum Brush Script', cursive;
   font-size: 180px;
@@ -65,53 +119,13 @@ div.row > div  {
   display: float;
   font-family: 'Nanum Brush Script', cursive;
   font-size: 120px;
+  left: -463px;
   position: relative;
   top: -38px;
-  left: -463px;
 }
 
-.red {
-  color: red;
-}
-
-.blue {
-  color: blue;
-}
-
-.div0 {
-  border-bottom: 10px solid black;
-  border-right: 10px solid black;
-}
-
-.div1 {
-  border-bottom: 10px solid black;
-  border-right: 10px solid black;
-}
-
-.div2 {
-  border-bottom: 10px solid black;
-}
-
-.div3 {
-  border-bottom: 10px solid black;
-  border-right: 10px solid black;
-}
-
-.div4 {
-  border-bottom: 10px solid black;
-  border-right: 10px solid black;
-}
-
-.div5 {
-  border-bottom: 10px solid black;
-}
-
-.div6 {
-  border-right: 10px solid black;
-}
-
-.div7 {
-  border-right: 10px solid black;
+.o-color {
+  color: $blue;
 }
 
 .row {
@@ -120,13 +134,6 @@ div.row > div  {
   width: 100%;
 }
 
-.board {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-  width: 500px;
-  height: 500px;
-  font-size: 200px;
-  font-family: 'Nanum Brush Script', cursive;
+.x-color {
+  color: $red;
 }

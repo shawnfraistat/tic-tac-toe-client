@@ -3,10 +3,10 @@
 const updateBoardDisplay = function (currentBoard) {
   for (let i = 0; i < 9; i++) {
     if (currentBoard[i] === 'x') {
-      document.getElementById(i).innerHTML = '<p class="red">X</p>'
+      document.getElementById(i).innerHTML = '<p class="x-color">X</p>'
     }
     if (currentBoard[i] === 'o') {
-      document.getElementById(i).innerHTML = '<p class="blue">O</p>'
+      document.getElementById(i).innerHTML = '<p class="o-color">O</p>'
     }
     if (currentBoard[i] !== 'x' && currentBoard[i] !== 'o') {
       document.getElementById(i).innerHTML = ''

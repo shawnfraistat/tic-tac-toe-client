@@ -29,10 +29,31 @@
       </ul>
     </nav>
 		<main>
-			<div class="board">
+			<div class="board invisible">
 				<div class="row"><div id="0" class="div0"></div><div id="1" class="div1"></div><div id="2" class="div2"></div></div>
 				<div class="row"><div id="3" class="div3"></div><div id="4" class="div4"></div><div id="5" class="div5"></div></div>
 				<div class="row"><div id="6" class="div6"></div><div id="7" class="div7"></div><div id="8" class="div8"></div></div>
+			</div>
+      <div class="signview">
+        <form id="sign-up" class="invisible">
+        <fieldset>
+            <legend>Sign Up</legend>
+            <input type="text" name="credentials[email]" placeholder="Email" />
+            <input type="password" name="credentials[password]" placeholder="Password" />
+            <input type="password" name="credentials[password_confirmation]" placeholder="Confirm Password" />
+            <input type="submit" class="submit" value="Submit" />
+            <p>Existing users <scan class="switch-to-sign-in">sign in</scan></p>
+          </fieldset>
+        </form>
+        <form id="sign-in">
+          <fieldset>
+            <legend>Sign In</legend>
+            <input type="text" name="credentials[email]" placeholder="Email" />
+            <input type="password" name="credentials[password]" placeholder="Password" />
+            <input type="submit" class="submit" value="Submit" />
+            <p>New users <scan class="switch-to-sign-up">sign up</scan></p>
+          </fieldset>
+        </form>
 			</div>
 		</main>
 	</body>

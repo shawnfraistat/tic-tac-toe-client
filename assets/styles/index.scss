@@ -64,8 +64,31 @@ div {
   &.div7 {
     border-right: 10px solid $black;
   }
+
+  &.signview {
+    display: flex;
+    justify-content: center;
+  }
 }
 
+fieldset {
+  display: flex;
+}
+
+legend {
+  margin: 20px 0;
+}
+
+form {
+  align-items: center;
+  border: solid 5px $black;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: space-around;
+  min-width: 300px;
+  width: 30%;
+}
 
 header {
   background-color: $black;
@@ -81,6 +104,19 @@ header > div {
   justify-content: center;
   margin: 0 auto;
   width: 750px;
+}
+
+input {
+  &.submit {
+    margin: 10px 0;
+  }
+}
+
+.invisible {
+  height: 0;
+  min-width: 0;
+  visibility: hidden;
+  width: 0;
 }
 
 main {
@@ -132,6 +168,18 @@ nav > ul > li {
   display: flex;
   height: 33%;
   width: 100%;
+}
+
+scan {
+  &.switch-to-sign-in {
+    color: $blue;
+    text-decoration: underline;
+  }
+
+  &.switch-to-sign-up {
+    color: $blue;
+    text-decoration: underline;
+  }
 }
 
 .x-color {

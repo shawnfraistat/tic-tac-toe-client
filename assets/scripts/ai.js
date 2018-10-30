@@ -54,12 +54,12 @@ const randomChoice = function (boardToEval) {
   }
 }
 
-// goForKill() is used to check whether the computer has a move that will the game for it this turn
-// This is used in two cases: (1) as part of the "medium" difficulty ai logic; (2) to correct a weird behavior with the "impossible" difficulty game logic
-// For medium difficulty, the ai just plays randomly unless it sees an immediate winning move for itself or the player. It calls goForKill to  see if it has a winning move.
-// for impossible difficulty, the computer evaluates branches on the move tree in such a way as to be indifferent between choosing a move that will make it win
-// this turn vs. a move that guarantees it a win in the future.
-// To prevent the ai from screwing around with the human player for a few turns, goForKill() checks to see if it has an immediate winning move and forces the computer to take it.
+/* goForKill() is used to check whether the computer has a move that will the game for it this turn.
+This is used in two cases: (1) as part of the "medium" difficulty ai logic; (2) to correct a weird behavior with the "impossible" difficulty game logic
+For medium difficulty, the ai just plays randomly unless it sees an immediate winning move for itself or the player. It calls goForKill to  see if it has a winning move.
+For impossible difficulty, the computer evaluates branches on the move tree in such a way as to be indifferent between choosing a move that will make it win
+this turn vs. a move that guarantees it a win in the future.
+To prevent the ai from screwing around with the human player for a few turns, goForKill() checks to see if it has an immediate winning move and forces the computer to take it. */
 
 const goForKill = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
@@ -140,23 +140,22 @@ const minimax = function (boardToEval, player) {
   /* By now the computer's out of the for loop; at this point, it needs to assess all the move objects it's created.
   Each move object contains an index value referring to a space on the board, and it has a score associated with it that comes from
   checking the state of the board after the move: a 10 results from an AI win, a 0 from a tie, and a -10 from a human victory.
-  //
+
   What the ai doing here is intuitive enough if we're just thinking about what will happen as a consequence of its move this turn.
   It should pick a move object that has the highest score, and return that as the move it should take right now.
-  //
+
   But the code here has to be more complicated, because sometimes a move doesn't end the game immediately.
   In that case, this function is being called recursively. It needs to summarize the possibilities available wherever it is in the move tree
   and kick them back up a level for evaluation.
-  //
+
   The way it summarizes them is like this:
   (1) Is the AI assessing the possibilites that result from an AI turn? If so, it should push the BEST possibility up a level,
   because it knows it can take that possibility when the time comes.
   (2) But if the AI is assessing the possibilities that result from a human turn, it should push the WORST possibility (for the AI) up a level,
   acting on the assumption that the human player will take advantage of any opportunities the AI gives him/her.
-  //
+
   That's why the AI is going to go through the move tree, returning the move with the highest score if it's thinking about the moves on its turn, and
-  returning the lowest score if it's thinking about the moves on the human's turn
-  */
+  returning the lowest score if it's thinking about the moves on the human's turn */
   let bestMove
   if (player === 'ai') {
     let bestScore = -100 // doesn't matter what this number is; just want something low to get the ball rolling
@@ -166,9 +165,7 @@ const minimax = function (boardToEval, player) {
         bestMove = i
       }
     }
-  } else {
-  //  but if the only end game states occur on the human's turn, loop over the moves and choose the move with the lowest score
-  // (i.e., minimize the damage the human player can do)
+  } else { // this applies if it's the human's turn we're considering
     let bestScore = 100 // again, doesn't matter what this number is; just want something high to get the ball rolling
     for (let i = 0; i < moves.length; i++) {
       if (moves[i].score < bestScore) {

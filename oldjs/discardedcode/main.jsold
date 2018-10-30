@@ -1,0 +1,248 @@
+//main.js
+
+let originalBoard = ["~", "~", "~", "~", "O", "~", "~", "~", "~"];
+let callingSpace = [];
+let moves = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let turn = 1;
+
+var takeAITurn = function (boardToEval) {
+	clearCallingSpace();
+	availSpaces = getSpaces(boardToEval);
+	turnEval(boardToEval, "ai");
+	let bestMove = getBestMove(boardToEval);
+	let leastBadMove = getLeastBadMove(boardToEval);
+	let firstBoard = evalSpace(boardToEval, bestMove, "ai");
+	let secondBoard = evalSpace(boardToEval, leastBadMove, "human")
+	if (terminalCheck(firstBoard, "ai") === "aiwin") {
+		originalBoard[bestMove] = "X";
+	} else if (terminalCheck(secondBoard, "human") === "humanwin") {
+			originalBoard[leastBadMove] = "X";
+	} else { 
+		originalBoard[bestMove] = "X";
+	}
+	
+	moves = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	updateBoardDisplay();
+	if (terminalCheck(originalBoard, "ai") === "aiwin") {
+		alert("You lose!");
+	} else if (terminalCheck(originalBoard, "ai") === "tie") {
+		alert("Tie!");
+	} else if (terminalCheck(originalBoard, "human") === "humanwin") {
+		alert("You win!");
+	} else {
+		turn++;
+		for (var i = 0; i < 9; i++) {
+		document.getElementById(i).addEventListener("click", takeHumanTurn);
+		}
+	}
+};
+
+var updateBoardDisplay = function () {
+	for (var i = 0; i < 9; i++) {
+		document.getElementById(i).innerHTML = originalBoard[i];
+	}	
+};
+
+var getBestMove = function (boardToEval) {
+	let unSpaces = getUnSpaces(boardToEval);
+	for (var k = 0; k < unSpaces.length; k++) {
+		moves[unSpaces[k]] = -1000000;
+	}
+	let highestValue = moves[0];
+	for (var i = 1; i < moves.length; i++) {
+	    if (moves[i] > highestValue) {
+	      highestValue = moves[i];
+	    }
+    }
+	for (var j = 0; j < 9; j++) {
+		if (moves[j] === highestValue) {
+			var bestMoveList = j;
+		}
+	}	return bestMoveList;
+};
+
+var getLeastBadMove = function (boardToEval) {
+	let unSpaces = getUnSpaces(boardToEval);
+	for (var k = 0; k < unSpaces.length; k++) {
+		moves[unSpaces[k]] = 1000000;
+	}
+	let lowestValue = moves[0];
+	for (var i = 1; i < moves.length; i++) {
+	    if (moves[i] < lowestValue) {
+	      lowestValue = moves[i];
+	    }
+    }
+	for (var j = 0; j < 9; j++) {
+		if (moves[j] === lowestValue) {
+			var leastBadMoveList = j;
+		}
+	}
+	return leastBadMoveList;
+};
+
+var takeHumanTurn = function (boardToEval) {
+	clearCallingSpace();
+	originalBoard[this.id] = "O";
+	updateBoardDisplay();
+	if (terminalCheck(originalBoard, "human") === "win") {
+		alert("You win!");
+	} else if (terminalCheck(originalBoard, "human") === "tie") {
+		alert("Tie!");
+	} else {
+		takeAITurn(originalBoard);
+	}
+};
+
+
+var clearCallingSpace = function () {
+	while (callingSpace.length > 0) {
+		callingSpace.pop();
+	}
+};
+
+//turnEval checks to see if a player has a move that ends the round. 
+
+var turnEval = function (boardToEval, player) {
+	var spaceScore;
+	let nextPlayer;
+	var thisAvailSpaces = getSpaces(boardToEval);
+	for (var i = 0; i < thisAvailSpaces.length; i++) {
+		callingSpace.push(thisAvailSpaces[i]);
+		var currentBoard = evalSpace(boardToEval, thisAvailSpaces[i], player);
+		var thisCheckResult = terminalCheck(currentBoard, player);
+		if (thisCheckResult === "aiwin") {
+			spaceScore = getScore(thisCheckResult);
+			moves[callingSpace[0]] += spaceScore;
+				if (callingSpace.length === 1) {
+					moves[callingSpace[0]] += 100000;
+				}
+			callingSpace.pop();
+		} else if (thisCheckResult === "humanwin") {
+			spaceScore = getScore(thisCheckResult);
+			moves[callingSpace[0]] += spaceScore;
+				if (callingSpace.length === 1) {
+					moves[callingSpace[0]] -= 100000;
+				}
+			callingSpace.pop();
+		} else if (thisCheckResult === "tie") {
+			spaceScore = getScore(thisCheckResult);
+			moves[callingSpace[0]] += spaceScore;
+			callingSpace.pop();
+		} else if (thisCheckResult === "continue") {
+			if (player === "ai") {
+			  nextPlayer = "human";
+			} else if (player === "human") {
+				nextPlayer = "ai";
+			}
+			turnEval(currentBoard, nextPlayer);
+			// console.log("the value of nextMoves is " + nextMoves);
+			// if (nextMoves.length > 0 ) {
+			// 	moves.push(nextMoves);
+			// }
+		}
+	callingSpace.pop();
+	}
+};
+
+
+//evalSpace() takes a boardToEval, a space, and a player. It imagines the player making a move in the given space. It then returns an updated board.
+
+var evalSpace = function (boardToEval, space, player) {
+	var currentBoard = [];
+	for (var i = 0; i < boardToEval.length; i++) {
+		currentBoard.push(boardToEval[i]);
+	}
+	if (player === "ai") {
+		currentBoard[space] = "X";
+	} else if (player === "human") {
+		currentBoard[space] = "O";
+	}
+	return currentBoard;
+};
+
+
+//Checks to see if the board is in a terminal state
+
+var terminalCheck = function (boardToEval, player) {
+	var availSpaces = getSpaces(boardToEval);
+	var playerMark;
+	if (player === "human") {
+		var playerMark = "O";
+	} else if (player === "ai") {
+		var playerMark = "X";
+	}
+	if (boardToEval[0] == playerMark && boardToEval[1] == playerMark && boardToEval[2] == playerMark) {
+		// console.log("first row victory");
+		return player + "win";
+	} else if (boardToEval[3] == playerMark && boardToEval[4] == playerMark && boardToEval[5] == playerMark) {
+		// console.log("second row victory");
+		return player + "win";
+	} else if (boardToEval[6] == playerMark && boardToEval[7] == playerMark && boardToEval[8] == playerMark) {
+		// console.log("third row victory");
+		return player + "win";
+	} else if (boardToEval[0] == playerMark && boardToEval[3] == playerMark && boardToEval[6] == playerMark) {
+		// console.log("first column victory");
+		return player + "win";
+	} else if (boardToEval[1] == playerMark && boardToEval[4] == playerMark && boardToEval[7] == playerMark) {
+		// console.log("second column victory");
+		return player + "win";
+	} else if (boardToEval[2] == playerMark && boardToEval[5] == playerMark && boardToEval[8] == playerMark) {
+		// console.log("third column victory");
+		return player + "win";
+	} else if (boardToEval[0] == playerMark && boardToEval[4] == playerMark && boardToEval[8] == playerMark) {
+		// console.log("top left to bottom right diagonal victory");
+		return player + "win";
+	} else if (boardToEval[2] == playerMark && boardToEval[4] == playerMark && boardToEval[6] == playerMark) {
+		// console.log("top right to bottom left diagonal victory");
+		return player + "win";
+	} else if (availSpaces.length === 0) {
+		return "tie";
+	} else if (availSpaces.length > 0) {
+		return "continue";
+	}
+};
+
+
+//getScore scores checkResult, and calls evalSpace recursively if needed
+
+var getScore = function (checkResult) {
+	if (checkResult === "humanwin") {
+		var spaceScore = -10;
+	} else if (checkResult === "aiwin") {
+		var spaceScore = 10;
+	} else if (checkResult === "tie") {
+		var spaceScore = 5;
+	} else if (checkResult === "continue") {
+		var spaceScore = 0;
+	}
+	return spaceScore;
+};
+		
+
+//Get available spaces
+
+var getSpaces = function (boardToEval) {
+	var availSpaces = [];
+	for (var i = 0; i < boardToEval.length; i++) {
+		if (boardToEval[i] != "O" && boardToEval[i] != "X") {
+			availSpaces.push(i);
+		}
+	}
+	return availSpaces;
+};
+
+var getUnSpaces = function (boardToEval) {
+	var unSpaces = [];
+	for (var i = 0; i < boardToEval.length; i++) {
+		if (boardToEval[i] == "O" || boardToEval[i] == "X") {
+			unSpaces.push(i);
+		}
+	}
+	return unSpaces;
+};
+
+//On page load code to run.
+
+updateBoardDisplay();
+takeAITurn(originalBoard);
+

@@ -59,6 +59,13 @@ const clearForms = () => {
   $('.sign-in-message').html('<p class="sign-in-message"></p>')
 }
 
+const toggleAIDifficultyRadios = () => {
+  const buttons = $('input[name="difficulty"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].toggleAttribute('disabled')
+  }
+}
+
 //
 //
 // UI functions that deal with the USER view
@@ -132,6 +139,7 @@ module.exports = {
   handleSignUpFailure,
   handleSignInSuccess,
   handleSignInFailure,
+  toggleAIDifficultyRadios,
   // GAME view UI functions
   hideBoard,
   showBoard,

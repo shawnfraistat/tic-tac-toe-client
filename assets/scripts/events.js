@@ -6,22 +6,25 @@ const ui = require('./ui.js')
 
 const onSwitchToSignIn = (event) => {
   event.preventDefault()
-  // document.getElementsByTagName('FORM').forEach(x => x.reset())
   ui.hideSignUp()
   ui.showSignIn()
+  $('#logInModalTitle').text('Sign In')
+  $('#sign-up-submit').attr('id', 'sign-in-submit')
+  $('#sign-in-submit').on('click', onSignIn)
 }
 
 const onSwitchToSignUp = (event) => {
   event.preventDefault()
-  // document.getElementsByTagName('FORM').forEach(x => x.reset())
   ui.hideSignIn()
   ui.showSignUp()
+  $('#logInModalTitle').text('Sign Up')
+  $('#sign-in-submit').attr('id', 'sign-up-submit')
+  $('#sign-up-submit').on('click', onSignUp)
 }
 
 const onSignIn = event => {
   event.preventDefault()
   const data = getFormFields(event.target)
-  // const x = document.getElementsByTagName('FORM').reset()
   api.signIn(data)
     .then(ui.handleSignInSuccess)
     .catch(ui.handleSignInFailure)
@@ -30,7 +33,6 @@ const onSignIn = event => {
 const onSignUp = event => {
   event.preventDefault()
   const data = getFormFields(event.target)
-  // document.getElementsByTagName('FORM').forEach(x => x.reset())
   api.signUp(data)
     .then(ui.handleSignUpSuccess)
     .catch(ui.handleSignUpFailure)

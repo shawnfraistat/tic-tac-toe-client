@@ -5,6 +5,7 @@ $red: #f00;
 $black: #000;
 $fadedblack: rgba(0, 0, 0, .75);
 $white: #fff;
+$green: #0f0;
 
 body {
 }
@@ -90,6 +91,10 @@ form {
   width: 30%;
 }
 
+.green {
+  color: $green;
+}
+
 header {
   background-color: $black;
 }
@@ -114,8 +119,9 @@ input {
 
 .invisible {
   height: 0;
+  max-width: 0;
   min-width: 0;
-  visibility: hidden;
+  visibility: none;
   width: 0;
 }
 
@@ -126,24 +132,28 @@ main {
 nav {
   background-color: $fadedblack;
   color: $white;
-  display: flex;
-  flex-direction: row;
   font-family: 'Nanum Gothic', sans-serif;
-}
 
-nav > ul {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  height: 50px;
-  justify-content: space-around;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
+  > ul {
+    align-items: center;
+    height: 50px;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
 
-nav > ul > li {
-  list-style: none;
+  ul > li {
+    list-style: none;
+  }
+
+  a {
+    color: $white;
+
+    &:hover {
+      color: $red;
+    }
+  }
 }
 
 .header-o {
@@ -162,6 +172,10 @@ nav > ul > li {
 
 .o-color {
   color: $blue;
+}
+
+.red {
+  color: $red;
 }
 
 .row {

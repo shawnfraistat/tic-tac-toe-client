@@ -16,4 +16,6 @@ $(() => {
   gamelogic.takeAITurn(store.currentBoard)
   $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
   $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
+  $('.sign-up-submit').on('click', events.onSignUp)
+  $('.sign-in-submit').on('click', events.onSignIn)
 })

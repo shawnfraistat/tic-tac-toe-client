@@ -1,3 +1,5 @@
+const store = require('./store.js')
+
 //
 //
 // UI functions that deal with the SIGN-FORM views
@@ -82,17 +84,37 @@ const showBoard = function () {
   $('.board').removeClass('invisible')
 }
 
+const showPlayerTurn = function () {
+  if (store.currentPlayer === 'playerOne') {
+    $('.board-message').html(`<p><scan class="x-color">Player One</scan>'s Turn</p>`)
+  } else {
+    $('.board-message').html(`<p><scan class="o-color">Player Two</scan>'s Turn</p>`)
+  }
+}
+
+const showPlayerWin = function (player) {
+  if (player === 'playerOne') {
+    $('.board-message').html(`<p><scan class="x-color">Player One</scan> Wins!</p>`)
+  } else {
+    $('.board-message').html(`<p><scan class="o-color">Player Two</scan> Wins!</p>`)
+  }
+}
+
+const showPlayerTie = function (player) {
+  $('.board-message').html(`<p>Tie!</p>`)
+}
+
 // updateBoardDisplay() updates the display board to match the current board state
 
-const updateBoardDisplay = function (currentBoard) {
+const updateBoardDisplay = function () {
   for (let i = 0; i < 9; i++) {
-    if (currentBoard[i] === 'x') {
+    if (store.currentBoard[i] === 'x') {
       document.getElementById(i).innerHTML = '<p class="x-color">X</p>'
     }
-    if (currentBoard[i] === 'o') {
+    if (store.currentBoard[i] === 'o') {
       document.getElementById(i).innerHTML = '<p class="o-color">O</p>'
     }
-    if (currentBoard[i] !== 'x' && currentBoard[i] !== 'o') {
+    if (store.currentBoard[i] !== 'x' && store.currentBoard[i] !== 'o') {
       document.getElementById(i).innerHTML = ''
     }
   }
@@ -113,5 +135,8 @@ module.exports = {
   // GAME view UI functions
   hideBoard,
   showBoard,
-  updateBoardDisplay
+  updateBoardDisplay,
+  showPlayerTurn,
+  showPlayerWin,
+  showPlayerTie
 }

@@ -7,15 +7,14 @@
 // require('./example')
 
 const ui = require('./ui.js')
-const gamelogic = require('./gamelogic.js')
 const store = require('./store.js')
 const events = require('./events.js')
 
 $(() => {
   ui.updateBoardDisplay(store.currentBoard)
-  gamelogic.takeAITurn(store.currentBoard)
   $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
   $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
   $('.sign-up-submit').on('click', events.onSignUp)
   $('.sign-in-submit').on('click', events.onSignIn)
+  $('#start-game-button').on('click', events.onNewGame)
 })

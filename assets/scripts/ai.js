@@ -2,29 +2,26 @@
 
 // getAIMove() is used to calculate a move for the AI. It uses a different logic depending on the difficulty setting.
 
-const getAIMove = function (boardToEval, difficultySetting) {
+const getAIMove = function (boardToEval, aiDifficulty) {
   let myMove
-  switch (difficultySetting) {
-    case 0:
+  switch (aiDifficulty) {
+    case '0':
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
-      console.log(myMove.index)
       break
-    case 1:
+    case '1':
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
       if (goForKill(boardToEval) != null) {
         myMove.index = goForKill(boardToEval)
-        console.log(goForKill(boardToEval))
       } else if (impendingDisaster(boardToEval) != null) {
         myMove.index = impendingDisaster(boardToEval)
       }
       break
-    case 2:
-      myMove = minimax(boardToEval, 'ai')
+    case '2':
+      myMove = minimax(boardToEval, 'playerTwo')
       if (goForKill(boardToEval) != null) {
         myMove.index = goForKill(boardToEval)
-        console.log(goForKill(boardToEval))
       }
   }
   return myMove.index
@@ -65,8 +62,8 @@ const goForKill = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   for (let i = 0; i < availSpots.length; i++) {
     boardToEval[availSpots[i]] = 'x'
-    const checkResult = terminalCheck(boardToEval, 'ai')
-    if (checkResult === 'aiwin') {
+    const checkResult = terminalCheck(boardToEval, 'playerTwo')
+    if (checkResult === 'playerTwoWin') {
       boardToEval[availSpots[i]] = availSpots[i]
       return availSpots[i]
     }
@@ -81,8 +78,8 @@ const impendingDisaster = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   for (let i = 0; i < availSpots.length; i++) {
     boardToEval[availSpots[i]] = 'o'
-    const checkResult = terminalCheck(boardToEval, 'human')
-    if (checkResult === 'humanwin') {
+    const checkResult = terminalCheck(boardToEval, 'playerOne')
+    if (checkResult === 'playerOneWin') {
       boardToEval[availSpots[i]] = availSpots[i]
       return availSpots[i]
     }
@@ -101,9 +98,9 @@ const minimax = function (boardToEval, player) {
   // get available spaces on the board
   const availSpots = getAvailableSpaces(boardToEval)
   // check for the terminal states such as win, lose, and tie and return a value accordingly
-  if (terminalCheck(boardToEval, 'ai') === 'aiwin') {
+  if (terminalCheck(boardToEval, 'playerTwo') === 'playerTwoWin') {
     return { score: 10 }
-  } else if (terminalCheck(boardToEval, 'human') === 'humanwin') {
+  } else if (terminalCheck(boardToEval, 'playerOne') === 'playerOneWin') {
     return { score: -10 }
   } else if (availSpots.length === 0) {
     return { score: 0 }
@@ -116,14 +113,14 @@ const minimax = function (boardToEval, player) {
     move.index = availSpots[i]
     // if we're considering what would happen if the ai moved here, mark the board spot with an "x"
     // then prepare to run this function again to see what would happen the turn after; alternate the player and consider the human's possible moves
-    if (player === 'ai') {
-      boardToEval[availSpots[i]] = 'x'
-      nextPlayer = 'human'
-    } else if (player === 'human') {
+    if (player === 'playerTwo') {
+      boardToEval[availSpots[i]] = 'o'
+      nextPlayer = 'playerOne'
+    } else if (player === 'playerOne') {
       // if we're considering what would happen if the human moved here, mark the board spot with an "o"
       // then prepare to run this function again to see what would happen the turn after; alternate the player and consider the ai's possible moves
-      boardToEval[availSpots[i]] = 'o'
-      nextPlayer = 'ai'
+      boardToEval[availSpots[i]] = 'x'
+      nextPlayer = 'playerTwo'
     }
     // check what the consequence of moving to availSpots[i] would be; if it ends the game, we'll get an immediate result.
     // if it doesn't end the game, the computer will go a level deeper, examining what would happen next turn after the next player goes,
@@ -157,7 +154,7 @@ const minimax = function (boardToEval, player) {
   That's why the AI is going to go through the move tree, returning the move with the highest score if it's thinking about the moves on its turn, and
   returning the lowest score if it's thinking about the moves on the human's turn */
   let bestMove
-  if (player === 'ai') {
+  if (player === 'playerTwo') {
     let bestScore = -100 // doesn't matter what this number is; just want something low to get the ball rolling
     for (let i = 0; i < moves.length; i++) {
       if (moves[i].score > bestScore) {
@@ -183,27 +180,27 @@ const minimax = function (boardToEval, player) {
 const terminalCheck = function (boardToEval, player) {
   const availSpaces = getAvailableSpaces(boardToEval)
   let playerMark
-  if (player === 'human') {
-    playerMark = 'o'
-  } else if (player === 'ai') {
+  if (player === 'playerOne') {
     playerMark = 'x'
+  } else if (player === 'playerTwo') {
+    playerMark = 'o'
   }
   if (boardToEval[0] === playerMark && boardToEval[1] === playerMark && boardToEval[2] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[3] === playerMark && boardToEval[4] === playerMark && boardToEval[5] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[6] === playerMark && boardToEval[7] === playerMark && boardToEval[8] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[0] === playerMark && boardToEval[3] === playerMark && boardToEval[6] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[1] === playerMark && boardToEval[4] === playerMark && boardToEval[7] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[2] === playerMark && boardToEval[5] === playerMark && boardToEval[8] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[0] === playerMark && boardToEval[4] === playerMark && boardToEval[8] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (boardToEval[2] === playerMark && boardToEval[4] === playerMark && boardToEval[6] === playerMark) {
-    return player + 'win'
+    return player + 'Win'
   } else if (availSpaces.length === 0) {
     return 'tie'
   } else {

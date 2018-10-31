@@ -1,71 +1,148 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Tic-Tac-Toe</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
-      <!-- Do not add `link` tags-->
-      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<head>
+  <title>Tic-Tac-Toe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <!-- Do not add `script` tags-->
-      <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
-      <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
-	</head>
-	<body>
-    <header>
-      <div>
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
+  <!-- Do not add `link` tags-->
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Do not add `script` tags-->
+  <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+  <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+</head>
+
+<body>
+  <header>
+    <div>
       Tic-Tac-T<span class="header-o o-color">o</span>e<div class="header-x x-color">x</div>
+    </div>
+  </header>
+  <nav class="nav justify-content-center">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGameModal">
+          New Game
+        </button>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Load Game</a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="#">Settings</a>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">User Profile</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!-- New Game Modal -->
+  <div class="modal fade" id="newGameModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newGameModalTitle">New Game</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span class='x-color modal-x'>x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="new-game">
+            <div class="form group">
+              <fieldset>
+                <legend>Choose Who Goes First: </legend>
+                <div class="first-options">
+                  <input id="player-one-first-radio" type="radio" name="first-player" value="playerOne" checked="checked">
+                  <label for="player-one-first-radio">You</label>
+                  <input id="player-two-first-radio" type="radio" name="first-player" value="playerTwo">
+                  <label for="player-two-first-radio">Opponent</label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Select Opponent: </legend>
+                <div class="opponent-options">
+                  <input id="opponent-self-radio" type="radio" name="opponent" value="self" checked="checked">
+                  <label for="opponent-self-radio">Self</label>
+                  <input id="opponent-ai-radio" type="radio" name="opponent" value="ai">
+                  <label for="opponent-self-radio">AI</label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Select AI Difficulty: </legend>
+                <div class="ai-difficulty">
+                  <input id="ai-easy-radio" type="radio" name="difficulty" value=0 checked="checked">
+                  <label for="ai-easy-radio">Easy</label>
+                  <input id="ai-medium-radio" type="radio" name="difficulty" value=1>
+                  <label for="ai-medium-radio">Medium</label>
+                  <input id="ai-impossible-radio" type="radio" name="difficulty" value=2>
+                  <label for="ai-impossible-radio">Impossible</label>
+                </div>
+              </fieldset>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" id="start-game-button" class="btn btn-primary">Start</button>
+        </div>
       </div>
-    </header>
-    <nav class="nav justify-content-center">
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <a class="nav-link" href="#">New Game</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Load Game</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Settings</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">User</a>
-        </li>
-      </ul>
-    </nav>
-		<main>
-			<div class="board">
-        <div class="board-message"></div>
-				<div class="row"><div id="0" class="div0"></div><div id="1" class="div1"></div><div id="2" class="div2"></div></div>
-				<div class="row"><div id="3" class="div3"></div><div id="4" class="div4"></div><div id="5" class="div5"></div></div>
-				<div class="row"><div id="6" class="div6"></div><div id="7" class="div7"></div><div id="8" class="div8"></div></div>
-			</div>
-      <div class="sign-view invisible">
-        <form id="sign-up" class="invisible">
+    </div>
+  </div>
+
+  <main>
+    <div class="board-plus-message">
+      <div class="board-message"></div>
+      <div class="board">
+        <div class="row">
+          <div id="0" class="div0"></div>
+          <div id="1" class="div1"></div>
+          <div id="2" class="div2"></div>
+        </div>
+        <div class="row">
+          <div id="3" class="div3"></div>
+          <div id="4" class="div4"></div>
+          <div id="5" class="div5"></div>
+        </div>
+        <div class="row">
+          <div id="6" class="div6"></div>
+          <div id="7" class="div7"></div>
+          <div id="8" class="div8"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sign-view invisible">
+      <form id="sign-up" class="invisible">
         <fieldset>
-            <legend>Sign Up</legend>
-            <p class="sign-up-message"></p>
-            <input type="text" name="credentials[email]" placeholder="Email" />
-            <input type="password" name="credentials[password]" placeholder="Password" />
-            <input type="password" name="credentials[password_confirmation]" placeholder="Confirm Password" />
-            <input type="submit" class="submit sign-up-submit" value="Submit" />
-            <p>Existing users <scan class="switch-to-sign-in">sign in</scan></p>
-          </fieldset>
-        </form>
-        <form id="sign-in">
-          <fieldset>
-            <legend>Sign In</legend>
-            <p class="sign-in-message"></p>
-            <input type="text" name="credentials[email]" placeholder="Email" />
-            <input type="password" name="credentials[password]" placeholder="Password" />
-            <input type="submit" class="submit sign-in-submit" value="Submit" />
-            <p>New users <scan class="switch-to-sign-up">sign up</scan></p>
-          </fieldset>
-        </form>
-			</div>
-		</main>
-	</body>
+          <legend>Sign Up</legend>
+          <p class="sign-up-message"></p>
+          <input type="text" name="credentials[email]" placeholder="Email" />
+          <input type="password" name="credentials[password]" placeholder="Password" />
+          <input type="password" name="credentials[password_confirmation]" placeholder="Confirm Password" />
+          <input type="submit" class="submit sign-up-submit" value="Submit" />
+          <p>Existing users <scan class="switch-to-sign-in">sign in</scan>
+          </p>
+        </fieldset>
+      </form>
+      <form id="sign-in">
+        <fieldset>
+          <legend>Sign In</legend>
+          <p class="sign-in-message"></p>
+          <input type="text" name="credentials[email]" placeholder="Email" />
+          <input type="password" name="credentials[password]" placeholder="Password" />
+          <input type="submit" class="submit sign-in-submit" value="Submit" />
+          <p>New users <scan class="switch-to-sign-up">sign up</scan>
+          </p>
+        </fieldset>
+      </form>
+    </div>
+  </main>
+</body>
+
 </html>

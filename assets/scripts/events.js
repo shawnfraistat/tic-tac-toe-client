@@ -9,6 +9,7 @@ const onSwitchToSignIn = (event) => {
   ui.hideSignUp()
   ui.showSignIn()
   $('#logInModalTitle').text('Sign In')
+  $('#sign-up-submit').off('click', onSignUp)
   $('#sign-up-submit').attr('id', 'sign-in-submit')
   $('#sign-in-submit').on('click', onSignIn)
 }
@@ -18,13 +19,15 @@ const onSwitchToSignUp = (event) => {
   ui.hideSignIn()
   ui.showSignUp()
   $('#logInModalTitle').text('Sign Up')
+  $('#sign-in-submit').off('click', onSignIn)
   $('#sign-in-submit').attr('id', 'sign-up-submit')
   $('#sign-up-submit').on('click', onSignUp)
 }
 
 const onSignIn = event => {
   event.preventDefault()
-  const data = getFormFields(event.target)
+  const target = $('#sign-in')[0]
+  const data = getFormFields(target)
   api.signIn(data)
     .then(ui.handleSignInSuccess)
     .catch(ui.handleSignInFailure)
@@ -32,7 +35,8 @@ const onSignIn = event => {
 
 const onSignUp = event => {
   event.preventDefault()
-  const data = getFormFields(event.target)
+  const target = $('#sign-up')[0]
+  const data = getFormFields(target)
   api.signUp(data)
     .then(ui.handleSignUpSuccess)
     .catch(ui.handleSignUpFailure)

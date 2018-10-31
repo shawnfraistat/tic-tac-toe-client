@@ -10,6 +10,9 @@ const ui = require('./ui.js')
 const store = require('./store.js')
 const events = require('./events.js')
 
+// !! NEED TO ADD EVENT LISTENERS AND EVENTS TO RESET MODAL VALUES AFTER
+// THE MODEL CLOSES
+
 $(() => {
   ui.updateBoardDisplay(store.currentBoard)
   $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)

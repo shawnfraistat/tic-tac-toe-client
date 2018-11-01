@@ -6,18 +6,17 @@
 // use require without a reference to ensure a file is bundled
 // require('./example')
 
-const ui = require('./ui.js')
-const store = require('./store.js')
 const events = require('./events.js')
+const ui = require('./ui.js')
 
 // !! NEED TO ADD EVENT LISTENERS AND EVENTS TO RESET MODAL VALUES AFTER
-// THE MODEL CLOSES
+// THE MODAL CLOSES
 
 $(() => {
-  ui.updateBoardDisplay(store.currentBoard)
   $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
   $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
   $('#sign-in-submit').on('click', events.onSignIn)
+  $('#sign-out-submit').on('click', events.onSignOut)
   $('#start-game-button').on('click', events.onNewGame)
   $('#opponent-self-radio').on('click', ui.toggleAIDifficultyRadios)
   $('#opponent-ai-radio').on('click', ui.toggleAIDifficultyRadios)

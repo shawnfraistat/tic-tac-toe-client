@@ -34,11 +34,28 @@ const showSignUp = function () {
 
 const handleSignInSuccess = event => {
   $('.sign-in-message').html('<p class="sign-in-message green">Signed in!</p>')
+  $('#load-game-nav-button').toggleClass('invisible')
+  $('#log-in-nav-button').toggleClass('invisible')
+  $('#sign-out-nav-button').toggleClass('invisible')
+  $('#user-profile-nav-button').toggleClass('invisible')
   console.log(event)
 }
 
 const handleSignInFailure = event => {
   $('.sign-in-message').html('<p class="sign-in-message red">Invalid sign in</p>')
+  console.log(event)
+}
+
+const handleSignOutSuccess = () => {
+  $('.sign-out-message').html('<p class="green">Signed out</p>')
+  $('#load-game-nav-button').toggleClass('invisible')
+  $('#log-in-nav-button').toggleClass('invisible')
+  $('#sign-out-nav-button').toggleClass('invisible')
+  $('#user-profile-nav-button').toggleClass('invisible')
+}
+
+const handleSignOutFailure = event => {
+  $('.sign-out-message').html('<p class="green">Failed to sign out</p>')
   console.log(event)
 }
 
@@ -135,10 +152,12 @@ module.exports = {
   showSignIn,
   hideSignUp,
   showSignUp,
-  handleSignUpSuccess,
-  handleSignUpFailure,
   handleSignInSuccess,
   handleSignInFailure,
+  handleSignUpSuccess,
+  handleSignUpFailure,
+  handleSignOutSuccess,
+  handleSignOutFailure,
   toggleAIDifficultyRadios,
   // GAME view UI functions
   hideBoard,

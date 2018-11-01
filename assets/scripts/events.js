@@ -4,40 +4,11 @@ const getFormFields = require('../../lib/get-form-fields.js')
 const store = require('./store.js')
 const ui = require('./ui.js')
 
-const onSwitchToSignIn = (event) => {
+const onChangePassword = event => {
   event.preventDefault()
-  ui.hideSignUp()
-  ui.showSignIn()
-  $('#logInModalTitle').text('Sign In')
-  $('#sign-up-submit').off('click', onSignUp)
-  $('#sign-up-submit').attr('id', 'sign-in-submit')
-  $('#sign-in-submit').on('click', onSignIn)
-}
-
-const onSwitchToSignUp = (event) => {
-  event.preventDefault()
-  ui.hideSignIn()
-  ui.showSignUp()
-  $('#logInModalTitle').text('Sign Up')
-  $('#sign-in-submit').off('click', onSignIn)
-  $('#sign-in-submit').attr('id', 'sign-up-submit')
-  $('#sign-up-submit').on('click', onSignUp)
-}
-
-const onSignIn = event => {
-  event.preventDefault()
-  const target = $('#sign-in')[0]
+  const target = $('#password-form')[0]
   const data = getFormFields(target)
-  api.signIn(data)
-    .then(ui.handleSignInSuccess)
-    .catch(ui.handleSignInFailure)
-}
-
-const onSignUp = event => {
-  event.preventDefault()
-  const target = $('#sign-up')[0]
-  const data = getFormFields(target)
-  api.signUp(data)
+  api.changePassword(data)
     .then(ui.handleSignUpSuccess)
     .catch(ui.handleSignUpFailure)
 }
@@ -61,10 +32,57 @@ const onNewGame = function (event) {
   }
 }
 
+const onSignIn = event => {
+  event.preventDefault()
+  const target = $('#sign-in')[0]
+  const data = getFormFields(target)
+  api.signIn(data)
+    .then(api.storeSignInInfo)
+    .catch(ui.handleSignInFailure)
+}
+
+const onSignOut = event => {
+  event.preventDefault()
+  api.signOut()
+    .then(api.eraseSignInInfo)
+    .catch(ui.handleSignUpFailure)
+}
+
+const onSignUp = event => {
+  event.preventDefault()
+  const target = $('#sign-up')[0]
+  const data = getFormFields(target)
+  api.signUp(data)
+    .then(ui.handleSignUpSuccess, api.signIn)
+    .catch(ui.handleSignUpFailure)
+}
+
+const onSwitchToSignIn = (event) => {
+  event.preventDefault()
+  ui.hideSignUp()
+  ui.showSignIn()
+  $('#logInModalTitle').text('Sign In')
+  $('#sign-up-submit').off('click', onSignUp)
+  $('#sign-up-submit').attr('id', 'sign-in-submit')
+  $('#sign-in-submit').on('click', onSignIn)
+}
+
+const onSwitchToSignUp = (event) => {
+  event.preventDefault()
+  ui.hideSignIn()
+  ui.showSignUp()
+  $('#logInModalTitle').text('Sign Up')
+  $('#sign-in-submit').off('click', onSignIn)
+  $('#sign-in-submit').attr('id', 'sign-up-submit')
+  $('#sign-up-submit').on('click', onSignUp)
+}
+
 module.exports = {
+  onChangePassword,
   onNewGame,
-  onSwitchToSignIn,
-  onSwitchToSignUp,
   onSignIn,
-  onSignUp
+  onSignUp,
+  onSignOut,
+  onSwitchToSignIn,
+  onSwitchToSignUp
 }

@@ -1,6 +1,9 @@
 'use strict'
 
-const store = {
+const user = {
+  id: 0,
+  email: '',
+  token: ''
 }
 
 // current game state
@@ -13,10 +16,11 @@ let opponent = ""
 let aiDifficulty = 0
 
 module.exports = {
-  store,
+
   currentBoard,
   currentPlayer,
   firstPlayer,
   opponent,
-  aiDifficulty
+  aiDifficulty,
+  user
 }

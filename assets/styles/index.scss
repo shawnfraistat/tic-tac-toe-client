@@ -107,18 +107,18 @@ form {
 
 header {
   background-color: $black;
-}
 
-header > div {
-  align-items: center;
-  color: $white;
-  display: flex;
-  font-family: 'Nanum Gothic', sans-serif;
-  font-size: 100px;
-  height: 250px;
-  justify-content: center;
-  margin: 0 auto;
-  width: 750px;
+  > div {
+    align-items: center;
+    color: $white;
+    display: flex;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 100px;
+    height: 250px;
+    justify-content: center;
+    margin: 0 auto;
+    width: 750px;
+  }
 }
 
 input {
@@ -128,11 +128,12 @@ input {
 }
 
 .invisible {
-  height: 0;
-  max-width: 0;
-  min-width: 0;
-  visibility: none;
-  width: 0;
+  // height: 0;
+  // max-width: 0;
+  // min-width: 0;
+  // visibility: none;
+  // width: 0;
+  display: none;
 }
 
 nav {

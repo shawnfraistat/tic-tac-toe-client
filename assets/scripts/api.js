@@ -1,5 +1,6 @@
 const config = require('./config.js')
 const store = require('./store.js')
+const ui = require('./ui.js')
 
 // USER API actions
 
@@ -39,10 +40,30 @@ const changePassword = data => {
   })
 }
 
+const storeSignInInfo = data => {
+  console.log('Inside storeSignInInfo')
+  console.log(data.user)
+  console.log(store.user)
+  store.user.id = data.user.id
+  store.user.email = data.user.email
+  store.user.token = data.user.token
+  console.log(store.user)
+  ui.handleSignInSuccess(data)
+}
+
+const eraseSignInInfo = () => {
+  store.user.id = 0
+  store.user.email = ''
+  store.user.token = ''
+  ui.handleSignOutSuccess()
+}
+
 module.exports = {
   // USER API functions
   signUp,
   signIn,
   signOut,
-  changePassword
+  changePassword,
+  storeSignInInfo,
+  eraseSignInInfo
 }

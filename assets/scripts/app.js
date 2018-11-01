@@ -18,7 +18,7 @@ $(() => {
   $('#sign-in-submit').on('click', events.onSignIn)
   $('#sign-out-submit').on('click', events.onSignOut)
   $('#start-game-button').on('click', events.onNewGame)
-  $('#load-game-nav-button').on('click', events.onLoadGame)
+  $('#load-game-nav-button').on('click', events.onLoadView)
   $('#opponent-self-radio').on('click', ui.toggleAIDifficultyRadios)
   $('#opponent-ai-radio').on('click', ui.toggleAIDifficultyRadios)
   $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)

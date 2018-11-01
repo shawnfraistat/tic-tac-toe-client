@@ -13,13 +13,42 @@ const onChangePassword = event => {
     .catch(ui.handleSignUpFailure)
 }
 
-const onLoadGame = function (event) {
+// LOAD events
+
+const onLoadGame = event => {
+  $('.load-board').off('click', onLoadGame)
+  api.loadThisGame(event)
+    .then(setUpLoadedGame)
+    .then(ui.handleLoadGameSuccess)
+  console.log('Loading your game!')
+}
+
+const onLoadView = function (event) {
   event.preventDefault()
-  $('.board-plus-message').toggleClass('invisible')
-  $('.load-view').toggleClass('invisible')
   api.getGameList()
+    .then(storeLoadedGames)
     .then(ui.handleGameListSuccess)
+    .then(function () { $('.load-board').on('click', onLoadGame) })
     .catch(ui.handleGameListFailure)
+}
+
+const storeLoadedGames = data => {
+  console.log('Inside storeLoadedGames')
+  console.log(data)
+  for (let i = 0; i < data.games.length; i++) {
+    store.user.games[i] = data.games[i]
+  }
+}
+
+const setUpLoadedGame = data => {
+  for (let i = 0; i < store.currentBoard.length; i++) {
+    store.currentBoard[i] = data.game.cells[i]
+  }
+  for (const key in data.game) {
+    store.game[key] = data.game[key]
+  }
+  console.log(store.game)
+  console.log(data)
 }
 
 const onNewGame = function (event) {
@@ -28,6 +57,12 @@ const onNewGame = function (event) {
   store.opponent = $('input[name="opponent"]:checked').val()
   store.aiDifficulty = $('input[name="difficulty"]:checked').val()
   store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  if (store.user.id !== 0) {
+    api.createNewGame()
+      .then(copyNewGameData)
+      .catch(ui.handleCreateNewGameFailure)
+  }
+  ui.showBoard()
   ui.updateBoardDisplay()
   console.log(store.firstPlayer)
   console.log(store.opponent)
@@ -39,6 +74,11 @@ const onNewGame = function (event) {
   } else {
     gamelogic.readyPlayerTurn()
   }
+}
+
+const copyNewGameData = data => {
+  console.log('Inside copyNewGameData--data is:', data)
+  store.game.id = data.game.id
 }
 
 const onSignIn = event => {
@@ -90,6 +130,7 @@ module.exports = {
   onChangePassword,
   onNewGame,
   onLoadGame,
+  onLoadView,
   onSignIn,
   onSignUp,
   onSignOut,

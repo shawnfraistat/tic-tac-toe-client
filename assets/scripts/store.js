@@ -16,14 +16,11 @@ const game = {
   player_o: null
 }
 
-const games = {
-
-}
-
 const user = {
   id: 0,
   email: '',
-  token: ''
+  token: '',
+  games: []
 }
 
 // current game state
@@ -40,7 +37,6 @@ module.exports = {
   currentLoadPage,
   totalLoadPages,
   game,
-  games,
   user,
   // current game state
   currentBoard,

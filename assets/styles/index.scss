@@ -45,6 +45,8 @@ div > .row > div  {
   width: 33.3%;
 }
 
+
+
 div {
   &.div0 {
     border-bottom: $big-border;
@@ -118,6 +120,10 @@ div {
     border-right: $small-border;
   }
 
+  &.load-message > p {
+    margin: 0 20px;
+  }
+
   &.signview {
     display: flex;
     justify-content: center;
@@ -129,12 +135,13 @@ fieldset {
 }
 
 .game-list {
+  align-content: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   height: 500px;
   margin: 0 auto;
-  width: 800px;
+  width: 500px;
 }
 
 legend {
@@ -184,16 +191,16 @@ input {
   display: flex;
   flex-direction: column;
   font-family: 'Nanum Brush Script', cursive;
-  height: 100px;
+  // height: 100px;
   margin: 20px;
-  width: 100px;
+  // width: 100px;
 }
 
 .load-message {
   display: flex;
   flex-direction: row;
   font-size: 40px;
-  justify-content: space-around;
+  justify-content: center;
   margin: 20px;
 }
 

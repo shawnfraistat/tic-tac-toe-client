@@ -4,9 +4,30 @@ const ui = require('./ui.js')
 
 // GAME API actions
 
+const createNewGame = () => {
+  return $.ajax({
+    url: config.apiUrl + '/games',
+    method: 'POST',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 const getGameList = () => {
   return $.ajax({
     url: config.apiUrl + '/games',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
+const loadThisGame = event => {
+  const id = event.currentTarget.attributes.dataid.value
+  return $.ajax({
+    url: config.apiUrl + '/games/' + id,
     method: 'GET',
     headers: {
       Authorization: 'Token token=' + store.user.token
@@ -55,7 +76,6 @@ const changePassword = data => {
 const storeSignInInfo = data => {
   console.log('Inside storeSignInInfo')
   console.log(data.user)
-  console.log(store.user)
   store.user.id = data.user.id
   store.user.email = data.user.email
   store.user.token = data.user.token
@@ -72,7 +92,9 @@ const eraseSignInInfo = () => {
 
 module.exports = {
   // GAME API functions
+  createNewGame,
   getGameList,
+  loadThisGame,
   // USER API functions
   signUp,
   signIn,

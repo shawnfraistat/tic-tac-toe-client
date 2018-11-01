@@ -1,192 +1,5 @@
 const store = require('./store.js')
 
-const testOne = {
-  "games": [
-    {
-      "id": 1,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 2,
-      "cells": ["","","","","","","","",""],
-      "over": false,
-      "player_x": {
-        "id": 3,
-        "email": "dna@dna.com"
-      },
-      "player_o": {
-        "id": 1,
-        "email": "and@and.com"
-      }
-    },
-    {
-      "id": 3,
-      "cells": ["","","","","","","","",""],
-      "over": false,
-      "player_x": {
-        "id": 3,
-        "email": "dna@dna.com"
-      },
-      "player_o": {
-        "id": 1,
-        "email": "and@and.com"
-      }
-    },
-    {
-      "id": 4,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 5,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 6,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 7,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 8,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 9,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 10,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 11,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 12,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 13,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-    {
-      "id": 14,
-      "cells": ["o","x","o","x","o","x","o","x","o"],
-      "over": true,
-      "player_x": {
-        "id": 1,
-        "email": "and@and.com"
-      },
-      "player_o": {
-        "id": 3,
-        "email": "dna@dna.com"
-      }
-    },
-  ]
-}
-
 //
 //
 // UI functions that deal with the LOAD views
@@ -194,54 +7,65 @@ const testOne = {
 //
 
 const handleGameListSuccess = () => {
-  const data = testOne
-  store.totalLoadPages = Math.ceil((data.games.length / 9)) - 1
+  $('.board-plus-message').addClass('invisible')
+  $('.load-view').removeClass('invisible')
+  const data = store.user
+  if (data.games.length > 0) {
+    store.totalLoadPages = Math.ceil((data.games.length / 9)) - 1
+  }
   if (data.games.length === 0) {
     $('.game-list').text('No games found')
   } else if (data.games.length < 9) {
-    for (let i = 0; i < data.games.length; i++) {
-      $('.game-list')[0].innerHTML += `
-      <div class="load-board">
-        <div class="row">
-          <div id="0" class="load-div0">${data.games[i].cells[0]}</div>
-          <div id="1" class="load-div1">${data.games[i].cells[1]}</div>
-          <div id="2" class="load-div2">${data.games[i].cells[2]}</div>
-        </div>
-        <div class="row">
-          <div id="3" class="load-div3">${data.games[i].cells[3]}</div>
-          <div id="4" class="load-div4">${data.games[i].cells[4]}</div>
-          <div id="5" class="load-div5">${data.games[i].cells[5]}</div>
-        </div>
-        <div class="row">
-          <div id="6" class="load-div6">${data.games[i].cells[6]}</div>
-          <div id="7" class="load-div7">${data.games[i].cells[7]}</div>
-          <div id="8" class="load-div8">${data.games[i].cells[8]}</div>
-        </div>`
-    }
+    const startPoint = 0
+    const endPoint = data.games.length
+    displayLoadedBoard(startPoint, endPoint)
   } else if (data.games.length >= 9) {
-    for (let i = 0; i < 9; i++) {
-      $('.game-list')[0].innerHTML += `
-      <div class="load-board">
-        <div class="row">
-          <div id="0" class="load-div0">${data.games[i].cells[0]}</div>
-          <div id="1" class="load-div1">${data.games[i].cells[1]}</div>
-          <div id="2" class="load-div2">${data.games[i].cells[2]}</div>
-        </div>
-        <div class="row">
-          <div id="3" class="load-div3">${data.games[i].cells[3]}</div>
-          <div id="4" class="load-div4">${data.games[i].cells[4]}</div>
-          <div id="5" class="load-div5">${data.games[i].cells[5]}</div>
-        </div>
-        <div class="row">
-          <div id="6" class="load-div6">${data.games[i].cells[6]}</div>
-          <div id="7" class="load-div7">${data.games[i].cells[7]}</div>
-          <div id="8" class="load-div8">${data.games[i].cells[8]}</div>
-        </div>`
-    }
-    updatePageArrows()
+    const startPoint = 0
+    const endPoint = 9
+    displayLoadedBoard(startPoint, endPoint)
   }
-  setLoadBoardDimensions(data.games.length)
-  // setLoadBoardColors()
+  updatePageArrows()
+  if (data.games.length > 9) {
+    setLoadBoardDimensions(9)
+  } else if (data.games.length > 0) {
+    setLoadBoardDimensions(data.games.length)
+  }
+}
+
+const handleLoadGameSuccess = data => {
+
+}
+
+const handleCreateNewGameFailure = data => {
+  console.log('New game failed to create!')
+}
+
+const displayLoadedBoard = (startPoint, endPoint) => {
+  const data = store.user
+  $('.game-list')[0].innerHTML = ''
+  for (let i = startPoint; i < endPoint; i++) {
+    $('.game-list')[0].innerHTML += `
+    <div class="load-board" dataId="${data.games[i].id}">
+      <div class="row">
+        <div id="0" class="load-div0">${data.games[i].cells[0]}</div>
+        <div id="1" class="load-div1">${data.games[i].cells[1]}</div>
+        <div id="2" class="load-div2">${data.games[i].cells[2]}</div>
+      </div>
+      <div class="row">
+        <div id="3" class="load-div3">${data.games[i].cells[3]}</div>
+        <div id="4" class="load-div4">${data.games[i].cells[4]}</div>
+        <div id="5" class="load-div5">${data.games[i].cells[5]}</div>
+      </div>
+      <div class="row">
+        <div id="6" class="load-div6">${data.games[i].cells[6]}</div>
+        <div id="7" class="load-div7">${data.games[i].cells[7]}</div>
+        <div id="8" class="load-div8">${data.games[i].cells[8]}</div>
+      </div>`
+  }
+  setLoadBoardColors()
+}
+
+const setLoadBoardColors = () => {
 }
 
 const updatePageArrows = () => {
@@ -250,6 +74,10 @@ const updatePageArrows = () => {
   if (store.totalLoadPages === 0) {
     $('#previous-load-page-arrow').addClass('invisible')
     $('#next-load-page-arrow').addClass('invisible')
+    $('#current-page-display').addClass('invisible')
+  } else {
+    $('#current-page-display').removeClass('invisible')
+    $('#current-page-display').text(`(${store.currentLoadPage + 1} / ${store.totalLoadPages + 1})`)
   }
   if (store.currentLoadPage < store.totalLoadPages) {
     $('#next-load-page-arrow').removeClass('invisible')
@@ -264,74 +92,38 @@ const updatePageArrows = () => {
 }
 
 const displayNextLoadPage = () => {
-  const data = testOne
+  const data = store.user
   store.currentLoadPage++
   const startPoint = store.currentLoadPage * 9
   const endPoint = startPoint + (data.games.length - startPoint)
   console.log('startPoint is', startPoint)
   console.log('endPoint is', endPoint)
-  $('.game-list')[0].innerHTML = ''
-  for (let i = startPoint; i < endPoint; i++) {
-    $('.game-list')[0].innerHTML += `
-    <div class="load-board">
-      <div class="row">
-        <div id="0" class="load-div0">${data.games[i].cells[0]}</div>
-        <div id="1" class="load-div1">${data.games[i].cells[1]}</div>
-        <div id="2" class="load-div2">${data.games[i].cells[2]}</div>
-      </div>
-      <div class="row">
-        <div id="3" class="load-div3">${data.games[i].cells[3]}</div>
-        <div id="4" class="load-div4">${data.games[i].cells[4]}</div>
-        <div id="5" class="load-div5">${data.games[i].cells[5]}</div>
-      </div>
-      <div class="row">
-        <div id="6" class="load-div6">${data.games[i].cells[6]}</div>
-        <div id="7" class="load-div7">${data.games[i].cells[7]}</div>
-        <div id="8" class="load-div8">${data.games[i].cells[8]}</div>
-      </div>`
-  }
+  displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
+  setLoadBoardDimensions(data.games.length - startPoint)
 }
 
 const displayPreviousLoadPage = () => {
-  const data = testOne
   store.currentLoadPage--
   const startPoint = store.currentLoadPage * 9
-  $('.game-list')[0].innerHTML = ''
-  for (let i = startPoint; i < startPoint + 9; i++) {
-    $('.game-list')[0].innerHTML += `
-    <div class="load-board">
-      <div class="row">
-        <div id="0" class="load-div0">${data.games[i].cells[0]}</div>
-        <div id="1" class="load-div1">${data.games[i].cells[1]}</div>
-        <div id="2" class="load-div2">${data.games[i].cells[2]}</div>
-      </div>
-      <div class="row">
-        <div id="3" class="load-div3">${data.games[i].cells[3]}</div>
-        <div id="4" class="load-div4">${data.games[i].cells[4]}</div>
-        <div id="5" class="load-div5">${data.games[i].cells[5]}</div>
-      </div>
-      <div class="row">
-        <div id="6" class="load-div6">${data.games[i].cells[6]}</div>
-        <div id="7" class="load-div7">${data.games[i].cells[7]}</div>
-        <div id="8" class="load-div8">${data.games[i].cells[8]}</div>
-      </div>`
-  }
+  const endPoint = startPoint + 9
+  displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
+  setLoadBoardDimensions(9)
 }
 
 const setLoadBoardDimensions = numOfBoards => {
   let dimension
-  if (numOfBoards <= 3) {
+  if (numOfBoards < 3) {
     dimension = Math.floor((1 / numOfBoards) * 100)
   } else {
-    dimension = Math.floor((1 / 3) * 100)
+    dimension = Math.floor((1 / 4) * 100)
   }
   console.log('dimension is', dimension)
-  // for (let i = 0; i < numOfBoards; i++) {
-  //   document.getElementsByClassName('load-board')[i].style.width = `${dimension}%`
-  //   document.getElementsByClassName('load-board')[i].style.height = `${dimension}%`
-  // }
+  for (let i = 0; i < numOfBoards; i++) {
+    document.getElementsByClassName('load-board')[i].style.width = `${dimension}%`
+    document.getElementsByClassName('load-board')[i].style.height = `${dimension}%`
+  }
 }
 
 //
@@ -429,7 +221,6 @@ const showUserView = function () {
 }
 
 
-
 //
 //
 // UI functions that deal with the GAME views
@@ -437,11 +228,12 @@ const showUserView = function () {
 //
 
 const hideBoard = function () {
-  $('.board').addClass('invisible')
+  $('.board-plus-message').addClass('invisible')
 }
 
 const showBoard = function () {
-  $('.board').removeClass('invisible')
+  $('.board-plus-message').removeClass('invisible')
+  $('.load-view').addClass('invisible')
 }
 
 const showPlayerTurn = function () {
@@ -481,8 +273,11 @@ const updateBoardDisplay = function () {
 }
 
 module.exports = {
+  // NEW game UI functions
+  handleCreateNewGameFailure,
   // LOAD view UI functions
   handleGameListSuccess,
+  handleLoadGameSuccess,
   displayNextLoadPage,
   displayPreviousLoadPage,
   // USER view UI functions

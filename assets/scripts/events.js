@@ -13,6 +13,15 @@ const onChangePassword = event => {
     .catch(ui.handleSignUpFailure)
 }
 
+const onLoadGame = function (event) {
+  event.preventDefault()
+  $('.board-plus-message').toggleClass('invisible')
+  $('.load-view').toggleClass('invisible')
+  api.getGameList()
+    .then(ui.handleGameListSuccess)
+    .catch(ui.handleGameListFailure)
+}
+
 const onNewGame = function (event) {
   console.log('Start game!')
   store.firstPlayer = $('input[name="first-player"]:checked').val()
@@ -80,6 +89,7 @@ const onSwitchToSignUp = (event) => {
 module.exports = {
   onChangePassword,
   onNewGame,
+  onLoadGame,
   onSignIn,
   onSignUp,
   onSignOut,

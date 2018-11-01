@@ -30,7 +30,9 @@
         </button>
       </li>
       <li class="nav-item invisible" id="load-game-nav-button">
-        <a class="nav-link" href="#">Load Game</a>
+        <button type="button" class="btn btn-primary">
+          Load Game
+        </button>
       </li>
       <li class="nav-item invisible" id="user-profile-nav-button">
         <a class="nav-link" href="#">User Profile</a>
@@ -71,6 +73,7 @@
                   <label for="player-two-first-radio">Opponent</label>
                 </div>
               </fieldset>
+              <br />
               <fieldset>
                 <legend>Select Opponent: </legend>
                 <div class="opponent-options">
@@ -80,6 +83,7 @@
                   <label for="opponent-self-radio">AI</label>
                 </div>
               </fieldset>
+              <br />
               <fieldset id="ai-difficulty-radios">
                 <legend>Select AI Difficulty: </legend>
                 <div class="ai-difficulty">
@@ -92,6 +96,8 @@
                 </div>
               </fieldset>
             </div>
+            <br />
+            <h6 id='save-warning'>NOTE: If you are not logged in, this game will not be saved</h6>
           </form>
         </div>
         <div class="modal-footer">
@@ -178,6 +184,15 @@
       </div>
     </div>
 
+    <div class="load-view invisible">
+      <div class="load-message">
+        <p class="invisible" id="previous-load-page-arrow"><</p>
+        <h3>Load Game</h3>
+        <p class="invisible" id="next-load-page-arrow">></p>
+      </div>
+      <div class="game-list">
+      </div>
+    </div>
   </main>
 </body>
 

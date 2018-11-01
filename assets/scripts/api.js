@@ -2,6 +2,18 @@ const config = require('./config.js')
 const store = require('./store.js')
 const ui = require('./ui.js')
 
+// GAME API actions
+
+const getGameList = () => {
+  return $.ajax({
+    url: config.apiUrl + '/games',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 // USER API actions
 
 const signUp = data => {
@@ -59,6 +71,8 @@ const eraseSignInInfo = () => {
 }
 
 module.exports = {
+  // GAME API functions
+  getGameList,
   // USER API functions
   signUp,
   signIn,

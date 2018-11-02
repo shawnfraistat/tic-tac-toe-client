@@ -17,7 +17,7 @@ const ui = require('./ui.js')
 1. Have load game view display games ordered by id number--should be possible to
 accomplish this by sorting games array before committing it to store.js
 
-2. have games in load game view highlight on hover
+2. have games in load game view highlight on hover DONE
 
 3. when trying to load a game, have confirmation modal
 

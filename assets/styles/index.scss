@@ -13,7 +13,6 @@ body {
   font-family: 'Nanum Gothic', sans-serif;
 }
 
-
 .board {
   align-items: center;
   display: flex;
@@ -188,6 +187,11 @@ legend {
   height: 100px;
   margin: 20px;
   width: 100px;
+
+  &:hover {
+    border: solid $blue 5px;
+    // border-radius: 100px;
+  }
 }
 
 .load-message {

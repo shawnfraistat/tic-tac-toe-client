@@ -15,6 +15,11 @@ const onChangePassword = event => {
 
 // LOAD events
 
+const copyNewGameData = data => {
+  console.log('Inside copyNewGameData--data is:', data)
+  store.game.id = data.game.id
+}
+
 const onLoadGame = () => {
   api.loadThisGame(store.currentClickEvent)
     .then(setUpLoadedGame)
@@ -24,20 +29,15 @@ const onLoadGame = () => {
 
 const onLoadView = function (event) {
   event.preventDefault()
+  setTimeout(setUpLoadView(event), 1000000)
+}
+
+const setUpLoadView = event => {
+  event.preventDefault()
   api.getGameList()
     .then(storeLoadedGames)
     .then(ui.handleGameListSuccess)
     .catch(ui.handleGameListFailure)
-}
-
-const storeLoadedGames = data => {
-  store.user.games = []
-  console.log('Inside storeLoadedGames')
-  console.log(data)
-  for (let i = 0; i < data.games.length; i++) {
-    store.user.games[i] = data.games[i]
-  }
-  store.user.games.sort((a, b) => a.id - b.id)
 }
 
 const setUpLoadedGame = data => {
@@ -55,40 +55,30 @@ const setUpLoadedGame = data => {
   console.log(store.game)
   ui.showBoard()
   ui.updateBoardDisplay()
-  store.currentPlayer = 'playerOne'
-  store.opponent = 'self'
-  store.aiDifficulty = 0
-  gamelogic.readyPlayerTurn()
-}
-
-const onPreviousPageArrowClick = () => {
-  ui.displayPreviousLoadPage()
-}
-
-const onNextPageArrowClick = () => {
-  ui.displayNextLoadPage()
-}
-
-// NEW GAME events
-
-const onNewGame = function (event) {
-  console.log('Start game!')
-  store.firstPlayer = $('input[name="first-player"]:checked').val()
-  store.opponent = $('input[name="opponent"]:checked').val()
-  store.aiDifficulty = $('input[name="difficulty"]:checked').val()
-  store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-  if (store.user.id !== 0) {
-    api.createNewGame()
-      .then(copyNewGameData)
-      .catch(ui.handleCreateNewGameFailure)
+  // hard-coded ids used here to figure out who the AI was on load
+  // need to change if API changes
+  if (store.game.player_o === null) {
+    store.opponent = 'self'
+  } else if (store.game.player_o.id === 142) {
+    store.opponent = 'ai'
+    store.aiDifficulty = '0'
+    console.log('Loading easy ai')
+  } else if (store.game.player_o.id === 144) {
+    store.opponent = 'ai'
+    store.aiDifficulty = '1'
+    console.log('Loading medium ai')
+  } else if (store.game.player_o.id === 145) {
+    store.opponent = 'ai'
+    store.aiDifficulty = '2'
+    console.log('Loading impossible ai')
   }
-  ui.showBoard()
-  ui.updateBoardDisplay()
-  console.log(store.firstPlayer)
-  console.log(store.opponent)
-  console.log(store.aiDifficulty)
-  $('#newGameModal').modal('hide')
-  store.currentPlayer = store.firstPlayer
+  const xArray = store.currentBoard.filter(value => value === 'x')
+  const oArray = store.currentBoard.filter(value => value === 'o')
+  if (xArray.length > oArray.length) {
+    store.currentPlayer = 'playerTwo'
+  } else {
+    store.currentPlayer = 'playerOne'
+  }
   if (store.currentPlayer === 'playerTwo' && store.opponent === 'ai') {
     gamelogic.takeAITurn()
   } else {
@@ -96,9 +86,41 @@ const onNewGame = function (event) {
   }
 }
 
-const copyNewGameData = data => {
-  console.log('Inside copyNewGameData--data is:', data)
-  store.game.id = data.game.id
+const storeLoadedGames = data => {
+  store.user.games = []
+  console.log('Inside storeLoadedGames')
+  console.log(data)
+  for (let i = 0; i < data.games.length; i++) {
+    store.user.games[i] = data.games[i]
+  }
+  store.user.games.sort((a, b) => a.id - b.id)
+}
+
+// NEW GAME events
+
+const onNewGame = function (event) {
+  console.log('Start game!')
+  // This is a nice idea, but it screws up saving; no easy way for the API to
+  // store who had the last move
+  // store.firstPlayer = $('input[name="first-player"]:checked').val()
+  store.opponent = $('input[name="opponent"]:checked').val()
+  store.aiDifficulty = $('input[name="difficulty"]:checked').val()
+  store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  if (store.user.id !== 0) {
+    api.createNewGame()
+      .then(copyNewGameData)
+      .then(api.signInAI)
+      .catch(ui.handleCreateNewGameFailure)
+  }
+  ui.showBoard()
+  ui.updateBoardDisplay()
+  $('#newGameModal').modal('hide')
+  store.currentPlayer = 'playerOne'
+  if (store.currentPlayer === 'playerTwo' && store.opponent === 'ai') {
+    gamelogic.takeAITurn()
+  } else {
+    gamelogic.readyPlayerTurn()
+  }
 }
 
 // SIGN IN/SIGN OUT Events
@@ -155,8 +177,6 @@ module.exports = {
   onNewGame,
   onLoadGame,
   onLoadView,
-  onPreviousPageArrowClick,
-  onNextPageArrowClick,
   onSignIn,
   onSignUp,
   onSignOut,

@@ -2,14 +2,19 @@
 
 // getAIMove() is used to calculate a move for the AI. It uses a different logic depending on the difficulty setting.
 
-const getAIMove = function (boardToEval, aiDifficulty) {
+const store = require('./store')
+
+const getAIMove = function (boardToEval) {
+  console.log('inside getAIMove, store.aiDifficulty is', store.aiDifficulty)
   let myMove
-  switch (aiDifficulty) {
+  switch (store.aiDifficulty) {
     case '0':
+      console.log('case 0')
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
       break
     case '1':
+      console.log('case 1')
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
       if (goForKill(boardToEval) != null) {
@@ -19,6 +24,7 @@ const getAIMove = function (boardToEval, aiDifficulty) {
       }
       break
     case '2':
+      console.log('case 2')
       myMove = minimax(boardToEval, 'playerTwo')
       if (goForKill(boardToEval) != null) {
         myMove.index = goForKill(boardToEval)
@@ -61,7 +67,7 @@ To prevent the ai from screwing around with the human player for a few turns, go
 const goForKill = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   for (let i = 0; i < availSpots.length; i++) {
-    boardToEval[availSpots[i]] = 'x'
+    boardToEval[availSpots[i]] = 'o'
     const checkResult = terminalCheck(boardToEval, 'playerTwo')
     if (checkResult === 'playerTwoWin') {
       boardToEval[availSpots[i]] = availSpots[i]
@@ -77,7 +83,7 @@ const goForKill = function (boardToEval) {
 const impendingDisaster = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   for (let i = 0; i < availSpots.length; i++) {
-    boardToEval[availSpots[i]] = 'o'
+    boardToEval[availSpots[i]] = 'x'
     const checkResult = terminalCheck(boardToEval, 'playerOne')
     if (checkResult === 'playerOneWin') {
       boardToEval[availSpots[i]] = availSpots[i]

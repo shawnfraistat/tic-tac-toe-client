@@ -14,11 +14,6 @@ const ui = require('./ui.js')
 
 /* TO DO:
 
-4. There might be a bug that occurs if players start a new game, _then_ sign in--
-it might try to update on the API, but the game won't exist
-
-5. Add ai players to API database
-
 6. Add logic that checks for AI players and loads them in when loading a game
 
 7. Check that this doesn't become bugged when you deploy--you'll be using a
@@ -35,6 +30,8 @@ within the modal on success, and then change so that they can be dismissed
 
 12. adjust border on game cells so that it's divided equally between each cell
 
+13. add id number below each game in Load Game view
+
 */
 
 $(() => {
@@ -46,7 +43,7 @@ $(() => {
   $('#load-game-nav-button').on('click', events.onLoadView)
   $('#opponent-self-radio').on('click', ui.toggleAIDifficultyRadios)
   $('#opponent-ai-radio').on('click', ui.toggleAIDifficultyRadios)
-  $('#previous-load-page-arrow').on('click', events.onPreviousPageArrowClick)
+  $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)
   $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
   $('#load-game-submit').on('click', events.onLoadGame)
 })

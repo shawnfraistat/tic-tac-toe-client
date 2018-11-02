@@ -32,7 +32,7 @@ let currentPlayer = ''
 // settings
 let firstPlayer = ''
 let opponent = ''
-let aiDifficulty = 0
+let aiDifficulty = '0'
 
 // misc globals
 

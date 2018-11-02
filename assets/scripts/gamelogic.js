@@ -13,14 +13,21 @@ const takeAITurn = function () {
   console.log('Inside of takeAITurn, aiDifficulty is', store.aiDifficulty)
   const aiMove = ai.getAIMove(store.currentBoard, store.aiDifficulty)
   console.log('Inside of takeAITurn, aiMove is', aiMove)
+  const spaceNumber = store.currentBoard[aiMove]
   store.currentBoard[aiMove] = 'o'
   ui.updateBoardDisplay(store.currentBoard)
   if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
     ui.showPlayerWin('playerTwo')
     over = true
+    for (let i = 0; i < 9; i++) {
+      document.getElementById(i).removeEventListener('click', takeHumanTurn)
+    }
   } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'tie') {
     ui.showPlayerTie()
     over = true
+    for (let i = 0; i < 9; i++) {
+      document.getElementById(i).removeEventListener('click', takeHumanTurn)
+    }
   } else {
     store.currentPlayer = 'playerOne'
     readyPlayerTurn()
@@ -28,7 +35,7 @@ const takeAITurn = function () {
   const moveForAPI = {
     "game": {
       "cell": {
-        "index": store.currentBoard[aiMove],
+        "index": spaceNumber,
         "value": "o"
       },
       "over": over
@@ -44,9 +51,12 @@ const takeAITurn = function () {
 // eventListeners on available spots.
 
 const readyPlayerTurn = function () {
+  for (let i = 0; i < 9; i++) {
+    document.getElementById(i).removeEventListener('click', takeHumanTurn)
+  }
   ui.showPlayerTurn()
   for (let i = 0; i < 9; i++) {
-    if (document.getElementById(i).innerHTML !== '<p class="x-color">X</p>' && document.getElementById(i).innerHTML !== '<p class="o-color">O</p>') {
+    if (document.getElementById(i).innerHTML !== `<p style="color:${store.xColor}">X</p>` && document.getElementById(i).innerHTML !== `<p style="color:${store.oColor}">O</p>`) {
       document.getElementById(i).addEventListener('click', takeHumanTurn)
     }
   }
@@ -65,9 +75,6 @@ const takeHumanTurn = function (event) {
       "over": false
     }
   }
-  for (let i = 0; i < 9; i++) {
-    document.getElementById(i).removeEventListener('click', takeHumanTurn)
-  }
   if (store.currentPlayer === 'playerOne') {
     store.currentBoard[event.srcElement.id] = 'x'
     moveForAPI.game.cell.value = 'x'
@@ -80,13 +87,22 @@ const takeHumanTurn = function (event) {
     console.log('Player One wins!')
     ui.showPlayerWin('playerOne')
     moveForAPI.game.over = true
+    for (let i = 0; i < 9; i++) {
+      document.getElementById(i).removeEventListener('click', takeHumanTurn)
+    }
   } else if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie') {
     ui.showPlayerTie()
     moveForAPI.game.over = true
+    for (let i = 0; i < 9; i++) {
+      document.getElementById(i).removeEventListener('click', takeHumanTurn)
+    }
   } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin' && store.opponent === 'self') {
     console.log('Player Two wins!')
     ui.showPlayerWin('playerTwo')
     moveForAPI.game.over = true
+    for (let i = 0; i < 9; i++) {
+      document.getElementById(i).removeEventListener('click', takeHumanTurn)
+    }
   } else {
     console.log('Next turn')
     if (store.currentPlayer === 'playerOne') {

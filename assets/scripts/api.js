@@ -96,9 +96,7 @@ const storeSignInInfo = data => {
 }
 
 const eraseSignInInfo = () => {
-  store.user.id = 0
-  store.user.email = ''
-  store.user.token = ''
+  resetUser()
   ui.handleSignOutSuccess()
 }
 

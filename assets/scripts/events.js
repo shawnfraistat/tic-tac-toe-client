@@ -117,7 +117,7 @@ const onSignIn = event => {
 const onSignOut = event => {
   event.preventDefault()
   api.signOut()
-    .then(api.eraseSignInInfo)
+    .then(ui.handleSignOutSuccess)
     .catch(ui.handleSignUpFailure)
 }
 

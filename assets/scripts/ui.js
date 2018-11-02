@@ -185,12 +185,21 @@ const handleSignInFailure = event => {
 }
 
 const handleSignOutSuccess = () => {
+  store.user.id = 0
+  store.user.email = ''
+  store.user.token = ''
+  store.user.games = []
+  store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  store.currentPlayer = ''
+  $('.board-message').html('')
   $('.sign-out-message').html('<p class="green">Signed out</p>')
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')
   $('#save-warning').toggleClass('invisible')
   $('#sign-out-nav-button').toggleClass('invisible')
   $('#user-profile-nav-button').toggleClass('invisible')
+  updateBoardDisplay()
+  showBoard()
 }
 
 const handleSignOutFailure = event => {

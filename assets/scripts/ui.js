@@ -48,25 +48,35 @@ const displayLoadedBoard = (startPoint, endPoint) => {
     $('.game-list')[0].innerHTML += `
     <div class="load-board" dataId="${data.games[i].id}">
       <div class="row">
-        <div id="0" class="load-div0">${data.games[i].cells[0]}</div>
-        <div id="1" class="load-div1">${data.games[i].cells[1]}</div>
-        <div id="2" class="load-div2">${data.games[i].cells[2]}</div>
+        <div class="load-div load-div0">${data.games[i].cells[0]}</div>
+        <div class="load-div load-div1">${data.games[i].cells[1]}</div>
+        <div class="load-div load-div2">${data.games[i].cells[2]}</div>
       </div>
       <div class="row">
-        <div id="3" class="load-div3">${data.games[i].cells[3]}</div>
-        <div id="4" class="load-div4">${data.games[i].cells[4]}</div>
-        <div id="5" class="load-div5">${data.games[i].cells[5]}</div>
+        <div class="load-div load-div3">${data.games[i].cells[3]}</div>
+        <div class="load-div load-div4">${data.games[i].cells[4]}</div>
+        <div class="load-div load-div5">${data.games[i].cells[5]}</div>
       </div>
       <div class="row">
-        <div id="6" class="load-div6">${data.games[i].cells[6]}</div>
-        <div id="7" class="load-div7">${data.games[i].cells[7]}</div>
-        <div id="8" class="load-div8">${data.games[i].cells[8]}</div>
+        <div class="load-div load-div6">${data.games[i].cells[6]}</div>
+        <div class="load-div load-div7">${data.games[i].cells[7]}</div>
+        <div class="load-div load-div8">${data.games[i].cells[8]}</div>
       </div>`
   }
   setLoadBoardColors()
 }
 
 const setLoadBoardColors = () => {
+  const loadDivs = document.getElementsByClassName('load-div')
+  console.log(loadDivs)
+  console.log(loadDivs[1].innerHTML)
+  for (let i = 0; i < loadDivs.length; i++) {
+    if (loadDivs[i].innerHTML === 'x') {
+      loadDivs[i].innerHTML = `<p style="color:${store.xColor}">x</p>`
+    } else if (loadDivs[i].innerHTML === 'o') {
+      loadDivs[i].innerHTML = `<p style="color:${store.oColor}">o</p>`
+    }
+  }
 }
 
 const updatePageArrows = () => {
@@ -239,17 +249,17 @@ const showBoard = function () {
 
 const showPlayerTurn = function () {
   if (store.currentPlayer === 'playerOne') {
-    $('.board-message').html(`<p><scan class="x-color">Player One</scan>'s Turn</p>`)
+    $('.board-message').html(`<p><scan style="color:${store.xColor}">Player One</scan>'s Turn</p>`)
   } else {
-    $('.board-message').html(`<p><scan class="o-color">Player Two</scan>'s Turn</p>`)
+    $('.board-message').html(`<p><scan style="color:${store.oColor}">Player Two</scan>'s Turn</p>`)
   }
 }
 
 const showPlayerWin = function (player) {
   if (player === 'playerOne') {
-    $('.board-message').html(`<p><scan class="x-color">Player One</scan> Wins!</p>`)
+    $('.board-message').html(`<p><scan style="color:${store.xColor}">Player One</scan> Wins!</p>`)
   } else {
-    $('.board-message').html(`<p><scan class="o-color">Player Two</scan> Wins!</p>`)
+    $('.board-message').html(`<p><scan style="color:${store.oColor}">Player Two</scan> Wins!</p>`)
   }
 }
 
@@ -262,10 +272,10 @@ const showPlayerTie = function (player) {
 const updateBoardDisplay = function () {
   for (let i = 0; i < 9; i++) {
     if (store.currentBoard[i] === 'x') {
-      document.getElementById(i).innerHTML = '<p class="x-color">X</p>'
+      document.getElementById(i).innerHTML = `<p style="color:${store.xColor}">X</p>`
     }
     if (store.currentBoard[i] === 'o') {
-      document.getElementById(i).innerHTML = '<p class="o-color">O</p>'
+      document.getElementById(i).innerHTML = `<p style="color:${store.oColor}">O</p>`
     }
     if (store.currentBoard[i] !== 'x' && store.currentBoard[i] !== 'o') {
       document.getElementById(i).innerHTML = ''

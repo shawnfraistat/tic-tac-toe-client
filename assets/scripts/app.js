@@ -35,9 +35,9 @@ different API, and your AI players won't exist on it
 
 8. Handlers are missing for a lot of API actions
 
-9.Add user view and user crap
+9. Add user view and user crap
 
-10. color the letters on the load view boards
+10. color the letters on the load view boards DONE
 
 */
 

@@ -62,6 +62,8 @@ const setUpLoadedGame = data => {
   gamelogic.readyPlayerTurn()
 }
 
+// NEW GAME events
+
 const onNewGame = function (event) {
   console.log('Start game!')
   store.firstPlayer = $('input[name="first-player"]:checked').val()
@@ -91,6 +93,8 @@ const copyNewGameData = data => {
   console.log('Inside copyNewGameData--data is:', data)
   store.game.id = data.game.id
 }
+
+// SIGN IN/SIGN OUT Events
 
 const onSignIn = event => {
   event.preventDefault()

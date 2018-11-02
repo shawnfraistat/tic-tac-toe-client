@@ -4,6 +4,8 @@
 
 let currentLoadPage = 0
 let totalLoadPages = 0
+let oColor = "#00f"
+let xColor = "#f00"
 
 const game = {
   id: 0,
@@ -44,5 +46,7 @@ module.exports = {
   // settings
   firstPlayer,
   opponent,
-  aiDifficulty
+  aiDifficulty,
+  oColor,
+  xColor
 }

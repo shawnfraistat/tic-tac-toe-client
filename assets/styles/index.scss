@@ -1,7 +1,6 @@
 @import '~bootstrap/scss/bootstrap';
 
 $blue: #00f;
-
 $red: #f00;
 $black: #000;
 $fadedblack: rgba(0, 0, 0, .75);
@@ -245,10 +244,6 @@ nav {
 
 .o-color {
   color: $blue;
-}
-
-.red {
-  color: $red;
 }
 
 .row {

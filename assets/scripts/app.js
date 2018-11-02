@@ -19,7 +19,7 @@ accomplish this by sorting games array before committing it to store.js DONE
 
 2. have games in load game view highlight on hover DONE
 
-3. when trying to load a game, have confirmation modal
+3. when trying to load a game, have confirmation modal DONE
 
 4. There might be a bug that occurs if players start a new game, _then_ sign in--
 it might try to update on the API, but the game won't exist
@@ -42,6 +42,8 @@ different API, and your AI players won't exist on it
 11. Make Sign in and Sign up modals do their thing, display a confirmation
 within the modal on success, and then change so that they can be dismissed
 
+12. adjust border on game cells so that it's divided equally between each cell
+
 */
 
 $(() => {
@@ -55,4 +57,5 @@ $(() => {
   $('#opponent-ai-radio').on('click', ui.toggleAIDifficultyRadios)
   $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)
   $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
+  $('#load-game-submit').on('click', events.onLoadGame)
 })

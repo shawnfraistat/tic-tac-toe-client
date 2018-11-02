@@ -4,6 +4,8 @@ const getFormFields = require('../../lib/get-form-fields.js')
 const store = require('./store.js')
 const ui = require('./ui.js')
 
+let currentClickEvent
+
 const onChangePassword = event => {
   event.preventDefault()
   const target = $('#password-form')[0]
@@ -15,9 +17,9 @@ const onChangePassword = event => {
 
 // LOAD events
 
-const onLoadGame = event => {
+const onLoadGame = () => {
   $('.load-board').off('click', onLoadGame)
-  api.loadThisGame(event)
+  api.loadThisGame(currentClickEvent)
     .then(setUpLoadedGame)
     .then(ui.handleLoadGameSuccess)
   console.log('Loading your game!')
@@ -28,8 +30,14 @@ const onLoadView = function (event) {
   api.getGameList()
     .then(storeLoadedGames)
     .then(ui.handleGameListSuccess)
-    .then(function () { $('.load-board').on('click', onLoadGame) })
+    .then(function () { $('.load-board').on('click', onChooseLoadGame) })
     .catch(ui.handleGameListFailure)
+}
+
+const onChooseLoadGame = event => {
+  event.preventDefault()
+  currentClickEvent = event
+  $('#loadConfirmModal').modal('show')
 }
 
 const storeLoadedGames = data => {

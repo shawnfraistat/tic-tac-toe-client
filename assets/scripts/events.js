@@ -17,6 +17,15 @@ const onChangePassword = event => {
 
 // LOAD events
 
+const onLoadNavClick = event => {
+  event.preventDefault()
+  if (store.game.id !== 0) {
+    $('#loadViewConfirmModal').modal('show')
+  } else {
+    onLoadView(event)
+  }
+}
+
 const onLoadGame = () => {
   $('.load-board').off('click', onLoadGame)
   api.loadThisGame(currentClickEvent)
@@ -155,6 +164,7 @@ module.exports = {
   onNewGame,
   onLoadGame,
   onLoadView,
+  onLoadNavClick,
   onSignIn,
   onSignUp,
   onSignOut,

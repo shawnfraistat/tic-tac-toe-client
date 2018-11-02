@@ -6,7 +6,7 @@ $black: #000;
 $fadedblack: rgba(0, 0, 0, .75);
 $white: #fff;
 $green: #0f0;
-$big-border: 10px solid $black;
+$big-border: 5px solid $black;
 $small-border: 2px solid $black;
 
 body {
@@ -40,8 +40,6 @@ div > .row > div  {
   width: 33.3%;
 }
 
-
-
 div {
   &.div0 {
     border-bottom: $big-border;
@@ -50,33 +48,48 @@ div {
 
   &.div1 {
     border-bottom: $big-border;
+    border-left: $big-border;
     border-right: $big-border;
   }
 
   &.div2 {
     border-bottom: $big-border;
+    border-left: $big-border;
   }
 
   &.div3 {
     border-bottom: $big-border;
     border-right: $big-border;
+    border-top: $big-border;
   }
 
   &.div4 {
     border-bottom: $big-border;
+    border-left: $big-border;
     border-right: $big-border;
+    border-top: $big-border;
   }
 
   &.div5 {
     border-bottom: $big-border;
+    border-left: $big-border;
+    border-top: $big-border;
   }
 
   &.div6 {
     border-right: $big-border;
+    border-top: $big-border;
   }
 
   &.div7 {
+    border-left: $big-border;
     border-right: $big-border;
+    border-top: $big-border;
+  }
+
+  &.div8 {
+    border-left: $big-border;
+    border-top: $big-border;
   }
 
   &.load-div0 {
@@ -86,33 +99,48 @@ div {
 
   &.load-div1 {
     border-bottom: $small-border;
+    border-left: $small-border;
     border-right: $small-border;
   }
 
   &.load-div2 {
     border-bottom: $small-border;
+    border-left: $small-border;
   }
 
   &.load-div3 {
     border-bottom: $small-border;
     border-right: $small-border;
+    border-top: $small-border;
   }
 
   &.load-div4 {
     border-bottom: $small-border;
+    border-left: $small-border;
     border-right: $small-border;
+    border-top: $small-border;
   }
 
   &.load-div5 {
     border-bottom: $small-border;
+    border-left: $small-border;
+    border-top: $small-border;
   }
 
   &.load-div6 {
     border-right: $small-border;
+    border-top: $small-border;
   }
 
   &.load-div7 {
+    border-left: $small-border;
     border-right: $small-border;
+    border-top: $small-border;
+  }
+
+  &.load-div8 {
+    border-left: $small-border;
+    border-top: $small-border;
   }
 
   &.load-message > p {

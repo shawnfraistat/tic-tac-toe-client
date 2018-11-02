@@ -14,23 +14,18 @@ const ui = require('./ui.js')
 
 /* TO DO:
 
-6. Add logic that checks for AI players and loads them in when loading a game
-
-7. Check that this doesn't become bugged when you deploy--you'll be using a
+1. Check that this doesn't become bugged when you deploy--you'll be using a
 different API, and your AI players won't exist on it
 
-7. Add logic that figures out whose turn it is when loading a game
+2. Handlers are missing for a lot of API actions
 
-8. Handlers are missing for a lot of API actions
+3. Add user view and user crap
 
-9. Add user view and user crap
-
-11. Make Sign in and Sign up modals do their thing, display a confirmation
+4. Make Sign in and Sign up modals do their thing, display a confirmation
 within the modal on success, and then change so that they can be dismissed
 
-12. adjust border on game cells so that it's divided equally between each cell
-
-13. add id number below each game in Load Game view
+6. add id number below each game in Load Game view; display player-x and
+player-o
 
 */
 

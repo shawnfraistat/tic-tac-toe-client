@@ -34,6 +34,10 @@ let firstPlayer = ''
 let opponent = ''
 let aiDifficulty = 0
 
+// misc globals
+
+let currentClickEvent
+
 module.exports = {
   // current user data
   currentLoadPage,
@@ -48,5 +52,7 @@ module.exports = {
   opponent,
   aiDifficulty,
   oColor,
-  xColor
+  xColor,
+  // misc globals
+  currentClickEvent
 }

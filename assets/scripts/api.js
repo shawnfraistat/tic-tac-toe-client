@@ -4,6 +4,54 @@ const ui = require('./ui.js')
 
 // GAME API actions
 
+const createGameInProgress = () => {
+  console.log('inside createGameInProgress')
+  if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
+    console.log('there is a game in progress; I should tell the API')
+    $.ajax({
+      url: config.apiUrl + '/games',
+      method: 'POST',
+      headers: {
+        Authorization: 'Token token=' + store.user.token
+      }
+    })
+      .then(updateBoardGameInProgress)
+      .catch(console.log('failed to createGameInProgress'))
+  }
+}
+
+//
+
+const updateBoardGameInProgress = data => {
+  store.game.id = data.game.id
+  console.log('there is a game in progress; I should update all the moves on the API')
+  for (let i = 0; i < store.currentBoard.length; i++) {
+    if (store.currentBoard[i] === 'x' || store.currentBoard[i] === 'o') {
+      const moveForAPI = {
+        "game": {
+          "cell": {
+            "index": i,
+            "value": (function () {
+              if (store.currentBoard[i] === 'x') {
+                return 'x'
+              } else if (store.currentBoard[i] === 'o') {
+                return 'o'
+              }
+            }())
+          },
+          "over": false
+        }
+      }
+      console.log('moveForAPI inside updateBoardGameInProgress is', moveForAPI)
+      console.log('store game id is', store.game.id)
+      console.log('store user token is', store.user.token)
+      updateGame(moveForAPI)
+        .then(console.log)
+        .catch(console.log)
+    }
+  }
+}
+
 const createNewGame = () => {
   return $.ajax({
     url: config.apiUrl + '/games',
@@ -92,17 +140,13 @@ const storeSignInInfo = data => {
   store.user.email = data.user.email
   store.user.token = data.user.token
   console.log(store.user)
-  ui.handleSignInSuccess(data)
-}
-
-const eraseSignInInfo = () => {
-  resetUser()
-  ui.handleSignOutSuccess()
+  return data
 }
 
 module.exports = {
   // GAME API functions
   createNewGame,
+  createGameInProgress,
   getGameList,
   loadThisGame,
   updateGame,
@@ -111,6 +155,5 @@ module.exports = {
   signIn,
   signOut,
   changePassword,
-  storeSignInInfo,
-  eraseSignInInfo
+  storeSignInInfo
 }

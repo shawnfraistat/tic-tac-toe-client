@@ -46,7 +46,7 @@ $(() => {
   $('#load-game-nav-button').on('click', events.onLoadView)
   $('#opponent-self-radio').on('click', ui.toggleAIDifficultyRadios)
   $('#opponent-ai-radio').on('click', ui.toggleAIDifficultyRadios)
-  $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)
+  $('#previous-load-page-arrow').on('click', events.onPreviousPageArrowClick)
   $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
   $('#load-game-submit').on('click', events.onLoadGame)
 })

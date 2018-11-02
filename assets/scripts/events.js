@@ -4,8 +4,6 @@ const getFormFields = require('../../lib/get-form-fields.js')
 const store = require('./store.js')
 const ui = require('./ui.js')
 
-let currentClickEvent
-
 const onChangePassword = event => {
   event.preventDefault()
   const target = $('#password-form')[0]
@@ -18,8 +16,7 @@ const onChangePassword = event => {
 // LOAD events
 
 const onLoadGame = () => {
-  $('.load-board').off('click', onLoadGame)
-  api.loadThisGame(currentClickEvent)
+  api.loadThisGame(store.currentClickEvent)
     .then(setUpLoadedGame)
     .then(ui.handleLoadGameSuccess)
   console.log('Loading your game!')
@@ -30,14 +27,7 @@ const onLoadView = function (event) {
   api.getGameList()
     .then(storeLoadedGames)
     .then(ui.handleGameListSuccess)
-    .then(function () { $('.load-board').on('click', onChooseLoadGame) })
     .catch(ui.handleGameListFailure)
-}
-
-const onChooseLoadGame = event => {
-  event.preventDefault()
-  currentClickEvent = event
-  $('#loadConfirmModal').modal('show')
 }
 
 const storeLoadedGames = data => {
@@ -69,6 +59,14 @@ const setUpLoadedGame = data => {
   store.opponent = 'self'
   store.aiDifficulty = 0
   gamelogic.readyPlayerTurn()
+}
+
+const onPreviousPageArrowClick = () => {
+  ui.displayPreviousLoadPage()
+}
+
+const onNextPageArrowClick = () => {
+  ui.displayNextLoadPage()
 }
 
 // NEW GAME events
@@ -111,6 +109,8 @@ const onSignIn = event => {
   const data = getFormFields(target)
   api.signIn(data)
     .then(api.storeSignInInfo)
+    .then(ui.handleSignInSuccess)
+    .then(api.createGameInProgress)
     .catch(ui.handleSignInFailure)
 }
 
@@ -155,6 +155,8 @@ module.exports = {
   onNewGame,
   onLoadGame,
   onLoadView,
+  onPreviousPageArrowClick,
+  onNextPageArrowClick,
   onSignIn,
   onSignUp,
   onSignOut,

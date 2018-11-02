@@ -7,6 +7,7 @@ const store = require('./store.js')
 //
 
 const handleGameListSuccess = () => {
+  store.currentLoadPage = 0
   $('.game-list').html('')
   $('.board-plus-message').addClass('invisible')
   $('.load-view').removeClass('invisible')
@@ -64,12 +65,21 @@ const displayLoadedBoard = (startPoint, endPoint) => {
       </div>`
   }
   setLoadBoardColors()
+  $('.load-board').on('click', onChooseLoadGame)
+}
+
+// onChooseLoadGame should probably be in events.js, but I couldn't figure out
+// an easy way to do that without creating a circular dependency (because ui.js
+// needs to bind onChooseLoadGame to .load-board in displayLoadedBoard())
+
+const onChooseLoadGame = event => {
+  event.preventDefault()
+  store.currentClickEvent = event
+  $('#loadConfirmModal').modal('show')
 }
 
 const setLoadBoardColors = () => {
   const loadDivs = document.getElementsByClassName('load-div')
-  console.log(loadDivs)
-  console.log(loadDivs[1].innerHTML)
   for (let i = 0; i < loadDivs.length; i++) {
     if (loadDivs[i].innerHTML === 'x') {
       loadDivs[i].innerHTML = `<p style="color:${store.xColor}">x</p>`
@@ -105,8 +115,14 @@ const updatePageArrows = () => {
 const displayNextLoadPage = () => {
   const data = store.user
   store.currentLoadPage++
+  console.log('inside displayPreviousLoadPage')
   const startPoint = store.currentLoadPage * 9
-  const endPoint = startPoint + (data.games.length - startPoint)
+  let endPoint = 0
+  if (data.games.length - startPoint < 9) {
+    endPoint = startPoint + (data.games.length - startPoint)
+  } else {
+    endPoint = startPoint + 9
+  }
   console.log('startPoint is', startPoint)
   console.log('endPoint is', endPoint)
   displayLoadedBoard(startPoint, endPoint)
@@ -115,9 +131,18 @@ const displayNextLoadPage = () => {
 }
 
 const displayPreviousLoadPage = () => {
+  const data = store.user
   store.currentLoadPage--
+  console.log('inside displayPreviousLoadPage')
   const startPoint = store.currentLoadPage * 9
-  const endPoint = startPoint + 9
+  let endPoint = 0
+  if (data.games.length - startPoint < 9) {
+    endPoint = startPoint + (data.games.length - startPoint)
+  } else {
+    endPoint = startPoint + 9
+  }
+  console.log('startPoint is', startPoint)
+  console.log('endPoint is', endPoint)
   displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
   // setLoadBoardDimensions(9)
@@ -170,6 +195,7 @@ const showSignUp = function () {
 }
 
 const handleSignInSuccess = event => {
+  console.log('inside handleSignInSuccess')
   $('.sign-in-message').html('<p class="sign-in-message green">Signed in!</p>')
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')

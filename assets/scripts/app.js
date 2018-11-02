@@ -15,7 +15,7 @@ const ui = require('./ui.js')
 /* TO DO:
 
 1. Have load game view display games ordered by id number--should be possible to
-accomplish this by sorting games array before committing it to store.js
+accomplish this by sorting games array before committing it to store.js DONE
 
 2. have games in load game view highlight on hover DONE
 
@@ -38,6 +38,9 @@ different API, and your AI players won't exist on it
 9. Add user view and user crap
 
 10. color the letters on the load view boards DONE
+
+11. Make Sign in and Sign up modals do their thing, display a confirmation
+within the modal on success, and then change so that they can be dismissed
 
 */
 

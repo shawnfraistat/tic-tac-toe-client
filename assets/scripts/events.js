@@ -39,6 +39,7 @@ const storeLoadedGames = data => {
   for (let i = 0; i < data.games.length; i++) {
     store.user.games[i] = data.games[i]
   }
+  store.user.games.sort((a, b) => a.id - b.id)
 }
 
 const setUpLoadedGame = data => {

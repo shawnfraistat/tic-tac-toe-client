@@ -16,7 +16,7 @@ const createNewGame = () => {
 
 const getGameList = () => {
   return $.ajax({
-    url: config.apiUrl + '/games',
+    url: config.apiUrl + '/games?over=false',
     method: 'GET',
     headers: {
       Authorization: 'Token token=' + store.user.token
@@ -32,6 +32,18 @@ const loadThisGame = event => {
     headers: {
       Authorization: 'Token token=' + store.user.token
     }
+  })
+}
+
+const updateGame = data => {
+  console.log('Attempting to update game on API')
+  return $.ajax({
+    url: config.apiUrl + '/games/' + store.game.id,
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    },
+    data
   })
 }
 
@@ -95,6 +107,7 @@ module.exports = {
   createNewGame,
   getGameList,
   loadThisGame,
+  updateGame,
   // USER API functions
   signUp,
   signIn,

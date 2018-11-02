@@ -7,6 +7,7 @@ const store = require('./store.js')
 //
 
 const handleGameListSuccess = () => {
+  $('.game-list').html('')
   $('.board-plus-message').addClass('invisible')
   $('.load-view').removeClass('invisible')
   const data = store.user
@@ -25,11 +26,11 @@ const handleGameListSuccess = () => {
     displayLoadedBoard(startPoint, endPoint)
   }
   updatePageArrows()
-  if (data.games.length > 9) {
-    setLoadBoardDimensions(9)
-  } else if (data.games.length > 0) {
-    setLoadBoardDimensions(data.games.length)
-  }
+  // if (data.games.length > 9) {
+  //   setLoadBoardDimensions(9)
+  // } else if (data.games.length > 0) {
+  //   setLoadBoardDimensions(data.games.length)
+  // }
 }
 
 const handleLoadGameSuccess = data => {
@@ -100,7 +101,7 @@ const displayNextLoadPage = () => {
   console.log('endPoint is', endPoint)
   displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
-  setLoadBoardDimensions(data.games.length - startPoint)
+  // setLoadBoardDimensions(data.games.length - startPoint)
 }
 
 const displayPreviousLoadPage = () => {
@@ -109,22 +110,22 @@ const displayPreviousLoadPage = () => {
   const endPoint = startPoint + 9
   displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
-  setLoadBoardDimensions(9)
+  // setLoadBoardDimensions(9)
 }
 
-const setLoadBoardDimensions = numOfBoards => {
-  let dimension
-  if (numOfBoards < 3) {
-    dimension = Math.floor((1 / numOfBoards) * 100)
-  } else {
-    dimension = Math.floor((1 / 4) * 100)
-  }
-  console.log('dimension is', dimension)
-  for (let i = 0; i < numOfBoards; i++) {
-    document.getElementsByClassName('load-board')[i].style.width = `${dimension}%`
-    document.getElementsByClassName('load-board')[i].style.height = `${dimension}%`
-  }
-}
+// const setLoadBoardDimensions = numOfBoards => {
+//   let dimension
+//   if (numOfBoards < 3) {
+//     dimension = Math.floor((1 / numOfBoards) * 100)
+//   } else {
+//     dimension = Math.floor((1 / 4) * 100)
+//   }
+//   console.log('dimension is', dimension)
+//   for (let i = 0; i < numOfBoards; i++) {
+//     document.getElementsByClassName('load-board')[i].style.width = `${dimension}%`
+//     document.getElementsByClassName('load-board')[i].style.height = `${dimension}%`
+//   }
+// }
 
 //
 //

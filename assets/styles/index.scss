@@ -14,9 +14,6 @@ body {
   font-family: 'Nanum Gothic', sans-serif;
 }
 
-legend {
-  font-size: 20px;
-}
 
 .board {
   align-items: center;
@@ -135,20 +132,13 @@ fieldset {
 }
 
 .game-list {
-  align-content: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   height: 500px;
+  justify-content: center;
   margin: 0 auto;
   width: 500px;
-}
-
-legend {
-  margin: 20px 0;
-}
-
-form {
 }
 
 .green {
@@ -186,14 +176,19 @@ input {
   display: none;
 }
 
+legend {
+  font-size: 20px;
+  margin: 20px 0;
+}
+
 .load-board {
   align-items: center;
   display: flex;
   flex-direction: column;
   font-family: 'Nanum Brush Script', cursive;
-  // height: 100px;
+  height: 100px;
   margin: 20px;
-  // width: 100px;
+  width: 100px;
 }
 
 .load-message {

@@ -12,6 +12,35 @@ const ui = require('./ui.js')
 // !! NEED TO ADD EVENT LISTENERS AND EVENTS TO RESET MODAL VALUES AFTER
 // THE MODAL CLOSES
 
+/* TO DO:
+
+1. Have load game view display games ordered by id number--should be possible to
+accomplish this by sorting games array before committing it to store.js
+
+2. have games in load game view highlight on hover
+
+3. when trying to load a game, have confirmation modal
+
+4. There might be a bug that occurs if players start a new game, _then_ sign in--
+it might try to update on the API, but the game won't exist
+
+5. Add ai players to API database
+
+6. Add logic that checks for AI players and loads them in when loading a game
+
+7. Check that this doesn't become bugged when you deploy--you'll be using a
+different API, and your AI players won't exist on it
+
+7. Add logic that figures out whose turn it is when loading a game
+
+8. Handlers are missing for a lot of API actions
+
+9.Add user view and user crap
+
+10. color the letters on the load view boards
+
+*/
+
 $(() => {
   $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
   $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)

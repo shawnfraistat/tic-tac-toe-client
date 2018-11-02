@@ -33,6 +33,7 @@ const onLoadView = function (event) {
 }
 
 const storeLoadedGames = data => {
+  store.user.games = []
   console.log('Inside storeLoadedGames')
   console.log(data)
   for (let i = 0; i < data.games.length; i++) {
@@ -41,14 +42,24 @@ const storeLoadedGames = data => {
 }
 
 const setUpLoadedGame = data => {
+  store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
   for (let i = 0; i < store.currentBoard.length; i++) {
-    store.currentBoard[i] = data.game.cells[i]
+    if (data.game.cells[i] === 'x') {
+      store.currentBoard[i] = 'x'
+    } else if (data.game.cells[i] === 'o') {
+      store.currentBoard[i] = 'o'
+    }
   }
   for (const key in data.game) {
     store.game[key] = data.game[key]
   }
   console.log(store.game)
-  console.log(data)
+  ui.showBoard()
+  ui.updateBoardDisplay()
+  store.currentPlayer = 'playerOne'
+  store.opponent = 'self'
+  store.aiDifficulty = 0
+  gamelogic.readyPlayerTurn()
 }
 
 const onNewGame = function (event) {

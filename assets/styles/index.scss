@@ -96,6 +96,33 @@ div {
     border-top: $big-border;
   }
 
+  &.load-board-bottom-text {
+    font-size: 17px;
+  }
+
+  &.load-board {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Nanum Brush Script', cursive;
+    font-size: 80px;
+    height: 300px;
+    margin: 20px;
+    width: 200px;
+  }
+
+  &.load-board-minus-text {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    width: 200px;
+
+    &:hover {
+      border: solid $blue 5px;
+    }
+  }
+
   &.load-div0 {
     border-bottom: $small-border;
     border-right: $small-border;
@@ -165,10 +192,10 @@ fieldset {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 500px;
+  height: 800px;
   justify-content: center;
   margin: 0 auto;
-  width: 500px;
+  width: 800px;
 }
 
 .green {
@@ -209,21 +236,6 @@ input {
 legend {
   font-size: 20px;
   margin: 0;
-}
-
-.load-board {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  font-family: 'Nanum Brush Script', cursive;
-  height: 100px;
-  margin: 20px;
-  width: 100px;
-
-  &:hover {
-    border: solid $blue 5px;
-    // border-radius: 100px;
-  }
 }
 
 .load-message {

@@ -16,15 +16,10 @@ different API, and your AI players won't exist on it
 
 2. Handlers are missing for a lot of API actions -- really, for FAILURES
 
-3. Add user view and user crap
-
 4. add id number below each game in Load Game view; also display player-x and
-player-o
+player-o DONE
 
 5. When the user is logged in, show their email somewhere? Like, "Logged in as"?
-
-6. When signing up, check that password and confirm password match; throw an
-error if not
 
 7. Multiplayer? God help me?
 

@@ -22,6 +22,8 @@
       Tic-Tac-T<span class="header-o o-color">o</span>e<div class="header-x x-color">x</div>
     </div>
   </header>
+
+<!-- nav -->
   <nav class="nav justify-content-center">
     <ul class="nav nav-pills">
       <li class="nav-item">
@@ -52,8 +54,7 @@
     </ul>
   </nav>
 
-
-  <!-- newGameModal -->
+<!-- newGameModal -->
   <div class="modal fade" id="newGameModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -173,7 +174,6 @@
   </div>
 </div>
 
-
 <!-- loadConfirmModalModal-->
   <div class="modal fade sign-view" id="loadConfirmModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -190,39 +190,38 @@
 </div>
 
 <!-- userViewModal-->
-<div class="modal fade" id="userViewModal" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="userViewTitle">User Profile</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span class='x-color modal-x'>x</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h4 id="user-name"></h4>
-        <form id="change-password">
-          <div class="form group">
-              <fieldset>
-                <legend>Change Password</legend>
-                <h5 class="change-password-message"></h5>
-                <input type="password" name="passwords[old]" placeholder="Current Password" />
-                <input type="password" name="passwords[new]" placeholder="New Password" />
-                <input type="password" name="passwords[confirm_new]" placeholder="Confirm New" />
-                <button type="button" id="change-password-submit">Submit</button>
-              </fieldset>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="user-view-done" data-dismiss="modal" class="btn btn-primary">Done</button>
+  <div class="modal fade" id="userViewModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userViewTitle">User Profile</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span class='x-color modal-x'>x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 id="user-name"></h4>
+          <form id="change-password">
+            <div class="form group">
+                <fieldset>
+                  <legend>Change Password</legend>
+                  <h5 class="change-password-message"></h5>
+                  <input type="password" name="passwords[old]" placeholder="Current Password" />
+                  <input type="password" name="passwords[new]" placeholder="New Password" />
+                  <input type="password" name="passwords[confirm_new]" placeholder="Confirm New" />
+                  <button type="button" id="change-password-submit">Submit</button>
+                </fieldset>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="user-view-done" data-dismiss="modal" class="btn btn-primary">Done</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-
-
+<!-- game board-->
   <main>
     <div class="board-plus-message">
       <div class="board-message"></div>

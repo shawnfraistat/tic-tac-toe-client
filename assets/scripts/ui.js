@@ -10,33 +10,51 @@ const displayLoadedBoard = (startPoint, endPoint) => {
   const data = store.user
   $('.game-list')[0].innerHTML = ''
   for (let i = startPoint; i < endPoint; i++) {
+    let playerOne
+    let playerTwo
+    if (data.games[i].player_x.email === store.user.email) {
+      playerOne = `${store.user.email} (You)`
+    } else {
+      playerOne = `${data.games[i].player_x.email} (Human Opponent)`
+    }
+    if (data.games[i].player_o === null) {
+      playerTwo = `${store.user.email} (You)`
+    } else if (data.games[i].player_o.email === 'ai@easy.com') {
+      playerTwo = 'AI (Easy)'
+    } else if (data.games[i].player_o.email === 'ai@medium.com') {
+      playerTwo = 'AI (Medium)'
+    } else if (data.games[i].player_o.email === 'ai@impossible.com') {
+      playerTwo = 'AI (Impossible)'
+    }
     $('.game-list')[0].innerHTML += `
     <div class="load-board" dataId="${data.games[i].id}">
-      <div class="row">
-        <div class="load-div load-div0">${data.games[i].cells[0]}</div>
-        <div class="load-div load-div1">${data.games[i].cells[1]}</div>
-        <div class="load-div load-div2">${data.games[i].cells[2]}</div>
+      <div class="load-board-minus-text">
+        <div class="row">
+          <div class="load-div load-div0">${data.games[i].cells[0]}</div>
+          <div class="load-div load-div1">${data.games[i].cells[1]}</div>
+          <div class="load-div load-div2">${data.games[i].cells[2]}</div>
+        </div>
+        <div class="row">
+          <div class="load-div load-div3">${data.games[i].cells[3]}</div>
+          <div class="load-div load-div4">${data.games[i].cells[4]}</div>
+          <div class="load-div load-div5">${data.games[i].cells[5]}</div>
+        </div>
+        <div class="row">
+          <div class="load-div load-div6">${data.games[i].cells[6]}</div>
+          <div class="load-div load-div7">${data.games[i].cells[7]}</div>
+          <div class="load-div load-div8">${data.games[i].cells[8]}</div>
+        </div>
       </div>
-      <div class="row">
-        <div class="load-div load-div3">${data.games[i].cells[3]}</div>
-        <div class="load-div load-div4">${data.games[i].cells[4]}</div>
-        <div class="load-div load-div5">${data.games[i].cells[5]}</div>
-      </div>
-      <div class="row">
-        <div class="load-div load-div6">${data.games[i].cells[6]}</div>
-        <div class="load-div load-div7">${data.games[i].cells[7]}</div>
-        <div class="load-div load-div8">${data.games[i].cells[8]}</div>
+        <div class="load-board-bottom-text">
+          ID #: ${data.games[i].id}<br />
+          <scan style="color:${store.xColor}">Player One</scan>: ${playerOne}<br />
+          <scan style="color:${store.oColor}">Player Two</scan>: ${playerTwo}<br />
+        </div>
       </div>`
   }
   setLoadBoardColors()
   $('.load-board').on('click', onChooseLoadGame)
 }
-
-// onChooseLoadGame should probably be in events.js, but I couldn't figure out
-// an easy way to do that without creating a circular dependency (because ui.js
-// needs to bind onChooseLoadGame to .load-board in displayLoadedBoard())
-
-
 
 const displayNextLoadPage = () => {
   const data = store.user
@@ -102,6 +120,10 @@ const handleLoadGameSuccess = data => {
 const handleCreateNewGameFailure = data => {
   console.log('New game failed to create!')
 }
+
+// onChooseLoadGame should probably be in events.js, but I couldn't think of
+// an easy way to do that without creating a circular dependency (because ui.js
+// needs to bind onChooseLoadGame to .load-board in displayLoadedBoard())
 
 const onChooseLoadGame = event => {
   event.preventDefault()

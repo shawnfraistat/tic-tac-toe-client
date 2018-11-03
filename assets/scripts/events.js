@@ -33,8 +33,8 @@ const onLoadGame = () => {
 const onLoadView = function (event) {
   event.preventDefault()
   console.log('inside onLoadView')
-  api.updateBoardGameInProgress()
-  setUpLoadView()
+  $.when(api.updateBoardGameInProgress)
+    .done(setUpLoadView)
 }
 
 const setUpLoadView = () => {
@@ -245,10 +245,52 @@ const onUpdateXColorValue = event => {
   xColorValue = event.currentTarget.value
 }
 
+// MULTIPLAYER EventSource
+
+const onEstablishLink = () => {
+  const gameWatcher = api.createGameWatcher
+  gameWatcher.on('change', function (data) {
+    console.log(data)
+    if (data.game && data.game.cells) {
+      const diff = changes => {
+        let before = changes[0];
+        let after = changes[1];
+        for (let i = 0; i < after.length; i++) {
+          if (before[i] !== after[i]) {
+            return {
+              index: i,
+              value: after[i]
+            }
+          }
+        }
+        return { index: -1, value: '' }
+      }
+      let cell = diff(data.game.cells)
+
+      // original code
+      // $('#watch-index').val(cell.index)
+      // $('#watch-value').val(cell.value)
+
+      // your attempt
+      console.log('in onEstablishLink -- going to modify store at cell index', store.currentBoard[cell.index], cell.value)
+      store.currentBoard[cell.index] = cell.value
+      gamelogic.readyPlayerTurn()
+    } else if (data.timeout) { //not an error
+      gameWatcher.close()
+    }
+  })
+
+  gameWatcher.on('error', function (e) {
+    console.error('an error has occurred with the stream', e);
+  })
+}
+
+
 module.exports = {
   onChangePassword,
   onChangePasswordSubmit,
   onConfirmNewColors,
+  onEstablishLink,
   onNewGame,
   onLoadGame,
   onLoadView,

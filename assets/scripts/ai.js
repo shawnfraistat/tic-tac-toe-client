@@ -5,16 +5,13 @@
 const store = require('./store')
 
 const getAIMove = function (boardToEval) {
-  console.log('inside getAIMove, store.aiDifficulty is', store.aiDifficulty)
   let myMove
   switch (store.aiDifficulty) {
     case '0':
-      console.log('case 0')
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
       break
     case '1':
-      console.log('case 1')
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
       if (goForKill(boardToEval) != null) {
@@ -24,7 +21,6 @@ const getAIMove = function (boardToEval) {
       }
       break
     case '2':
-      console.log('case 2')
       myMove = minimax(boardToEval, 'playerTwo')
       if (goForKill(boardToEval) != null) {
         myMove.index = goForKill(boardToEval)

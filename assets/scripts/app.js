@@ -18,13 +18,16 @@ different API, and your AI players won't exist on it
 
 5. When the user is logged in, show their email somewhere? Like, "Logged in as"?
 
-7. Multiplayer? God help me?
+6. Multiplayer? God help me?
 
-8. Sound?
+7. Sound?
 
-9. Let user pick colors?
+8. Check what happens on mobile?
 
-10. Check what happens on mobile?
+9. STILL have the stupid bug where, if you load too quickly, your game won't
+have been saved properly
+
+10. when colors change, need to update "Player One's Turn" message above board
 
 */
 
@@ -49,4 +52,5 @@ $(() => {
   $('#confirm-new-colors').on('click', events.onConfirmNewColors)
   $('#o-color-picker').on('input', events.onUpdateOColorValue)
   $('#x-color-picker').on('input', events.onUpdateXColorValue)
+  $('#save-game-nav').on('input', events.onSaveGame)
 })

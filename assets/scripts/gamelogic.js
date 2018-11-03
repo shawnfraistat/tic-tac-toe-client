@@ -66,6 +66,10 @@ const readyPlayerTurn = function () {
 // It updates the board and checks to see if the human won or tied. Then it lets the ai player go.
 
 const takeHumanTurn = function (event) {
+  let flipPlayer = false
+  for (let i = 0; i < 9; i++) {
+    document.getElementById(i).removeEventListener('click', takeHumanTurn)
+  }
   const moveForAPI = {
     "game": {
       "cell": {
@@ -87,35 +91,41 @@ const takeHumanTurn = function (event) {
     console.log('Player One wins!')
     ui.showPlayerWin('playerOne')
     moveForAPI.game.over = true
-    for (let i = 0; i < 9; i++) {
-      document.getElementById(i).removeEventListener('click', takeHumanTurn)
-    }
   } else if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie') {
     ui.showPlayerTie()
     moveForAPI.game.over = true
-    for (let i = 0; i < 9; i++) {
-      document.getElementById(i).removeEventListener('click', takeHumanTurn)
-    }
   } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin' && store.opponent === 'self') {
     console.log('Player Two wins!')
     ui.showPlayerWin('playerTwo')
     moveForAPI.game.over = true
-    for (let i = 0; i < 9; i++) {
-      document.getElementById(i).removeEventListener('click', takeHumanTurn)
-    }
   } else {
     console.log('Next turn')
+    // first case: if player one just went, and there's no player two, 'cause the human is playing self
+    if (store.currentPlayer === 'playerOne' && store.opponent === 'self') {
+      console.log('I think the first player is playing vs. self')
+      flipPlayer = true
+    // second case: player one just went, and player two is an AI
+    } else if (store.opponent === 'ai') {
+      console.log('I think the first player is playing vs. AI')
+      store.currentPlayer = 'playerTwo'
+      takeAITurn()
+    // third case: player one just went, and player two is not an AI
+    } else if (store.opponent === 'multiplayer') {
+      console.log('I think the first player is playing vs. another human online')
+      // do nothing? b/c we should just wait for the other player to go?
+    }
+    if (store.currentPlayer === 'playerTwo' && store.opponent === 'self') {
+      console.log('I think the second player is playing vs. self')
+      flipPlayer = true
+    }
+  }
+  if (flipPlayer === true) {
     if (store.currentPlayer === 'playerOne') {
       store.currentPlayer = 'playerTwo'
-      if (store.opponent === 'ai') {
-        takeAITurn()
-      } else {
-        readyPlayerTurn()
-      }
-    } else if (store.currentPlayer === 'playerTwo') {
+    } else {
       store.currentPlayer = 'playerOne'
-      readyPlayerTurn()
     }
+    readyPlayerTurn()
   }
   console.log('moveForAPI is', moveForAPI)
   if (store.user.id !== 0 && store.game.id !== 0) {

@@ -1,6 +1,7 @@
 const ai = require('./ai.js')
 const config = require('./config.js')
 const store = require('./store.js')
+const watcher = require('./watcher.js')
 
 // GAME API actions
 
@@ -8,15 +9,16 @@ const createGameInProgress = () => {
   console.log('inside createGameInProgress')
   if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
     console.log('there is a game in progress; I should tell the API')
-    $.ajax({
+    $.when($.ajax({
       url: config.apiUrl + '/games',
       method: 'POST',
       headers: {
         Authorization: 'Token token=' + store.user.token
       }
-    })
+    }))
       .then(function (data) { store.game.id = data.game.id })
       .then(updateBoardGameInProgress)
+      .then(signInAI)
       .catch(console.log('failed to createGameInProgress'))
   }
 }
@@ -94,8 +96,6 @@ const updateBoardGameInProgress = () => {
       console.log('store game id is', store.game.id)
       console.log('store user token is', store.user.token)
       updateGame(moveForAPI)
-        .then(console.log)
-        .catch(console.log)
     }
   }
 }
@@ -201,14 +201,21 @@ const signInAI = () => {
 
 const joinAI = aiUser => {
   console.log('Inside joinAi, aiUser is', aiUser)
-  const response = $.ajax({
+  $.ajax({
     url: config.apiUrl + '/games/' + store.game.id,
     method: 'PATCH',
     headers: {
       Authorization: 'Token token=' + aiUser.user.token
     }
   })
-  console.log(response)
+}
+
+// MULTIPLAYER functions
+
+const createGameWatcher = id => {
+  return watcher.resourceWatcher(`${config.apiUrl}/games/${id}/watch`, {
+    Authorization: 'Token token=' + store.user.token
+  })
 }
 
 module.exports = {
@@ -228,5 +235,7 @@ module.exports = {
   storeSignUpInfo,
   // AI API functions
   signInAI,
-  joinAI
+  joinAI,
+  // MULTIPLAYER API functions
+  createGameWatcher
 }

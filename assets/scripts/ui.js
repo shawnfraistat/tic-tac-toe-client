@@ -272,10 +272,10 @@ const handleSignUpMismatchingPasswords = event => {
 }
 
 const toggleAIDifficultyRadios = () => {
-  const buttons = $('input[name="difficulty"]')
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].toggleAttribute('disabled')
-  }
+  // const buttons = $('input[name="difficulty"]')
+  // for (let i = 0; i < buttons.length; i++) {
+  //   buttons[i].toggleAttribute('disabled')
+  // }
 }
 
 //
@@ -310,6 +310,8 @@ const updateHeader = function () {
   console.log('inside updateHeader')
   $('.header-x').attr('style', `color: ${store.xColor}`)
   $('.header-o').attr('style', `color: ${store.oColor}`)
+  $('.board-message-x-scan').attr('style', `color: ${store.xColor}`)
+  $('.board-message-o-scan').attr('style', `color: ${store.oColor}`)
 }
 
 //
@@ -329,17 +331,17 @@ const showBoard = function () {
 
 const showPlayerTurn = function () {
   if (store.currentPlayer === 'playerOne') {
-    $('.board-message').html(`<p><scan style="color:${store.xColor}">Player One</scan>'s Turn</p>`)
+    $('.board-message').html(`<p><scan class="board-message-x-scan" style="color:${store.xColor}">Player One</scan>'s Turn</p>`)
   } else {
-    $('.board-message').html(`<p><scan style="color:${store.oColor}">Player Two</scan>'s Turn</p>`)
+    $('.board-message').html(`<p><scan class="board-message-o-scan" style="color:${store.oColor}">Player Two</scan>'s Turn</p>`)
   }
 }
 
 const showPlayerWin = function (player) {
   if (player === 'playerOne') {
-    $('.board-message').html(`<p><scan style="color:${store.xColor}">Player One</scan> Wins!</p>`)
+    $('.board-message').html(`<p><scan class="board-message-x-scan" style="color:${store.xColor}">Player One</scan> Wins!</p>`)
   } else {
-    $('.board-message').html(`<p><scan style="color:${store.oColor}">Player Two</scan> Wins!</p>`)
+    $('.board-message').html(`<p><scan class="board-message-o-scan" style="color:${store.oColor}">Player Two</scan> Wins!</p>`)
   }
 }
 

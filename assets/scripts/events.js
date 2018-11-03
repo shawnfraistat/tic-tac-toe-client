@@ -125,6 +125,20 @@ const onNewGame = function (event) {
 
 // SIGN IN/SIGN OUT Events
 
+const onSignUpContinue = data => {
+  const newCredentials = {
+    "credentials": {
+      "email": store.user.email,
+      "password": store.user.password
+    }
+  }
+  console.log('In callSignin; data is', newCredentials)
+  api.signIn(newCredentials)
+    .then(api.storeSignInInfo)
+    .then(api.createGameInProgress)
+    .catch(ui.handleSignUpFailure)
+}
+
 const onSignIn = event => {
   event.preventDefault()
   const target = $('#sign-in')[0]
@@ -147,29 +161,21 @@ const onSignUp = event => {
   event.preventDefault()
   const target = $('#sign-up')[0]
   const data = getFormFields(target)
+  console.log('inside onSignUp: data is', data)
+  api.storeSignUpInfo(data)
   api.signUp(data)
-    .then(ui.handleSignUpSuccess, api.signIn)
+    .then(ui.handleSignUpSuccess)
     .catch(ui.handleSignUpFailure)
 }
 
-const onSwitchToSignIn = (event) => {
+const onSwitchToSignIn = event => {
   event.preventDefault()
-  ui.hideSignUp()
-  ui.showSignIn()
-  $('#logInModalTitle').text('Sign In')
-  $('#sign-up-submit').off('click', onSignUp)
-  $('#sign-up-submit').attr('id', 'sign-in-submit')
-  $('#sign-in-submit').on('click', onSignIn)
+  ui.switchToSignIn()
 }
 
-const onSwitchToSignUp = (event) => {
+const onSwitchToSignUp = event => {
   event.preventDefault()
-  ui.hideSignIn()
-  ui.showSignUp()
-  $('#logInModalTitle').text('Sign Up')
-  $('#sign-in-submit').off('click', onSignIn)
-  $('#sign-in-submit').attr('id', 'sign-up-submit')
-  $('#sign-up-submit').on('click', onSignUp)
+  ui.switchToSignUp()
 }
 
 module.exports = {
@@ -179,6 +185,7 @@ module.exports = {
   onLoadView,
   onSignIn,
   onSignUp,
+  onSignUpContinue,
   onSignOut,
   onSwitchToSignIn,
   onSwitchToSignUp

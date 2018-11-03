@@ -24,6 +24,10 @@ body {
   width: 500px;
 }
 
+.blue {
+  color: $blue;
+}
+
 .board-message {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 50px;
@@ -276,6 +280,10 @@ nav {
 
 .o-color {
   color: $blue;
+}
+
+.red {
+  color: $red;
 }
 
 .row {

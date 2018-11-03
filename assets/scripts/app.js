@@ -14,7 +14,7 @@ const ui = require('./ui.js')
 
 /* TO DO:
 
-1. Check that this doesn't become bugged when you deploy--you'll be using a
+1. Check that AI players don't become bugged when you deploy--you'll be using a
 different API, and your AI players won't exist on it
 
 2. Handlers are missing for a lot of API actions
@@ -23,6 +23,8 @@ different API, and your AI players won't exist on it
 
 4. Make Sign in and Sign up modals do their thing, display a confirmation
 within the modal on success, and then change so that they can be dismissed
+
+5. Have "sign up" log you in automatically
 
 6. add id number below each game in Load Game view; display player-x and
 player-o
@@ -34,6 +36,8 @@ $(() => {
   $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
   $('#sign-in-submit').on('click', events.onSignIn)
   $('#sign-out-submit').on('click', events.onSignOut)
+  $('#sign-up-submit').on('click', events.onSignUp)
+  $('#sign-up-continue').on('click', events.onSignUpContinue)
   $('#start-game-button').on('click', events.onNewGame)
   $('#load-game-nav-button').on('click', events.onLoadView)
   $('#opponent-self-radio').on('click', ui.toggleAIDifficultyRadios)
@@ -41,4 +45,5 @@ $(() => {
   $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)
   $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
   $('#load-game-submit').on('click', events.onLoadGame)
+  $('#logInModal').on('show.bs.modal', ui.resetLogInModal)
 })

@@ -140,6 +140,13 @@ const storeSignInInfo = data => {
   return data
 }
 
+const storeSignUpInfo = data => {
+  console.log('Inside storeSignUpInfo')
+  store.user.email = data.credentials.email
+  store.user.password = data.credentials.password
+  return data
+}
+
 // AI API Interactions
 
 const signInAI = () => {
@@ -209,6 +216,7 @@ module.exports = {
   signOut,
   changePassword,
   storeSignInInfo,
+  storeSignUpInfo,
   // AI API functions
   signInAI,
   joinAI

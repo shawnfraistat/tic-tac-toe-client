@@ -112,25 +112,25 @@
   <div class="modal fade sign-view" id="logInModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" id="logInModalHeader">
           <h5 class="modal-title" id="logInModalTitle">Sign In</h5>
           <button type="button" class="close" data-dismiss="modal">
             <span class='x-color modal-x'>x</span>
           </button>
         </div>
         <div class="modal-body">
+          <p class="sign-in-message"></p>
           <form id="sign-in">
             <fieldset>
-              <p class="sign-in-message"></p>
               <input type="text" name="credentials[email]" placeholder="Email" />
               <input type="password" name="credentials[password]" placeholder="Password" />
               <p>New users <scan class="switch-to-sign-up">sign up</scan>
               </p>
             </fieldset>
           </form>
+        <p class="sign-up-message"></p>
         <form id="sign-up" class="invisible">
           <fieldset>
-            <p class="sign-up-message"></p>
             <input type="text" name="credentials[email]" placeholder="Email" />
             <input type="password" name="credentials[password]" placeholder="Password" />
             <input type="password" name="credentials[password_confirmation]" placeholder="Confirm Password" />
@@ -140,8 +140,16 @@
         </form>
         </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" id="sign-in-submit" class="btn btn-primary">Submit</button>
+        <div class="sign-in-footer-buttons">
+          <button type="button" id="sign-in-cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" id="sign-in-submit" class="btn btn-primary">Submit</button>
+          <button type="button" id="sign-in-continue" class="btn btn-primary invisible" data-dismiss="modal">Continue</button>
+        </div>
+        <div class="sign-up-footer-buttons">
+          <button type="button" id="sign-up-cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" id="sign-up-submit" class="btn btn-primary">Submit</button>
+          <button type="button" id="sign-up-continue" class="btn btn-primary invisible" data-dismiss="modal">Continue</button>
+        </div>
       </div>
     </div>
   </div>

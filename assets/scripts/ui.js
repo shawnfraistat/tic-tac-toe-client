@@ -155,38 +155,41 @@ const showSignView = function () {
   $('.sign-view').removeClass('invisible')
 }
 
-const hideSignIn = function () {
-  $('#sign-in').addClass('invisible')
+const switchToSignIn = function () {
   clearForms()
-}
-
-const showSignIn = function () {
-  $('#sign-in').removeClass('invisible')
-}
-
-const hideSignUp = function () {
   $('#sign-up').addClass('invisible')
-  clearForms()
+  $('.sign-up-footer-buttons').addClass('invisible')
+  $('#sign-in').removeClass('invisible')
+  $('.sign-in-footer-buttons').removeClass('invisible')
+  $('#logInModalTitle').text('Sign In')
 }
 
-const showSignUp = function () {
+const switchToSignUp = function () {
+  clearForms()
+  $('#sign-in').addClass('invisible')
+  $('.sign-in-footer-buttons').addClass('invisible')
   $('#sign-up').removeClass('invisible')
+  $('.sign-up-footer-buttons').removeClass('invisible')
+  $('#logInModalTitle').text('Sign Up')
 }
 
 const handleSignInSuccess = event => {
   console.log('inside handleSignInSuccess')
-  $('.sign-in-message').html('<p class="sign-in-message green">Signed in!</p>')
+  $('#logInModalHeader').addClass('invisible')
+  $('.sign-in-message').html(`<h3 class="sign-in-message green">Signed in as ${store.user.email}</h3>`)
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')
   $('#save-warning').toggleClass('invisible')
   $('#sign-out-nav-button').toggleClass('invisible')
   $('#user-profile-nav-button').toggleClass('invisible')
-  console.log(event)
+  $('#sign-in').addClass('invisible')
+  $('#sign-in-cancel').addClass('invisible')
+  $('#sign-in-submit').addClass('invisible')
+  $('#sign-in-continue').removeClass('invisible')
 }
 
 const handleSignInFailure = event => {
-  $('.sign-in-message').html('<p class="sign-in-message red">Invalid sign in</p>')
-  console.log(event)
+  $('.sign-in-message').html('<h5 class="sign-in-message red">Invalid sign in</h5>')
 }
 
 const handleSignOutSuccess = () => {
@@ -197,7 +200,7 @@ const handleSignOutSuccess = () => {
   store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
   store.currentPlayer = ''
   $('.board-message').html('')
-  $('.sign-out-message').html('<p class="green">Signed out</p>')
+  $('.sign-out-message').html('<h3 class="green">Signed out</h3>')
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')
   $('#save-warning').toggleClass('invisible')
@@ -208,23 +211,34 @@ const handleSignOutSuccess = () => {
 }
 
 const handleSignOutFailure = event => {
-  $('.sign-out-message').html('<p class="green">Failed to sign out</p>')
+  $('.sign-out-message').html('<p class="red">Failed to sign out</p>')
   console.log(event)
 }
 
 const handleSignUpSuccess = event => {
-  $('.sign-up-message').html('<p class="sign-up-message green">New account created</p>')
-  console.log(event)
+  console.log('inside handleSignUpSuccess')
+  $('.sign-up-message').html(`<h3 class="sign-up-message green">New account created for ${store.user.email}</h3>`)
+  $('#logInModalHeader').addClass('invisible')
+  $('#load-game-nav-button').toggleClass('invisible')
+  $('#log-in-nav-button').toggleClass('invisible')
+  $('#save-warning').toggleClass('invisible')
+  $('#sign-out-nav-button').toggleClass('invisible')
+  $('#user-profile-nav-button').toggleClass('invisible')
+  $('#sign-up').addClass('invisible')
+  $('#sign-up-cancel').addClass('invisible')
+  $('#sign-up-submit').addClass('invisible')
+  $('#sign-up-continue').removeClass('invisible')
 }
 
 const handleSignUpFailure = event => {
-  $('.sign-up-message').html('<p class="sign-up-message red">Invalid sign up</p>')
-  console.log(event)
+  $('.sign-up-message').html('<h3 class="sign-up-message red">Invalid sign up</h3>')
+  console.log('Invalid sign up event', event)
 }
 
 const clearForms = () => {
+  console.log('inside clearForms')
   document.getElementById('sign-up').reset()
-  $('.sign-up-message').html('<p class="sign-up-message"></p>')
+  $('.sign-up-message').html('<h3 class="sign-up-message"></h3>')
   document.getElementById('sign-in').reset()
   $('.sign-in-message').html('<p class="sign-in-message"></p>')
 }
@@ -297,6 +311,19 @@ const updateBoardDisplay = function () {
   }
 }
 
+// MODAL resets
+
+const resetLogInModal = () => {
+  $('#logInModalHeader').removeClass('invisible')
+  switchToSignIn()
+  // $('#sign-in').removeClass('invisible')
+  $('.sign-in-message').text('')
+  $('.sign-up-message').text('')
+  $('#sign-in-cancel').removeClass('invisible')
+  $('#sign-in-submit').removeClass('invisible')
+  $('#sign-in-continue').addClass('invisible')
+}
+
 module.exports = {
   // NEW game UI functions
   handleCreateNewGameFailure,
@@ -308,10 +335,8 @@ module.exports = {
   // USER view UI functions
   hideSignView,
   showSignView,
-  hideSignIn,
-  showSignIn,
-  hideSignUp,
-  showSignUp,
+  switchToSignIn,
+  switchToSignUp,
   handleSignInSuccess,
   handleSignInFailure,
   handleSignUpSuccess,
@@ -325,5 +350,7 @@ module.exports = {
   updateBoardDisplay,
   showPlayerTurn,
   showPlayerWin,
-  showPlayerTie
+  showPlayerTie,
+  // MODAL resets
+  resetLogInModal
 }

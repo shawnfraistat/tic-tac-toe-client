@@ -4,6 +4,9 @@ const getFormFields = require('../../lib/get-form-fields.js')
 const store = require('./store.js')
 const ui = require('./ui.js')
 
+let oColorValue = store.oColor
+let xColorValue = store.xColor
+
 const onChangePassword = event => {
   event.preventDefault()
   const target = $('#password-form')[0]
@@ -154,6 +157,7 @@ const onSignIn = event => {
 const onSignOut = event => {
   event.preventDefault()
   api.signOut()
+    .then(resetColors)
     .then(ui.handleSignOutSuccess)
     .catch(ui.handleSignOutFailure)
 }
@@ -183,6 +187,23 @@ const onSwitchToSignUp = event => {
   ui.switchToSignUp()
 }
 
+const resetColors = () => {
+  xColorValue = '#ff0000'
+  oColorValue = '#0000ff'
+  store.xColor = xColorValue
+  store.oColor = oColorValue
+  if (!($('.board-plus-message').hasClass('invisible'))) {
+    if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
+      ui.updateBoardDisplay()
+    }
+  }
+  if (!($('.load-view').hasClass('invisible'))) {
+    ui.setLoadBoardColors()
+    ui.updateLoadGameTextColor()
+  }
+  ui.updateHeader()
+}
+
 // USER VIEW Events
 const onChangePasswordSubmit = event => {
   event.preventDefault()
@@ -198,9 +219,36 @@ const onChangePasswordSubmit = event => {
   }
 }
 
+const onConfirmNewColors = event => {
+  event.preventDefault()
+  console.log('inside onConfirmNewColors')
+  store.xColor = xColorValue
+  store.oColor = oColorValue
+  if (!($('.board-plus-message').hasClass('invisible'))) {
+    if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
+      ui.updateBoardDisplay()
+    }
+  }
+  if (!($('.load-view').hasClass('invisible'))) {
+    ui.setLoadBoardColors()
+    ui.updateLoadGameTextColor()
+  }
+  ui.updateHeader()
+}
+
+const onUpdateOColorValue = event => {
+  console.log('Inside updateOColorValue')
+  oColorValue = event.currentTarget.value
+}
+
+const onUpdateXColorValue = event => {
+  xColorValue = event.currentTarget.value
+}
+
 module.exports = {
   onChangePassword,
   onChangePasswordSubmit,
+  onConfirmNewColors,
   onNewGame,
   onLoadGame,
   onLoadView,
@@ -209,5 +257,7 @@ module.exports = {
   onSignUpContinue,
   onSignOut,
   onSwitchToSignIn,
-  onSwitchToSignUp
+  onSwitchToSignUp,
+  onUpdateOColorValue,
+  onUpdateXColorValue
 }

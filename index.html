@@ -19,7 +19,7 @@
 <body>
   <header>
     <div>
-      Tic-Tac-T<span class="header-o o-color">o</span>e<div class="header-x x-color">x</div>
+      Tic-Tac-T<span class="header-o blue">o</span>e<div class="header-x red">x</div>
     </div>
   </header>
 
@@ -61,7 +61,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="newGameModalTitle">New Game</h5>
           <button type="button" class="close" data-dismiss="modal">
-            <span class='x-color modal-x'>x</span>
+            <span class='red modal-x'>x</span>
           </button>
         </div>
         <div class="modal-body">
@@ -118,7 +118,7 @@
         <div class="modal-header" id="logInModalHeader">
           <h5 class="modal-title" id="logInModalTitle">Sign In</h5>
           <button type="button" class="close" data-dismiss="modal">
-            <span class='x-color modal-x'>x</span>
+            <span class='red modal-x'>x</span>
           </button>
         </div>
         <div class="modal-body">
@@ -194,13 +194,14 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="userViewTitle">User Profile</h5>
+          <h4 class="modal-title" id="userViewTitle">User Profile</h5>
           <button type="button" class="close" data-dismiss="modal">
-            <span class='x-color modal-x'>x</span>
+            <span class='red modal-x'>x</span>
           </button>
         </div>
         <div class="modal-body">
-          <h4 id="user-name"></h4>
+          <h5 id="user-name"></h5>
+          <br />
           <form id="change-password">
             <div class="form group">
                 <fieldset>
@@ -212,6 +213,17 @@
                   <button type="button" id="change-password-submit">Submit</button>
                 </fieldset>
             </div>
+          </form>
+          <br />
+          <form id="change-x-color">
+            <label for="x-color-picker">Choose New X Color</label>
+            <input type="color" id="x-color-picker">
+          </form>
+          <form id="change-o-color">
+            <label for="o-color-picker">Choose New O Color</label>
+            <input type="color" id="o-color-picker">
+            <br />
+            <button type="button" id="confirm-new-colors">Confirm Colors</button>
           </form>
         </div>
         <div class="modal-footer">

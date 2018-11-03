@@ -4,8 +4,8 @@
 
 let currentLoadPage = 0
 let totalLoadPages = 0
-let oColor = "#00f"
-let xColor = "#f00"
+let oColor = '#0000ff'
+let xColor = '#ff0000'
 
 const game = {
   id: 0,

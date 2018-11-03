@@ -47,8 +47,8 @@ const displayLoadedBoard = (startPoint, endPoint) => {
       </div>
         <div class="load-board-bottom-text">
           ID #: ${data.games[i].id}<br />
-          <scan style="color:${store.xColor}">Player One</scan>: ${playerOne}<br />
-          <scan style="color:${store.oColor}">Player Two</scan>: ${playerTwo}<br />
+          <scan class="player-one-board-bottom-text" style="color:${store.xColor}">Player One</scan>: ${playerOne}<br />
+          <scan class="player-two-board-bottom-text" style="color:${store.oColor}">Player Two</scan>: ${playerTwo}<br />
         </div>
       </div>`
   }
@@ -121,6 +121,11 @@ const handleCreateNewGameFailure = data => {
   console.log('New game failed to create!')
 }
 
+const updateLoadGameTextColor = () => {
+  $('.player-one-board-bottom-text').attr('style', `color: ${store.xColor}`)
+  $('.player-two-board-bottom-text').attr('style', `color: ${store.oColor}`)
+}
+
 // onChooseLoadGame should probably be in events.js, but I couldn't think of
 // an easy way to do that without creating a circular dependency (because ui.js
 // needs to bind onChooseLoadGame to .load-board in displayLoadedBoard())
@@ -134,9 +139,9 @@ const onChooseLoadGame = event => {
 const setLoadBoardColors = () => {
   const loadDivs = document.getElementsByClassName('load-div')
   for (let i = 0; i < loadDivs.length; i++) {
-    if (loadDivs[i].innerHTML === 'x') {
+    if (loadDivs[i].innerText === 'x') {
       loadDivs[i].innerHTML = `<p style="color:${store.xColor}">x</p>`
-    } else if (loadDivs[i].innerHTML === 'o') {
+    } else if (loadDivs[i].innerText === 'o') {
       loadDivs[i].innerHTML = `<p style="color:${store.oColor}">o</p>`
     }
   }
@@ -230,6 +235,8 @@ const handleSignOutSuccess = () => {
   $('#save-warning').toggleClass('invisible')
   $('#sign-out-nav-button').toggleClass('invisible')
   $('#user-profile-nav-button').toggleClass('invisible')
+  document.getElementById('x-color-picker').value = '#ff0000'
+  document.getElementById('o-color-picker').value = '#0000ff'
   updateBoardDisplay()
   showBoard()
 }
@@ -291,7 +298,18 @@ const handleChangePasswordSuccess = function (newPassword) {
 }
 
 const showUserView = function () {
+  console.log('inside showUserView')
+  console.log(store.xColor)
+  console.log(store.oColor)
   $('#user-name').html(`Current User: <scan class="blue">${store.user.email} </scan>`)
+  $('#x-color-picker').attr('value', store.xColor)
+  $('#o-color-picker').attr('value', store.oColor)
+}
+
+const updateHeader = function () {
+  console.log('inside updateHeader')
+  $('.header-x').attr('style', `color: ${store.xColor}`)
+  $('.header-o').attr('style', `color: ${store.oColor}`)
 }
 
 //
@@ -377,11 +395,14 @@ module.exports = {
   handleLoadGameSuccess,
   displayNextLoadPage,
   displayPreviousLoadPage,
+  setLoadBoardColors,
+  updateLoadGameTextColor,
   // USER view UI functions
   handleChangePasswordFailure,
   handleChangePasswordMismatchingPasswords,
   handleChangePasswordSuccess,
   showUserView,
+  updateHeader,
   // SIGN-IN/SIGN-UP view UI functions
   hideSignView,
   showSignView,

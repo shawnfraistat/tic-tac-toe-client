@@ -16,9 +16,6 @@ different API, and your AI players won't exist on it
 
 2. Handlers are missing for a lot of API actions -- really, for FAILURES
 
-4. add id number below each game in Load Game view; also display player-x and
-player-o DONE
-
 5. When the user is logged in, show their email somewhere? Like, "Logged in as"?
 
 7. Multiplayer? God help me?
@@ -49,4 +46,7 @@ $(() => {
   $('#userViewModal').on('show.bs.modal', ui.showUserView)
   $('#user-view-done').on('click', ui.clearForms)
   $('#change-password-submit').on('click', events.onChangePasswordSubmit)
+  $('#confirm-new-colors').on('click', events.onConfirmNewColors)
+  $('#o-color-picker').on('input', events.onUpdateOColorValue)
+  $('#x-color-picker').on('input', events.onUpdateXColorValue)
 })

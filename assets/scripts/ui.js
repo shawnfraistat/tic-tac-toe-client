@@ -176,7 +176,7 @@ const switchToSignUp = function () {
 const handleSignInSuccess = event => {
   console.log('inside handleSignInSuccess')
   $('#logInModalHeader').addClass('invisible')
-  $('.sign-in-message').html(`<h3 class="sign-in-message green">Signed in as ${store.user.email}</h3>`)
+  $('.sign-in-message').html(`<h4 class="sign-in-message">Signed in as <scan class="blue">${store.user.email}</scan></h4>`)
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')
   $('#save-warning').toggleClass('invisible')
@@ -193,6 +193,7 @@ const handleSignInFailure = event => {
 }
 
 const handleSignOutSuccess = () => {
+  $('#signOutModal').modal('hide')
   store.user.id = 0
   store.user.email = ''
   store.user.token = ''
@@ -200,7 +201,6 @@ const handleSignOutSuccess = () => {
   store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
   store.currentPlayer = ''
   $('.board-message').html('')
-  $('.sign-out-message').html('<h3 class="green">Signed out</h3>')
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')
   $('#save-warning').toggleClass('invisible')
@@ -217,7 +217,7 @@ const handleSignOutFailure = event => {
 
 const handleSignUpSuccess = event => {
   console.log('inside handleSignUpSuccess')
-  $('.sign-up-message').html(`<h3 class="sign-up-message green">New account created for ${store.user.email}</h3>`)
+  $('.sign-up-message').html(`<h4 class="sign-up-message">New account created. Logged in as <scan class="blue">${store.user.email}</scan>.</h4>`)
   $('#logInModalHeader').addClass('invisible')
   $('#load-game-nav-button').toggleClass('invisible')
   $('#log-in-nav-button').toggleClass('invisible')
@@ -231,14 +231,14 @@ const handleSignUpSuccess = event => {
 }
 
 const handleSignUpFailure = event => {
-  $('.sign-up-message').html('<h3 class="sign-up-message red">Invalid sign up</h3>')
+  $('.sign-up-message').html('<h5 class="sign-up-message red">Invalid sign up</h5>')
   console.log('Invalid sign up event', event)
 }
 
 const clearForms = () => {
   console.log('inside clearForms')
   document.getElementById('sign-up').reset()
-  $('.sign-up-message').html('<h3 class="sign-up-message"></h3>')
+  $('.sign-up-message').html('<h4 class="sign-up-message"></h4>')
   document.getElementById('sign-in').reset()
   $('.sign-in-message').html('<p class="sign-in-message"></p>')
 }

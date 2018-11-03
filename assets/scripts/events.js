@@ -29,11 +29,12 @@ const onLoadGame = () => {
 
 const onLoadView = function (event) {
   event.preventDefault()
-  setTimeout(setUpLoadView(event), 1000000)
+  console.log('inside onLoadView')
+  $.when(api.updateBoardGameInProgress)
+    .done(setUpLoadView())
 }
 
-const setUpLoadView = event => {
-  event.preventDefault()
+const setUpLoadView = () => {
   api.getGameList()
     .then(storeLoadedGames)
     .then(ui.handleGameListSuccess)
@@ -100,7 +101,7 @@ const storeLoadedGames = data => {
 
 const onNewGame = function (event) {
   console.log('Start game!')
-  // This is a nice idea, but it screws up saving; no easy way for the API to
+  // Wanted to let user choose who goes first, but it screws up saving; no easy way for the API to
   // store who had the last move
   // store.firstPlayer = $('input[name="first-player"]:checked').val()
   store.opponent = $('input[name="opponent"]:checked').val()

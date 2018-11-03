@@ -14,6 +14,7 @@ const createGameInProgress = () => {
         Authorization: 'Token token=' + store.user.token
       }
     })
+      .then(function (data) { store.game.id = data.game.id })
       .then(updateBoardGameInProgress)
       .catch(console.log('failed to createGameInProgress'))
   }
@@ -62,8 +63,7 @@ const updateGame = data => {
   })
 }
 
-const updateBoardGameInProgress = data => {
-  store.game.id = data.game.id
+const updateBoardGameInProgress = () => {
   console.log('there is a game in progress; I should update all the moves on the API')
   for (let i = 0; i < store.currentBoard.length; i++) {
     if (store.currentBoard[i] === 'x' || store.currentBoard[i] === 'o') {

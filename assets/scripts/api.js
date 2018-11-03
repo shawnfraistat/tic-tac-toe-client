@@ -132,6 +132,7 @@ const changePassword = data => {
   return $.ajax({
     url: config.apiUrl + '/change-password',
     method: 'PATCH',
+    data,
     headers: {
       Authorization: 'Token token=' + store.user.token
     }

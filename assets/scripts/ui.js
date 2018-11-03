@@ -6,6 +6,72 @@ const store = require('./store.js')
 //
 //
 
+const displayLoadedBoard = (startPoint, endPoint) => {
+  const data = store.user
+  $('.game-list')[0].innerHTML = ''
+  for (let i = startPoint; i < endPoint; i++) {
+    $('.game-list')[0].innerHTML += `
+    <div class="load-board" dataId="${data.games[i].id}">
+      <div class="row">
+        <div class="load-div load-div0">${data.games[i].cells[0]}</div>
+        <div class="load-div load-div1">${data.games[i].cells[1]}</div>
+        <div class="load-div load-div2">${data.games[i].cells[2]}</div>
+      </div>
+      <div class="row">
+        <div class="load-div load-div3">${data.games[i].cells[3]}</div>
+        <div class="load-div load-div4">${data.games[i].cells[4]}</div>
+        <div class="load-div load-div5">${data.games[i].cells[5]}</div>
+      </div>
+      <div class="row">
+        <div class="load-div load-div6">${data.games[i].cells[6]}</div>
+        <div class="load-div load-div7">${data.games[i].cells[7]}</div>
+        <div class="load-div load-div8">${data.games[i].cells[8]}</div>
+      </div>`
+  }
+  setLoadBoardColors()
+  $('.load-board').on('click', onChooseLoadGame)
+}
+
+// onChooseLoadGame should probably be in events.js, but I couldn't figure out
+// an easy way to do that without creating a circular dependency (because ui.js
+// needs to bind onChooseLoadGame to .load-board in displayLoadedBoard())
+
+
+
+const displayNextLoadPage = () => {
+  const data = store.user
+  store.currentLoadPage++
+  console.log('inside displayPreviousLoadPage')
+  const startPoint = store.currentLoadPage * 9
+  let endPoint = 0
+  if (data.games.length - startPoint < 9) {
+    endPoint = startPoint + (data.games.length - startPoint)
+  } else {
+    endPoint = startPoint + 9
+  }
+  console.log('startPoint is', startPoint)
+  console.log('endPoint is', endPoint)
+  displayLoadedBoard(startPoint, endPoint)
+  updatePageArrows()
+}
+
+const displayPreviousLoadPage = () => {
+  const data = store.user
+  store.currentLoadPage--
+  console.log('inside displayPreviousLoadPage')
+  const startPoint = store.currentLoadPage * 9
+  let endPoint = 0
+  if (data.games.length - startPoint < 9) {
+    endPoint = startPoint + (data.games.length - startPoint)
+  } else {
+    endPoint = startPoint + 9
+  }
+  console.log('startPoint is', startPoint)
+  console.log('endPoint is', endPoint)
+  displayLoadedBoard(startPoint, endPoint)
+  updatePageArrows()
+}
+
 const handleGameListSuccess = () => {
   store.currentLoadPage = 0
   $('.game-list').html('')
@@ -36,36 +102,6 @@ const handleLoadGameSuccess = data => {
 const handleCreateNewGameFailure = data => {
   console.log('New game failed to create!')
 }
-
-const displayLoadedBoard = (startPoint, endPoint) => {
-  const data = store.user
-  $('.game-list')[0].innerHTML = ''
-  for (let i = startPoint; i < endPoint; i++) {
-    $('.game-list')[0].innerHTML += `
-    <div class="load-board" dataId="${data.games[i].id}">
-      <div class="row">
-        <div class="load-div load-div0">${data.games[i].cells[0]}</div>
-        <div class="load-div load-div1">${data.games[i].cells[1]}</div>
-        <div class="load-div load-div2">${data.games[i].cells[2]}</div>
-      </div>
-      <div class="row">
-        <div class="load-div load-div3">${data.games[i].cells[3]}</div>
-        <div class="load-div load-div4">${data.games[i].cells[4]}</div>
-        <div class="load-div load-div5">${data.games[i].cells[5]}</div>
-      </div>
-      <div class="row">
-        <div class="load-div load-div6">${data.games[i].cells[6]}</div>
-        <div class="load-div load-div7">${data.games[i].cells[7]}</div>
-        <div class="load-div load-div8">${data.games[i].cells[8]}</div>
-      </div>`
-  }
-  setLoadBoardColors()
-  $('.load-board').on('click', onChooseLoadGame)
-}
-
-// onChooseLoadGame should probably be in events.js, but I couldn't figure out
-// an easy way to do that without creating a circular dependency (because ui.js
-// needs to bind onChooseLoadGame to .load-board in displayLoadedBoard())
 
 const onChooseLoadGame = event => {
   event.preventDefault()
@@ -105,40 +141,6 @@ const updatePageArrows = () => {
   } else {
     $('#previous-load-page-arrow').addClass('invisible')
   }
-}
-
-const displayNextLoadPage = () => {
-  const data = store.user
-  store.currentLoadPage++
-  console.log('inside displayPreviousLoadPage')
-  const startPoint = store.currentLoadPage * 9
-  let endPoint = 0
-  if (data.games.length - startPoint < 9) {
-    endPoint = startPoint + (data.games.length - startPoint)
-  } else {
-    endPoint = startPoint + 9
-  }
-  console.log('startPoint is', startPoint)
-  console.log('endPoint is', endPoint)
-  displayLoadedBoard(startPoint, endPoint)
-  updatePageArrows()
-}
-
-const displayPreviousLoadPage = () => {
-  const data = store.user
-  store.currentLoadPage--
-  console.log('inside displayPreviousLoadPage')
-  const startPoint = store.currentLoadPage * 9
-  let endPoint = 0
-  if (data.games.length - startPoint < 9) {
-    endPoint = startPoint + (data.games.length - startPoint)
-  } else {
-    endPoint = startPoint + 9
-  }
-  console.log('startPoint is', startPoint)
-  console.log('endPoint is', endPoint)
-  displayLoadedBoard(startPoint, endPoint)
-  updatePageArrows()
 }
 
 //
@@ -240,14 +242,6 @@ const handleSignUpMismatchingPasswords = event => {
   console.log('Invalid sign up event', event)
 }
 
-const clearForms = () => {
-  console.log('inside clearForms')
-  document.getElementById('sign-up').reset()
-  $('.sign-up-message').html('<h4 class="sign-up-message"></h4>')
-  document.getElementById('sign-in').reset()
-  $('.sign-in-message').html('<p class="sign-in-message"></p>')
-}
-
 const toggleAIDifficultyRadios = () => {
   const buttons = $('input[name="difficulty"]')
   for (let i = 0; i < buttons.length; i++) {
@@ -261,9 +255,22 @@ const toggleAIDifficultyRadios = () => {
 //
 //
 
-const showUserView = function () {
+const handleChangePasswordFailure = function () {
+  $('.change-password-message').html('<h6 class="change-password-message red">Invalid Password</h6>')
 }
 
+const handleChangePasswordMismatchingPasswords = function () {
+  $('.change-password-message').html('<h6 class="change-password-message red">New Passwords Do Not Match</h6>')
+}
+
+const handleChangePasswordSuccess = function (newPassword) {
+  store.user.password = newPassword
+  $('.change-password-message').html('<h6 class="change-password-message blue">Password Changed</h6>')
+}
+
+const showUserView = function () {
+  $('#user-name').html(`Current User: <scan class="blue">${store.user.email} </scan>`)
+}
 
 //
 //
@@ -318,6 +325,17 @@ const updateBoardDisplay = function () {
 
 // MODAL resets
 
+const clearForms = () => {
+  console.log('inside clearForms')
+  document.getElementById('sign-up').reset()
+  $('.sign-up-message').html('<h5 class="sign-up-message"></h5>')
+  document.getElementById('sign-in').reset()
+  $('.sign-in-message').html('<h5 class="sign-in-message"></h5>')
+  document.getElementById('change-password').reset()
+  $('.change-password-message').text('')
+  $('#user-name').text('')
+}
+
 const resetLogInModal = () => {
   $('#logInModalHeader').removeClass('invisible')
   switchToSignIn()
@@ -338,6 +356,11 @@ module.exports = {
   displayNextLoadPage,
   displayPreviousLoadPage,
   // USER view UI functions
+  handleChangePasswordFailure,
+  handleChangePasswordMismatchingPasswords,
+  handleChangePasswordSuccess,
+  showUserView,
+  // SIGN-IN/SIGN-UP view UI functions
   hideSignView,
   showSignView,
   switchToSignIn,
@@ -349,6 +372,7 @@ module.exports = {
   handleSignUpMismatchingPasswords,
   handleSignOutSuccess,
   handleSignOutFailure,
+  // NEW GAME UI functions
   toggleAIDifficultyRadios,
   // GAME view UI functions
   hideBoard,
@@ -358,5 +382,6 @@ module.exports = {
   showPlayerWin,
   showPlayerTie,
   // MODAL resets
+  clearForms,
   resetLogInModal
 }

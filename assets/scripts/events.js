@@ -183,8 +183,24 @@ const onSwitchToSignUp = event => {
   ui.switchToSignUp()
 }
 
+// USER VIEW Events
+const onChangePasswordSubmit = event => {
+  event.preventDefault()
+  const target = $('#change-password')[0]
+  const data = getFormFields(target)
+  if (data.passwords.new === data.passwords.confirm_new) {
+    console.log('inside onChangePasswordSubmit, about to submit', data)
+    api.changePassword(data)
+      .done(ui.handleChangePasswordSuccess(data.passwords.new))
+      .fail(ui.handleChangePasswordFailure)
+  } else {
+    ui.handleChangePasswordMismatchingPasswords()
+  }
+}
+
 module.exports = {
   onChangePassword,
+  onChangePasswordSubmit,
   onNewGame,
   onLoadGame,
   onLoadView,

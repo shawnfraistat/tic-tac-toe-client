@@ -18,7 +18,7 @@ different API, and your AI players won't exist on it
 
 3. Add user view and user crap
 
-4. add id number below each game in Load Game view; display player-x and
+4. add id number below each game in Load Game view; also display player-x and
 player-o
 
 5. When the user is logged in, show their email somewhere? Like, "Logged in as"?
@@ -27,6 +27,12 @@ player-o
 error if not
 
 7. Multiplayer? God help me?
+
+8. Sound?
+
+9. Let user pick colors?
+
+10. Check what happens on mobile?
 
 */
 
@@ -45,4 +51,7 @@ $(() => {
   $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
   $('#load-game-submit').on('click', events.onLoadGame)
   $('#logInModal').on('show.bs.modal', ui.resetLogInModal)
+  $('#userViewModal').on('show.bs.modal', ui.showUserView)
+  $('#user-view-done').on('click', ui.clearForms)
+  $('#change-password-submit').on('click', events.onChangePasswordSubmit)
 })

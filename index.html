@@ -35,7 +35,9 @@
         </button>
       </li>
       <li class="nav-item invisible" id="user-profile-nav-button">
-        <a class="nav-link" href="#">User Profile</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userViewModal">
+          User Profile
+        </button>
       </li>
       <li class="nav-item" id="log-in-nav-button">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#logInModal">
@@ -51,7 +53,7 @@
   </nav>
 
 
-  <!-- New Game Modal -->
+  <!-- newGameModal -->
   <div class="modal fade" id="newGameModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -108,7 +110,7 @@
     </div>
   </div>
 
-<!-- LogInModal -->
+<!-- logInModal -->
   <div class="modal fade sign-view" id="logInModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -155,7 +157,7 @@
   </div>
 </div>
 
-<!-- SignOutModal -->
+<!-- signOutModal -->
   <div class="modal fade sign-view" id="signOutModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -172,7 +174,7 @@
 </div>
 
 
-<!-- LoadConfirmModal-->
+<!-- loadConfirmModalModal-->
   <div class="modal fade sign-view" id="loadConfirmModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -186,6 +188,40 @@
     </div>
   </div>
 </div>
+
+<!-- userViewModal-->
+<div class="modal fade" id="userViewModal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userViewTitle">User Profile</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span class='x-color modal-x'>x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 id="user-name"></h4>
+        <form id="change-password">
+          <div class="form group">
+              <fieldset>
+                <legend>Change Password</legend>
+                <h5 class="change-password-message"></h5>
+                <input type="password" name="passwords[old]" placeholder="Current Password" />
+                <input type="password" name="passwords[new]" placeholder="New Password" />
+                <input type="password" name="passwords[confirm_new]" placeholder="Confirm New" />
+                <button type="button" id="change-password-submit">Submit</button>
+              </fieldset>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="user-view-done" data-dismiss="modal" class="btn btn-primary">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
   <main>
     <div class="board-plus-message">

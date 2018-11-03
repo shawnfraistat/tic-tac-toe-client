@@ -235,6 +235,11 @@ const handleSignUpFailure = event => {
   console.log('Invalid sign up event', event)
 }
 
+const handleSignUpMismatchingPasswords = event => {
+  $('.sign-up-message').html('<h5 class="sign-up-message red">Passwords do not match</h5>')
+  console.log('Invalid sign up event', event)
+}
+
 const clearForms = () => {
   console.log('inside clearForms')
   document.getElementById('sign-up').reset()
@@ -341,6 +346,7 @@ module.exports = {
   handleSignInFailure,
   handleSignUpSuccess,
   handleSignUpFailure,
+  handleSignUpMismatchingPasswords,
   handleSignOutSuccess,
   handleSignOutFailure,
   toggleAIDifficultyRadios,

@@ -163,10 +163,14 @@ const onSignUp = event => {
   const target = $('#sign-up')[0]
   const data = getFormFields(target)
   console.log('inside onSignUp: data is', data)
-  api.storeSignUpInfo(data)
-  api.signUp(data)
-    .then(ui.handleSignUpSuccess)
-    .catch(ui.handleSignUpFailure)
+  if (data.credentials.password === data.credentials.password_confirmation) {
+    api.storeSignUpInfo(data)
+    api.signUp(data)
+      .then(ui.handleSignUpSuccess)
+      .catch(ui.handleSignUpFailure)
+  } else {
+    ui.handleSignUpMismatchingPasswords()
+  }
 }
 
 const onSwitchToSignIn = event => {

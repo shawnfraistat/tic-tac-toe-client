@@ -9,25 +9,24 @@
 const events = require('./events.js')
 const ui = require('./ui.js')
 
-// !! NEED TO ADD EVENT LISTENERS AND EVENTS TO RESET MODAL VALUES AFTER
-// THE MODAL CLOSES
-
 /* TO DO:
 
 1. Check that AI players don't become bugged when you deploy--you'll be using a
 different API, and your AI players won't exist on it
 
-2. Handlers are missing for a lot of API actions
+2. Handlers are missing for a lot of API actions -- really, for FAILURES
 
 3. Add user view and user crap
 
-4. Make Sign in and Sign up modals do their thing, display a confirmation
-within the modal on success, and then change so that they can be dismissed
-
-5. Have "sign up" log you in automatically
-
-6. add id number below each game in Load Game view; display player-x and
+4. add id number below each game in Load Game view; display player-x and
 player-o
+
+5. When the user is logged in, show their email somewhere? Like, "Logged in as"?
+
+6. When signing up, check that password and confirm password match; throw an
+error if not
+
+7. Multiplayer? God help me?
 
 */
 

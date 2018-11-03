@@ -30,8 +30,8 @@ const onLoadGame = () => {
 const onLoadView = function (event) {
   event.preventDefault()
   console.log('inside onLoadView')
-  $.when(api.updateBoardGameInProgress)
-    .done(setUpLoadView())
+  api.updateBoardGameInProgress()
+  setUpLoadView()
 }
 
 const setUpLoadView = () => {

@@ -1,3 +1,4 @@
+const ai = require('./ai.js')
 const config = require('./config.js')
 const store = require('./store.js')
 
@@ -52,6 +53,9 @@ const loadThisGame = event => {
 }
 
 const updateGame = data => {
+  if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
+    data.game.over = true
+  }
   console.log('Attempting to update game on API')
   return $.ajax({
     url: config.apiUrl + '/games/' + store.game.id,
@@ -65,6 +69,10 @@ const updateGame = data => {
 
 const updateBoardGameInProgress = () => {
   console.log('there is a game in progress; I should update all the moves on the API')
+  let over = false
+  if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
+    over = true
+  }
   for (let i = 0; i < store.currentBoard.length; i++) {
     if (store.currentBoard[i] === 'x' || store.currentBoard[i] === 'o') {
       const moveForAPI = {
@@ -79,7 +87,7 @@ const updateBoardGameInProgress = () => {
               }
             }())
           },
-          "over": false
+          "over": over
         }
       }
       console.log('moveForAPI inside updateBoardGameInProgress is', moveForAPI)

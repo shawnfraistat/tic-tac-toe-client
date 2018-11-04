@@ -59,7 +59,6 @@ const displayLoadedBoard = (startPoint, endPoint) => {
 const displayNextLoadPage = () => {
   const data = store.user
   store.currentLoadPage++
-  console.log('inside displayPreviousLoadPage')
   const startPoint = store.currentLoadPage * 9
   let endPoint = 0
   if (data.games.length - startPoint < 9) {
@@ -67,8 +66,6 @@ const displayNextLoadPage = () => {
   } else {
     endPoint = startPoint + 9
   }
-  console.log('startPoint is', startPoint)
-  console.log('endPoint is', endPoint)
   displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
 }
@@ -76,7 +73,6 @@ const displayNextLoadPage = () => {
 const displayPreviousLoadPage = () => {
   const data = store.user
   store.currentLoadPage--
-  console.log('inside displayPreviousLoadPage')
   const startPoint = store.currentLoadPage * 9
   let endPoint = 0
   if (data.games.length - startPoint < 9) {
@@ -84,8 +80,6 @@ const displayPreviousLoadPage = () => {
   } else {
     endPoint = startPoint + 9
   }
-  console.log('startPoint is', startPoint)
-  console.log('endPoint is', endPoint)
   displayLoadedBoard(startPoint, endPoint)
   updatePageArrows()
 }
@@ -148,8 +142,6 @@ const setLoadBoardColors = () => {
 }
 
 const updatePageArrows = () => {
-  console.log('totalLoadPages is', store.totalLoadPages)
-  console.log('currentLoadPage is', store.currentLoadPage)
   if (store.totalLoadPages === 0) {
     $('#previous-load-page-arrow').addClass('invisible')
     $('#next-load-page-arrow').addClass('invisible')
@@ -203,7 +195,6 @@ const switchToSignUp = function () {
 }
 
 const handleSignInSuccess = event => {
-  console.log('inside handleSignInSuccess')
   $('#logInModalHeader').addClass('invisible')
   $('.sign-in-message').html(`<h4 class="sign-in-message">Signed in as <scan class="blue">${store.user.email}</scan></h4>`)
   $('#load-game-nav-button').toggleClass('invisible')
@@ -215,10 +206,11 @@ const handleSignInSuccess = event => {
   $('#sign-in-cancel').addClass('invisible')
   $('#sign-in-submit').addClass('invisible')
   $('#sign-in-continue').removeClass('invisible')
+  $('#multiplayer-radios').removeClass('invisible')
 }
 
 const handleSignInFailure = event => {
-  $('.sign-in-message').html('<h5 class="sign-in-message red">Invalid sign in</h5>')
+  $('.sign-in-message').html('<h5 class="sign-in-message red">Sign in failed</h5>')
 }
 
 const handleSignOutSuccess = () => {
@@ -235,6 +227,8 @@ const handleSignOutSuccess = () => {
   $('#save-warning').toggleClass('invisible')
   $('#sign-out-nav-button').toggleClass('invisible')
   $('#user-profile-nav-button').toggleClass('invisible')
+  $('#multiplayer-radios').addClass('invisible')
+  $('#save-game-nav-button').addClass('invisible')
   document.getElementById('x-color-picker').value = '#ff0000'
   document.getElementById('o-color-picker').value = '#0000ff'
   updateBoardDisplay()
@@ -262,7 +256,7 @@ const handleSignUpSuccess = event => {
 }
 
 const handleSignUpFailure = event => {
-  $('.sign-up-message').html('<h5 class="sign-up-message red">Invalid sign up</h5>')
+  $('.sign-up-message').html('<h5 class="sign-up-message red">Sign up failed</h5>')
   console.log('Invalid sign up event', event)
 }
 
@@ -271,11 +265,37 @@ const handleSignUpMismatchingPasswords = event => {
   console.log('Invalid sign up event', event)
 }
 
-const toggleAIDifficultyRadios = () => {
-  // const buttons = $('input[name="difficulty"]')
-  // for (let i = 0; i < buttons.length; i++) {
-  //   buttons[i].toggleAttribute('disabled')
-  // }
+const selfRadios = () => {
+  let buttons = $('input[name="difficulty"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute('disabled', 'disabled')
+  }
+  buttons = $('input[name="multiplayer"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute('disabled', 'disabled')
+  }
+}
+
+const aiRadios = () => {
+  let buttons = $('input[name="difficulty"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].removeAttribute('disabled')
+  }
+  buttons = $('input[name="multiplayer"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute('disabled', 'disabled')
+  }
+}
+
+const multiplayerRadios = () => {
+  let buttons = $('input[name="difficulty"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute('disabled', 'disabled')
+  }
+  buttons = $('input[name="multiplayer"]')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].removeAttribute('disabled')
+  }
 }
 
 //
@@ -285,29 +305,25 @@ const toggleAIDifficultyRadios = () => {
 //
 
 const handleChangePasswordFailure = function () {
-  $('.change-password-message').html('<h6 class="change-password-message red">Invalid Password</h6>')
+  $('.change-password-message').html('<h6 class="change-password-message red">Invalid password</h6>')
 }
 
 const handleChangePasswordMismatchingPasswords = function () {
-  $('.change-password-message').html('<h6 class="change-password-message red">New Passwords Do Not Match</h6>')
+  $('.change-password-message').html('<h6 class="change-password-message red">New passwords do not match</h6>')
 }
 
 const handleChangePasswordSuccess = function (newPassword) {
   store.user.password = newPassword
-  $('.change-password-message').html('<h6 class="change-password-message blue">Password Changed</h6>')
+  $('.change-password-message').html('<h6 class="change-password-message blue">Password changed</h6>')
 }
 
 const showUserView = function () {
-  console.log('inside showUserView')
-  console.log(store.xColor)
-  console.log(store.oColor)
   $('#user-name').html(`Current User: <scan class="blue">${store.user.email} </scan>`)
   $('#x-color-picker').attr('value', store.xColor)
   $('#o-color-picker').attr('value', store.oColor)
 }
 
 const updateHeader = function () {
-  console.log('inside updateHeader')
   $('.header-x').attr('style', `color: ${store.xColor}`)
   $('.header-o').attr('style', `color: ${store.oColor}`)
   $('.board-message-x-scan').attr('style', `color: ${store.xColor}`)
@@ -368,7 +384,6 @@ const updateBoardDisplay = function () {
 // MODAL resets
 
 const clearForms = () => {
-  console.log('inside clearForms')
   document.getElementById('sign-up').reset()
   $('.sign-up-message').html('<h5 class="sign-up-message"></h5>')
   document.getElementById('sign-in').reset()
@@ -387,6 +402,26 @@ const resetLogInModal = () => {
   $('#sign-in-cancel').removeClass('invisible')
   $('#sign-in-submit').removeClass('invisible')
   $('#sign-in-continue').addClass('invisible')
+}
+
+const showNewGameModal = () => {
+  $('.new-game-message').html('')
+}
+
+// MULTIPLAYER UI functions
+
+const handleJoinGameFailure = () => {
+  $('.new-game-message').html('<h5 class="sign-up-message red">Failed to join game</h5>')
+}
+
+const handleHostGameFailure = () => {
+  $('.new-game-message').html(`<h5 class="sign-up-message red">Couldn't host game</h5>`)
+}
+
+const handleHostLobby = () => {
+  $('#newGameModal').modal('hide')
+  $('.board-message').html(`<p>Game ID is ${store.game.id}. Waiting for Opponent to Join...</p>`)
+  console.log(store.game.id)
 }
 
 module.exports = {
@@ -418,7 +453,9 @@ module.exports = {
   handleSignOutSuccess,
   handleSignOutFailure,
   // NEW GAME UI functions
-  toggleAIDifficultyRadios,
+  aiRadios,
+  selfRadios,
+  multiplayerRadios,
   // GAME view UI functions
   hideBoard,
   showBoard,
@@ -428,5 +465,10 @@ module.exports = {
   showPlayerTie,
   // MODAL resets
   clearForms,
-  resetLogInModal
+  showNewGameModal,
+  resetLogInModal,
+  // MULTIPLAYER UI functions
+  handleJoinGameFailure,
+  handleHostGameFailure,
+  handleHostLobby
 }

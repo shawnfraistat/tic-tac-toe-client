@@ -7,7 +7,7 @@ let totalLoadPages = 0
 let oColor = '#0000ff'
 let xColor = '#ff0000'
 
-const game = {
+let game = {
   id: 0,
   cells: [],
   over: false,
@@ -27,13 +27,16 @@ const user = {
 }
 
 // current game state
+
 let currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 let currentPlayer = ''
 
-// settings
+// current game settings
+
 let firstPlayer = ''
 let opponent = ''
 let aiDifficulty = '0'
+let multiplayerRole = ''
 
 // misc globals
 
@@ -45,15 +48,16 @@ module.exports = {
   totalLoadPages,
   game,
   user,
+  oColor,
+  xColor,
   // current game state
   currentBoard,
   currentPlayer,
-  // settings
+  // current game settings
   firstPlayer,
   opponent,
   aiDifficulty,
-  oColor,
-  xColor,
+  multiplayerRole,
   // misc globals
   currentClickEvent
 }

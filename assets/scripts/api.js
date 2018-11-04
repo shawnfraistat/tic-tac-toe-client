@@ -6,21 +6,21 @@ const watcher = require('./watcher.js')
 // GAME API actions
 
 const createGameInProgress = () => {
-  console.log('inside createGameInProgress')
-  if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
-    console.log('there is a game in progress; I should tell the API')
-    $.when($.ajax({
-      url: config.apiUrl + '/games',
-      method: 'POST',
-      headers: {
-        Authorization: 'Token token=' + store.user.token
-      }
-    }))
-      .then(function (data) { store.game.id = data.game.id })
-      .then(updateBoardGameInProgress)
-      .then(signInAI)
-      .catch(console.log('failed to createGameInProgress'))
-  }
+  // console.log('inside createGameInProgress')
+  // if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
+  //   console.log('there is a game in progress; I should tell the API')
+  //   $.when($.ajax({
+  //     url: config.apiUrl + '/games',
+  //     method: 'POST',
+  //     headers: {
+  //       Authorization: 'Token token=' + store.user.token
+  //     }
+  //   }))
+  //     .then(function (data) { store.game.id = data.game.id })
+  //     .then(updateBoardGameInProgress)
+  //     .then(signInAI)
+  //     .catch(console.log('failed to createGameInProgress'))
+  // }
 }
 
 const createNewGame = () => {
@@ -71,33 +71,7 @@ const updateGame = data => {
 
 const updateBoardGameInProgress = () => {
   console.log('there is a game in progress; I should update all the moves on the API')
-  let over = false
-  if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
-    over = true
-  }
-  for (let i = 0; i < store.currentBoard.length; i++) {
-    if (store.currentBoard[i] === 'x' || store.currentBoard[i] === 'o') {
-      const moveForAPI = {
-        "game": {
-          "cell": {
-            "index": i,
-            "value": (function () {
-              if (store.currentBoard[i] === 'x') {
-                return 'x'
-              } else if (store.currentBoard[i] === 'o') {
-                return 'o'
-              }
-            }())
-          },
-          "over": over
-        }
-      }
-      console.log('moveForAPI inside updateBoardGameInProgress is', moveForAPI)
-      console.log('store game id is', store.game.id)
-      console.log('store user token is', store.user.token)
-      updateGame(moveForAPI)
-    }
-  }
+  //blank
 }
 
 // USER API actions
@@ -212,9 +186,24 @@ const joinAI = aiUser => {
 
 // MULTIPLAYER functions
 
-const createGameWatcher = id => {
-  return watcher.resourceWatcher(`${config.apiUrl}/games/${id}/watch`, {
+const createGameWatcher = data => {
+  console.log('attempting to create game watcher')
+  console.log(data)
+  return watcher.resourceWatcher(`${config.apiUrl}/games/${data.game.id}/watch`, {
     Authorization: 'Token token=' + store.user.token
+  })
+}
+
+const joinMultiplayerGame = id => {
+  console.log('Inside joinMultiplayerGame')
+  console.log('store.user.token is', store.user.token)
+  console.log('game id is', id)
+  return $.ajax({
+    url: config.apiUrl + '/games/' + id,
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
   })
 }
 
@@ -237,5 +226,6 @@ module.exports = {
   signInAI,
   joinAI,
   // MULTIPLAYER API functions
-  createGameWatcher
+  createGameWatcher,
+  joinMultiplayerGame
 }

@@ -36,6 +36,11 @@
           Load Game
         </button>
       </li>
+      <li class="nav-item invisible" id="save-game-nav-button">
+        <button type="button" class="btn btn-primary">
+          Save Game
+        </button>
+      </li>
       <li class="nav-item invisible" id="user-profile-nav-button">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userViewModal">
           User Profile
@@ -66,6 +71,7 @@
         </div>
         <div class="modal-body">
           <form id="new-game">
+            <p class="new-game-message"></p>
             <div class="form group">
               <!-- <fieldset>
                 <legend>Choose Who Goes First: </legend>
@@ -80,27 +86,42 @@
               <fieldset>
                 <legend>Select Opponent: </legend>
                 <div class="opponent-options">
-                  <input id="opponent-self-radio" type="radio" name="opponent" value="self" checked="checked">
+                  <input id="opponent-self-radio" type="radio" name="opponent" value="self" checked="checked" />
                   <label for="opponent-self-radio">Self</label>
-                  <input id="opponent-ai-radio" type="radio" name="opponent" value="ai">
+                  <input id="opponent-ai-radio" type="radio" name="opponent" value="ai" />
                   <label for="opponent-self-radio">AI</label>
+                  <input id="opponent-multiplayer-radio" type="radio" name="opponent" value="multiplayer" />
+                  <label for="opponent-multiplayer-radio">Multiplayer</label>
                 </div>
               </fieldset>
               <br />
               <fieldset id="ai-difficulty-radios">
                 <legend>Select AI Difficulty: </legend>
                 <div class="ai-difficulty">
-                  <input id="ai-easy-radio" type="radio" name="difficulty" value=0 checked="checked">
+                  <input id="ai-easy-radio" type="radio" name="difficulty" value=0 checked="checked" disabled />
                   <label for="ai-easy-radio">Easy</label>
-                  <input id="ai-medium-radio" type="radio" name="difficulty" value=1>
+                  <input id="ai-medium-radio" type="radio" name="difficulty" value=1 disabled />
                   <label for="ai-medium-radio">Medium</label>
-                  <input id="ai-impossible-radio" type="radio" name="difficulty" value=2>
+                  <input id="ai-impossible-radio" type="radio" name="difficulty" value=2 disabled />
                   <label for="ai-impossible-radio">Impossible</label>
                 </div>
+                <br />
+              </fieldset>
+
+              <fieldset id="multiplayer-radios" class="invisible">
+                <legend>Select Multiplayer Role:</legend>
+                <div class="multiplayer-radios">
+                  <input id="multiplayer-host" type="radio" name="multiplayer" value="host" checked="checked" disabled />
+                  <label for="mutliplayer-host">Host</label>
+                  <input id="multiplayer-join" type="radio" name="multiplayer" value="join" disabled />
+                  <label for="ai-medium-radio">Join</label>
+                  <input type="text" name="multiplayer" id="join-id" placeholder="Game to Join ID" disabled />
+                </div>
+                  <br />
               </fieldset>
             </div>
-            <br />
-            <h6 id='save-warning'>NOTE: If you are not logged in, this game will not be saved</h6>
+
+            <h6 id='save-warning'>NOTE: If you are not logged in, you cannot save or use multiplayer</h6>
           </form>
         </div>
         <div class="modal-footer">
@@ -232,6 +253,16 @@
       </div>
     </div>
   </div>
+
+<!-- maybe gonna make a host lobby pop-up here>
+<div class="modal fade" id="userViewModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="userViewTitle">User Profile</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span class='red modal-x'>x</span>
+          </button> -->
 
 <!-- game board-->
   <main>

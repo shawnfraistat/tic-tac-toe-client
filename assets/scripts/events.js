@@ -1,3 +1,4 @@
+const ai = require('./ai.js')
 const api = require('./api.js')
 const gamelogic = require('./gamelogic')
 const getFormFields = require('../../lib/get-form-fields.js')
@@ -7,16 +8,51 @@ const ui = require('./ui.js')
 let oColorValue = store.oColor
 let xColorValue = store.xColor
 
-const onChangePassword = event => {
-  event.preventDefault()
-  const target = $('#password-form')[0]
-  const data = getFormFields(target)
-  api.changePassword(data)
-    .then(ui.handleSignUpSuccess)
-    .catch(ui.handleSignUpFailure)
+// LOAD and SAVE events
+
+const onSaveGame = data => {
+  console.log('inside onSaveGame')
+  if (store.game.id === 0) {
+    api.createNewGame()
+      .then(copyNewGameData)
+      .then(api.signInAI)
+      .then(saveThisGame)
+      .then(saveThisGame)
+      .catch(ui.handleCreateNewGameFailure)
+  } else if (store.game.id !== 0) {
+    saveThisGame()
+  }
 }
 
-// LOAD events
+const saveThisGame = () => {
+  let over = false
+  if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
+    over = true
+  }
+  for (let i = 0; i < store.currentBoard.length; i++) {
+    if (store.currentBoard[i] === 'x' || store.currentBoard[i] === 'o') {
+      const moveForAPI = {
+        "game": {
+          "cell": {
+            "index": i,
+            "value": (function () {
+              if (store.currentBoard[i] === 'x') {
+                return 'x'
+              } else if (store.currentBoard[i] === 'o') {
+                return 'o'
+              }
+            }())
+          },
+          "over": over
+        }
+      }
+      console.log('moveForAPI inside updateBoardGameInProgress is', moveForAPI)
+      console.log('store game id is', store.game.id)
+      console.log('store user token is', store.user.token)
+      api.updateGame(moveForAPI)
+    }
+  }
+}
 
 const copyNewGameData = data => {
   console.log('Inside copyNewGameData--data is:', data)
@@ -33,8 +69,9 @@ const onLoadGame = () => {
 const onLoadView = function (event) {
   event.preventDefault()
   console.log('inside onLoadView')
-  $.when(api.updateBoardGameInProgress)
-    .done(setUpLoadView)
+  setUpLoadView()
+  // $.when(api.updateBoardGameInProgress)
+  //   .done(setUpLoadView)
 }
 
 const setUpLoadView = () => {
@@ -57,6 +94,7 @@ const setUpLoadedGame = data => {
     store.game[key] = data.game[key]
   }
   console.log(store.game)
+  $('#save-game-nav-button').removeClass('invisible')
   ui.showBoard()
   ui.updateBoardDisplay()
   // hard-coded ids used here to figure out who the AI was on load
@@ -104,44 +142,43 @@ const storeLoadedGames = data => {
 
 const onNewGame = function (event) {
   console.log('Start game!')
+  store.game = {
+    id: 0,
+    cells: [],
+    over: false,
+    player_x: {
+      id: 0,
+      email: ''
+    },
+    player_o: null
+  }
+  if (store.user.id !== 0) {
+    $('#save-game-nav-button').removeClass('invisible')
+  }
   // Wanted to let user choose who goes first, but it screws up saving; no easy way for the API to
   // store who had the last move
   // store.firstPlayer = $('input[name="first-player"]:checked').val()
   store.opponent = $('input[name="opponent"]:checked').val()
-  store.aiDifficulty = $('input[name="difficulty"]:checked').val()
-  store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-  if (store.user.id !== 0) {
-    api.createNewGame()
-      .then(copyNewGameData)
-      .then(api.signInAI)
-      .catch(ui.handleCreateNewGameFailure)
-  }
-  ui.showBoard()
-  ui.updateBoardDisplay()
-  $('#newGameModal').modal('hide')
-  store.currentPlayer = 'playerOne'
-  if (store.currentPlayer === 'playerTwo' && store.opponent === 'ai') {
-    gamelogic.takeAITurn()
+  if (store.opponent === 'multiplayer') {
+    startNewMultiplayerGame()
   } else {
-    gamelogic.readyPlayerTurn()
+    if (store.opponent === 'ai') {
+      store.aiDifficulty = $('input[name="difficulty"]:checked').val()
+    }
+    store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    ui.showBoard()
+    ui.updateBoardDisplay()
+    $('#newGameModal').modal('hide')
+    store.currentPlayer = 'playerOne'
+    if (store.currentPlayer === 'playerTwo' && store.opponent === 'ai') {
+      gamelogic.takeAITurn()
+    } else {
+      gamelogic.readyPlayerTurn()
+    }
   }
 }
 
 // SIGN IN/SIGN OUT Events
-
-const onSignUpContinue = data => {
-  const newCredentials = {
-    "credentials": {
-      "email": store.user.email,
-      "password": store.user.password
-    }
-  }
-  console.log('In callSignin; data is', newCredentials)
-  api.signIn(newCredentials)
-    .then(api.storeSignInInfo)
-    .then(api.createGameInProgress)
-    .catch(ui.handleSignUpFailure)
-}
 
 const onSignIn = event => {
   event.preventDefault()
@@ -150,7 +187,7 @@ const onSignIn = event => {
   api.signIn(data)
     .then(api.storeSignInInfo)
     .then(ui.handleSignInSuccess)
-    .then(api.createGameInProgress)
+    // .then(api.createGameInProgress)
     .catch(ui.handleSignInFailure)
 }
 
@@ -175,6 +212,20 @@ const onSignUp = event => {
   } else {
     ui.handleSignUpMismatchingPasswords()
   }
+}
+
+const onSignUpContinue = data => {
+  const newCredentials = {
+    "credentials": {
+      "email": store.user.email,
+      "password": store.user.password
+    }
+  }
+  console.log('In callSignin; data is', newCredentials)
+  api.signIn(newCredentials)
+    .then(api.storeSignInInfo)
+    // .then(api.createGameInProgress)
+    .catch(ui.handleSignUpFailure)
 }
 
 const onSwitchToSignIn = event => {
@@ -205,6 +256,16 @@ const resetColors = () => {
 }
 
 // USER VIEW Events
+
+const onChangePassword = event => {
+  event.preventDefault()
+  const target = $('#password-form')[0]
+  const data = getFormFields(target)
+  api.changePassword(data)
+    .then(ui.handleSignUpSuccess)
+    .catch(ui.handleSignUpFailure)
+}
+
 const onChangePasswordSubmit = event => {
   event.preventDefault()
   const target = $('#change-password')[0]
@@ -247,14 +308,48 @@ const onUpdateXColorValue = event => {
 
 // MULTIPLAYER EventSource
 
-const onEstablishLink = () => {
-  const gameWatcher = api.createGameWatcher
+const onEstablishLink = (gameData) => {
+  copyNewGameData(gameData)
+  const gameWatcher = api.createGameWatcher(gameData)
+  gameWatcher.on('connect', function (data) {
+    console.log('connection made!')
+    console.log(data)
+  })
+
   gameWatcher.on('change', function (data) {
+    // this handles what happens when the other player joins
+    if (data.game && data.game.player_o_id) {
+      const diff = changes => {
+        let before = changes[0]
+        let after = changes[1]
+        for (let i = 0; i < after.length; i++) {
+          if (before[i] !== after[i]) {
+            return {
+              index: i,
+              value: after[i]
+            }
+          }
+        }
+        return { index: -1, value: '' }
+      }
+      // console.log('data.game.player_o_id is ', data.game.player_o_id)
+      // store.game.player_o.id = data.game.player_o_id[1]
+      store.currentPlayer = 'playerOne'
+      ui.updateBoardDisplay()
+      ui.showPlayerTurn()
+      if (store.multiplayerRole === 'host') {
+        console.log('I think this user is Player One')
+        gamelogic.readyPlayerTurn()
+      }
+    }
+
+    // this handles what happens when the other player makes a move
     console.log(data)
     if (data.game && data.game.cells) {
+      console.log('The other player made a move')
       const diff = changes => {
-        let before = changes[0];
-        let after = changes[1];
+        let before = changes[0]
+        let after = changes[1]
         for (let i = 0; i < after.length; i++) {
           if (before[i] !== after[i]) {
             return {
@@ -274,17 +369,62 @@ const onEstablishLink = () => {
       // your attempt
       console.log('in onEstablishLink -- going to modify store at cell index', store.currentBoard[cell.index], cell.value)
       store.currentBoard[cell.index] = cell.value
-      gamelogic.readyPlayerTurn()
+      if (store.currentPlayer === 'playerOne') {
+        store.currentPlayer = 'playerTwo'
+      } else {
+        store.currentPlayer = 'playerOne'
+      }
+      ui.showPlayerTurn()
+      ui.updateBoardDisplay()
+      if (ai.terminalCheck(store.currentBoard, store.currentPlayer) === 'continue') {
+        console.log('performed a terminalCheck--found continue')
+        gamelogic.readyPlayerTurn()
+      }
     } else if (data.timeout) { //not an error
       gameWatcher.close()
     }
   })
 
   gameWatcher.on('error', function (e) {
-    console.error('an error has occurred with the stream', e);
+    console.error('an error has occurred with the stream', e)
   })
 }
 
+const startNewMultiplayerGame = () => {
+  store.currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  ui.updateBoardDisplay()
+  ui.showBoard()
+  store.multiplayerRole = $('input[name="multiplayer"]:checked').val()
+  console.log(store.multiplayerRole)
+  if (store.multiplayerRole === 'host') {
+    api.createNewGame()
+      .then(onEstablishLink)
+      .then(createHostLobby)
+      .catch(ui.handleHostGameFailure)
+    // store.currentPlayer = 'playerOne'
+    // gamelogic.readyPlayerTurn()
+  }
+  if (store.multiplayerRole === 'join') {
+    const gameToJoin = $('#join-id')[0].value
+    console.log('gameToJoin is', gameToJoin)
+    api.joinMultiplayerGame(gameToJoin)
+      .then(onEstablishLink)
+      .then(joinGameSuccess)
+      .catch(ui.handleJoinGameFailure)
+    // store.currentPlayer = 'playerTwo'
+    // gamelogic.readyPlayerTurn()
+  }
+}
+
+const joinGameSuccess = () => {
+  store.currentPlayer = 'playerOne'
+  ui.updateBoardDisplay()
+  ui.showPlayerTurn()
+}
+
+const createHostLobby = () => {
+  ui.handleHostLobby()
+}
 
 module.exports = {
   onChangePassword,
@@ -294,6 +434,7 @@ module.exports = {
   onNewGame,
   onLoadGame,
   onLoadView,
+  onSaveGame,
   onSignIn,
   onSignUp,
   onSignUpContinue,

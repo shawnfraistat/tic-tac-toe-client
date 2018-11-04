@@ -40,7 +40,6 @@ const updateGame = data => {
   if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
     data.game.over = true
   }
-  console.log('Attempting to update game on API')
   $.ajax({
     async: false,
     url: config.apiUrl + '/games/' + store.game.id,
@@ -92,17 +91,13 @@ const changePassword = data => {
 }
 
 const storeSignInInfo = data => {
-  console.log('Inside storeSignInInfo')
-  console.log(data.user)
   store.user.id = data.user.id
   store.user.email = data.user.email
   store.user.token = data.user.token
-  console.log(store.user)
   return data
 }
 
 const storeSignUpInfo = data => {
-  console.log('Inside storeSignUpInfo')
   store.user.email = data.credentials.email
   store.user.password = data.credentials.password
   return data
@@ -141,7 +136,6 @@ const signInAI = () => {
           }
         }
     }
-    console.log('The sign-in data for the AI is', data)
     $.ajax({
       url: config.apiUrl + '/sign-in',
       method: 'POST',
@@ -152,7 +146,6 @@ const signInAI = () => {
 }
 
 const joinAI = aiUser => {
-  console.log('Inside joinAi, aiUser is', aiUser)
   $.ajax({
     url: config.apiUrl + '/games/' + store.game.id,
     method: 'PATCH',
@@ -165,8 +158,6 @@ const joinAI = aiUser => {
 // MULTIPLAYER functions
 
 const createGameWatcher = data => {
-  console.log('attempting to create game watcher')
-  console.log(data)
   return watcher.resourceWatcher(`${config.apiUrl}/games/${data.game.id}/watch`, {
     Authorization: 'Token token=' + store.user.token,
     timeout: 360
@@ -174,9 +165,6 @@ const createGameWatcher = data => {
 }
 
 const joinMultiplayerGame = id => {
-  console.log('Inside joinMultiplayerGame')
-  console.log('store.user.token is', store.user.token)
-  console.log('game id is', id)
   return $.ajax({
     url: config.apiUrl + '/games/' + id,
     method: 'PATCH',
@@ -187,11 +175,9 @@ const joinMultiplayerGame = id => {
 }
 
 const updateGameASync = data => {
-  (console.log('inside updateGameASync'))
   if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
     data.game.over = true
   }
-  console.log('Attempting to updateGameASync, data is', data)
   $.ajax({
     url: config.apiUrl + '/games/' + store.game.id,
     method: 'PATCH',

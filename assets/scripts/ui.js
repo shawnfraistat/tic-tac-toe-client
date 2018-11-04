@@ -2,7 +2,7 @@ const store = require('./store.js')
 
 //
 //
-// UI functions that deal with the LOAD views
+//  LOAD view UI functions
 //
 //
 
@@ -12,8 +12,6 @@ const displayLoadedBoard = (startPoint, endPoint) => {
   for (let i = startPoint; i < endPoint; i++) {
     const playerOne = `${store.user.email} (You)`
     let playerTwo
-    // if (data.games[i].player_x.email === store.user.email) {
-    // }
     if (data.games[i].player_o === null) {
       playerTwo = `${store.user.email} (You)`
     } else if (data.games[i].player_o.email === 'ai@easy.com') {
@@ -104,12 +102,12 @@ const handleGameListSuccess = () => {
   updatePageArrows()
 }
 
-const handleLoadGameSuccess = data => {
-
-}
-
 const handleCreateNewGameFailure = data => {
   console.log('New game failed to create!')
+}
+
+const handleLoadGameFailure = event => {
+
 }
 
 const updateLoadGameTextColor = () => {
@@ -126,6 +124,8 @@ const onChooseLoadGame = event => {
   store.currentClickEvent = event
   $('#loadConfirmModal').modal('show')
 }
+
+
 
 const setLoadBoardColors = () => {
   const loadDivs = document.getElementsByClassName('load-div')
@@ -210,6 +210,14 @@ const handleSignInFailure = event => {
   $('.sign-in-message').html('<h5 class="sign-in-message red">Sign in failed</h5>')
 }
 
+const handleSignInAfterSignUpFailure = event => {
+  $('.sign-in-message').html('<h5 class="sign-up-message red">Sign in after sign up failed</h5>')
+}
+
+const handleSignInAfterSignUpSuccess = event => {
+  $('#logInModal').modal('hide')
+}
+
 const handleSignOutSuccess = () => {
   $('#signOutModal').modal('hide')
   store.user.id = 0
@@ -238,7 +246,6 @@ const handleSignOutFailure = event => {
 }
 
 const handleSignUpSuccess = event => {
-  console.log('inside handleSignUpSuccess')
   $('.sign-up-message').html(`<h4 class="sign-up-message">New account created. Logged in as <scan class="blue">${store.user.email}</scan>.</h4>`)
   $('#logInModalHeader').addClass('invisible')
   $('#load-game-nav-button').toggleClass('invisible')
@@ -432,7 +439,6 @@ const handleHostLobby = () => {
 // SAVE UI functions
 
 const handleSaveGameSuccess = () => {
-  console.log('inside handleSaveGameSuccess')
   $('#save-game-cancel').addClass('invisible')
   $('#save-game-submit').addClass('invisible')
   $('#save-game-okay').removeClass('invisible')
@@ -444,37 +450,13 @@ const handleSaveGameFailure = () => {
 }
 
 module.exports = {
-  // NEW game UI functions
-  handleCreateNewGameFailure,
   // LOAD view UI functions
-  handleGameListSuccess,
-  handleLoadGameSuccess,
   displayNextLoadPage,
   displayPreviousLoadPage,
+  handleGameListSuccess,
+  handleLoadGameFailure,
   setLoadBoardColors,
   updateLoadGameTextColor,
-  // USER view UI functions
-  handleChangePasswordFailure,
-  handleChangePasswordMismatchingPasswords,
-  handleChangePasswordSuccess,
-  showUserView,
-  updateHeader,
-  // SIGN-IN/SIGN-UP view UI functions
-  hideSignView,
-  showSignView,
-  switchToSignIn,
-  switchToSignUp,
-  handleSignInSuccess,
-  handleSignInFailure,
-  handleSignUpSuccess,
-  handleSignUpFailure,
-  handleSignUpMismatchingPasswords,
-  handleSignOutSuccess,
-  handleSignOutFailure,
-  // NEW GAME UI functions
-  aiRadios,
-  selfRadios,
-  multiplayerRadios,
   // GAME view UI functions
   hideBoard,
   showBoard,
@@ -491,8 +473,32 @@ module.exports = {
   handleJoinGameFailure,
   handleHostGameFailure,
   handleHostLobby,
+  // NEW game UI functions
+  handleCreateNewGameFailure,
+  aiRadios,
+  selfRadios,
+  multiplayerRadios,
+  updateHeader,
+  // SIGN-IN/SIGN-UP view UI functions
+  hideSignView,
+  showSignView,
+  switchToSignIn,
+  switchToSignUp,
+  handleSignInSuccess,
+  handleSignInFailure,
+  handleSignInAfterSignUpFailure,
+  handleSignInAfterSignUpSuccess,
+  handleSignUpSuccess,
+  handleSignUpFailure,
+  handleSignUpMismatchingPasswords,
+  handleSignOutSuccess,
+  handleSignOutFailure,
   // SAVE UI functions
   handleSaveGameFailure,
-  handleSaveGameSuccess
-
+  handleSaveGameSuccess,
+  // USER view UI functions
+  handleChangePasswordFailure,
+  handleChangePasswordMismatchingPasswords,
+  handleChangePasswordSuccess,
+  showUserView
 }

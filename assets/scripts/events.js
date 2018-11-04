@@ -17,7 +17,6 @@ const onSaveGameNavButton = event => {
 }
 
 const onSaveGame = data => {
-  console.log('inside onSaveGame')
   if (store.game.id === 0) {
     api.createNewGame()
       .then(copyNewGameData)
@@ -55,29 +54,23 @@ const saveThisGame = () => {
           "over": over
         }
       }
-      console.log('moveForAPI inside saveThisGame', moveForAPI)
-      console.log('store game id is', store.game.id)
-      console.log('store user token is', store.user.token)
       api.updateGame(moveForAPI)
     }
   }
 }
 
 const copyNewGameData = data => {
-  console.log('Inside copyNewGameData--data is:', data)
   store.game.id = data.game.id
 }
 
 const onLoadGame = () => {
   api.loadThisGame(store.currentClickEvent)
     .then(setUpLoadedGame)
-    .then(ui.handleLoadGameSuccess)
-  console.log('Loading your game!')
+    .catch(ui.handleLoadGameFailure)
 }
 
 const onLoadView = function (event) {
   event.preventDefault()
-  console.log('inside onLoadView')
   if (gameWatcher !== undefined) {
     gameWatcher.close()
   }
@@ -99,7 +92,6 @@ const setUpLoadedGame = data => {
   for (const key in data.game) {
     store.game[key] = data.game[key]
   }
-  console.log(store.game)
   $('#save-game-nav-button').removeClass('invisible')
   ui.showBoard()
   ui.updateBoardDisplay()
@@ -110,15 +102,12 @@ const setUpLoadedGame = data => {
   } else if (store.game.player_o.email === 'ai@easy.com') {
     store.opponent = 'ai'
     store.aiDifficulty = '0'
-    console.log('Loading easy ai')
   } else if (store.game.player_o.email === 'ai@medium.com') {
     store.opponent = 'ai'
     store.aiDifficulty = '1'
-    console.log('Loading medium ai')
   } else if (store.game.player_o.id === 'ai@impossible.com') {
     store.opponent = 'ai'
     store.aiDifficulty = '2'
-    console.log('Loading impossible ai')
   }
   const xArray = store.currentBoard.filter(value => value === 'x')
   const oArray = store.currentBoard.filter(value => value === 'o')
@@ -136,8 +125,6 @@ const setUpLoadedGame = data => {
 
 const storeLoadedGames = data => {
   store.user.games = []
-  console.log('Inside storeLoadedGames')
-  console.log(data)
   for (let i = 0; i < data.games.length; i++) {
     if (data.games[i].player_o === null || (data.games[i].player_o !== null && (data.games[i].player_o.email === 'ai@easy.com' || data.games[i].player_o.email === 'ai@medium.com' || data.games[i].player_o.email === 'ai@impossible.com'))) {
       store.user.games.push(data.games[i])
@@ -152,7 +139,6 @@ const onNewGame = function (event) {
   if (gameWatcher !== undefined) {
     gameWatcher.close()
   }
-  console.log('Start game!')
   store.game = {
     id: 0,
     cells: [],
@@ -216,7 +202,6 @@ const onSignUp = event => {
   event.preventDefault()
   const target = $('#sign-up')[0]
   const data = getFormFields(target)
-  console.log('inside onSignUp: data is', data)
   if (data.credentials.password === data.credentials.password_confirmation) {
     api.storeSignUpInfo(data)
     api.signUp(data)
@@ -234,10 +219,10 @@ const onSignUpContinue = data => {
       "password": store.user.password
     }
   }
-  console.log('In callSignin; data is', newCredentials)
   api.signIn(newCredentials)
     .then(api.storeSignInInfo)
-    .catch(ui.handleSignUpFailure)
+    .then(ui.handleSignInAfterSignUpSuccess)
+    .catch(ui.handleSignInAfterSignUpFailure)
 }
 
 const onSwitchToSignIn = event => {
@@ -283,7 +268,6 @@ const onChangePasswordSubmit = event => {
   const target = $('#change-password')[0]
   const data = getFormFields(target)
   if (data.passwords.new === data.passwords.confirm_new) {
-    console.log('inside onChangePasswordSubmit, about to submit', data)
     api.changePassword(data)
       .done(ui.handleChangePasswordSuccess(data.passwords.new))
       .fail(ui.handleChangePasswordFailure)
@@ -294,7 +278,6 @@ const onChangePasswordSubmit = event => {
 
 const onConfirmNewColors = event => {
   event.preventDefault()
-  console.log('inside onConfirmNewColors')
   store.xColor = xColorValue
   store.oColor = oColorValue
   if (!($('.board-plus-message').hasClass('invisible'))) {
@@ -310,7 +293,6 @@ const onConfirmNewColors = event => {
 }
 
 const onUpdateOColorValue = event => {
-  console.log('Inside updateOColorValue')
   oColorValue = event.currentTarget.value
 }
 
@@ -344,8 +326,6 @@ const onEstablishLink = (gameData) => {
         }
         return { index: -1, value: '' }
       }
-      // console.log('data.game.player_o_id is ', data.game.player_o_id)
-      // store.game.player_o.id = data.game.player_o_id[1]
       store.currentPlayer = 'playerOne'
       ui.updateBoardDisplay()
       ui.showPlayerTurn()
@@ -373,10 +353,6 @@ const onEstablishLink = (gameData) => {
         return { index: -1, value: '' }
       }
       let cell = diff(data.game.cells)
-
-      // original code
-      // $('#watch-index').val(cell.index)
-      // $('#watch-value').val(cell.value)
 
       // your attempt
       console.log('in onEstablishLink -- going to modify store at cell index', store.currentBoard[cell.index], cell.value)

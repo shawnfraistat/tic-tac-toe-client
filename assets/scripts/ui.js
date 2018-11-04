@@ -10,13 +10,10 @@ const displayLoadedBoard = (startPoint, endPoint) => {
   const data = store.user
   $('.game-list')[0].innerHTML = ''
   for (let i = startPoint; i < endPoint; i++) {
-    let playerOne
+    const playerOne = `${store.user.email} (You)`
     let playerTwo
-    if (data.games[i].player_x.email === store.user.email) {
-      playerOne = `${store.user.email} (You)`
-    } else {
-      playerOne = `${data.games[i].player_x.email} (Human Opponent)`
-    }
+    // if (data.games[i].player_x.email === store.user.email) {
+    // }
     if (data.games[i].player_o === null) {
       playerTwo = `${store.user.email} (You)`
     } else if (data.games[i].player_o.email === 'ai@easy.com') {
@@ -253,6 +250,7 @@ const handleSignUpSuccess = event => {
   $('#sign-up-cancel').addClass('invisible')
   $('#sign-up-submit').addClass('invisible')
   $('#sign-up-continue').removeClass('invisible')
+  $('#multiplayer-radios').removeClass('invisible')
 }
 
 const handleSignUpFailure = event => {
@@ -408,6 +406,13 @@ const showNewGameModal = () => {
   $('.new-game-message').html('')
 }
 
+const showSaveGameModel = () => {
+  $('#save-game-cancel').removeClass('invisible')
+  $('#save-game-submit').removeClass('invisible')
+  $('#save-game-okay').addClass('invisible')
+  $('#saveGameModalTitle').html(`<h5 class="modal-title" id="saveGameModalTitle">Save Game?</h5>`)
+}
+
 // MULTIPLAYER UI functions
 
 const handleJoinGameFailure = () => {
@@ -422,6 +427,20 @@ const handleHostLobby = () => {
   $('#newGameModal').modal('hide')
   $('.board-message').html(`<p>Game ID is ${store.game.id}. Waiting for Opponent to Join...</p>`)
   console.log(store.game.id)
+}
+
+// SAVE UI functions
+
+const handleSaveGameSuccess = () => {
+  console.log('inside handleSaveGameSuccess')
+  $('#save-game-cancel').addClass('invisible')
+  $('#save-game-submit').addClass('invisible')
+  $('#save-game-okay').removeClass('invisible')
+  $('#saveGameModalTitle').html(`<h5 class="save-game-message">Game saved as ID#<scan class="blue">${store.game.id}</scan>.</h5>`)
+}
+
+const handleSaveGameFailure = () => {
+  $('#saveGameModalTitle').html(`<h5 class="save-game-message red">Game failed to save.</h5>`)
 }
 
 module.exports = {
@@ -467,8 +486,13 @@ module.exports = {
   clearForms,
   showNewGameModal,
   resetLogInModal,
+  showSaveGameModel,
   // MULTIPLAYER UI functions
   handleJoinGameFailure,
   handleHostGameFailure,
-  handleHostLobby
+  handleHostLobby,
+  // SAVE UI functions
+  handleSaveGameFailure,
+  handleSaveGameSuccess
+
 }

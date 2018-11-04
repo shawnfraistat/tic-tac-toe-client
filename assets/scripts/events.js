@@ -7,8 +7,14 @@ const ui = require('./ui.js')
 
 let oColorValue = store.oColor
 let xColorValue = store.xColor
+let gameWatcher
 
 // LOAD and SAVE events
+
+const onSaveGameNavButton = event => {
+  event.preventDefault()
+  $('#saveGameModal').modal('show')
+}
 
 const onSaveGame = data => {
   console.log('inside onSaveGame')
@@ -17,10 +23,13 @@ const onSaveGame = data => {
       .then(copyNewGameData)
       .then(api.signInAI)
       .then(saveThisGame)
-      .then(saveThisGame)
-      .catch(ui.handleCreateNewGameFailure)
+      .then(ui.handleSaveGameSuccess)
+      .catch(ui.handleSaveGameFailure)
   } else if (store.game.id !== 0) {
-    saveThisGame()
+    $.when(saveThisGame)
+      .then(saveThisGame)
+      .then(ui.handleSaveGameSuccess)
+      .catch(ui.handleSaveGameFailure)
   }
 }
 
@@ -46,7 +55,7 @@ const saveThisGame = () => {
           "over": over
         }
       }
-      console.log('moveForAPI inside updateBoardGameInProgress is', moveForAPI)
+      console.log('moveForAPI inside saveThisGame', moveForAPI)
       console.log('store game id is', store.game.id)
       console.log('store user token is', store.user.token)
       api.updateGame(moveForAPI)
@@ -69,12 +78,9 @@ const onLoadGame = () => {
 const onLoadView = function (event) {
   event.preventDefault()
   console.log('inside onLoadView')
-  setUpLoadView()
-  // $.when(api.updateBoardGameInProgress)
-  //   .done(setUpLoadView)
-}
-
-const setUpLoadView = () => {
+  if (gameWatcher !== undefined) {
+    gameWatcher.close()
+  }
   api.getGameList()
     .then(storeLoadedGames)
     .then(ui.handleGameListSuccess)
@@ -101,15 +107,15 @@ const setUpLoadedGame = data => {
   // need to change if API changes
   if (store.game.player_o === null) {
     store.opponent = 'self'
-  } else if (store.game.player_o.id === 142) {
+  } else if (store.game.player_o.email === 'ai@easy.com') {
     store.opponent = 'ai'
     store.aiDifficulty = '0'
     console.log('Loading easy ai')
-  } else if (store.game.player_o.id === 144) {
+  } else if (store.game.player_o.email === 'ai@medium.com') {
     store.opponent = 'ai'
     store.aiDifficulty = '1'
     console.log('Loading medium ai')
-  } else if (store.game.player_o.id === 145) {
+  } else if (store.game.player_o.id === 'ai@impossible.com') {
     store.opponent = 'ai'
     store.aiDifficulty = '2'
     console.log('Loading impossible ai')
@@ -133,7 +139,9 @@ const storeLoadedGames = data => {
   console.log('Inside storeLoadedGames')
   console.log(data)
   for (let i = 0; i < data.games.length; i++) {
-    store.user.games[i] = data.games[i]
+    if (data.games[i].player_o === null || (data.games[i].player_o !== null && (data.games[i].player_o.email === 'ai@easy.com' || data.games[i].player_o.email === 'ai@medium.com' || data.games[i].player_o.email === 'ai@impossible.com'))) {
+      store.user.games.push(data.games[i])
+    }
   }
   store.user.games.sort((a, b) => a.id - b.id)
 }
@@ -141,6 +149,9 @@ const storeLoadedGames = data => {
 // NEW GAME events
 
 const onNewGame = function (event) {
+  if (gameWatcher !== undefined) {
+    gameWatcher.close()
+  }
   console.log('Start game!')
   store.game = {
     id: 0,
@@ -152,13 +163,13 @@ const onNewGame = function (event) {
     },
     player_o: null
   }
-  if (store.user.id !== 0) {
-    $('#save-game-nav-button').removeClass('invisible')
-  }
   // Wanted to let user choose who goes first, but it screws up saving; no easy way for the API to
   // store who had the last move
   // store.firstPlayer = $('input[name="first-player"]:checked').val()
   store.opponent = $('input[name="opponent"]:checked').val()
+  if (store.user.id !== 0 && store.opponent !== 'multiplayer') {
+    $('#save-game-nav-button').removeClass('invisible')
+  }
   if (store.opponent === 'multiplayer') {
     startNewMultiplayerGame()
   } else {
@@ -187,11 +198,13 @@ const onSignIn = event => {
   api.signIn(data)
     .then(api.storeSignInInfo)
     .then(ui.handleSignInSuccess)
-    // .then(api.createGameInProgress)
     .catch(ui.handleSignInFailure)
 }
 
 const onSignOut = event => {
+  if (gameWatcher !== undefined) {
+    gameWatcher.close()
+  }
   event.preventDefault()
   api.signOut()
     .then(resetColors)
@@ -224,7 +237,6 @@ const onSignUpContinue = data => {
   console.log('In callSignin; data is', newCredentials)
   api.signIn(newCredentials)
     .then(api.storeSignInInfo)
-    // .then(api.createGameInProgress)
     .catch(ui.handleSignUpFailure)
 }
 
@@ -310,7 +322,7 @@ const onUpdateXColorValue = event => {
 
 const onEstablishLink = (gameData) => {
   copyNewGameData(gameData)
-  const gameWatcher = api.createGameWatcher(gameData)
+  gameWatcher = api.createGameWatcher(gameData)
   gameWatcher.on('connect', function (data) {
     console.log('connection made!')
     console.log(data)
@@ -369,11 +381,11 @@ const onEstablishLink = (gameData) => {
       // your attempt
       console.log('in onEstablishLink -- going to modify store at cell index', store.currentBoard[cell.index], cell.value)
       store.currentBoard[cell.index] = cell.value
-      if (store.currentPlayer === 'playerOne') {
-        store.currentPlayer = 'playerTwo'
-      } else {
-        store.currentPlayer = 'playerOne'
-      }
+      // if (store.currentPlayer === 'playerOne') {
+      //   store.currentPlayer = 'playerTwo'
+      // } else {
+      //   store.currentPlayer = 'playerOne'
+      // }
       ui.showPlayerTurn()
       ui.updateBoardDisplay()
       if (ai.terminalCheck(store.currentBoard, store.currentPlayer) === 'continue') {
@@ -435,6 +447,7 @@ module.exports = {
   onLoadGame,
   onLoadView,
   onSaveGame,
+  onSaveGameNavButton,
   onSignIn,
   onSignUp,
   onSignUpContinue,

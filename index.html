@@ -90,8 +90,8 @@
                   <label for="opponent-self-radio">Self</label>
                   <input id="opponent-ai-radio" type="radio" name="opponent" value="ai" />
                   <label for="opponent-self-radio">AI</label>
-                  <input id="opponent-multiplayer-radio" type="radio" name="opponent" value="multiplayer" />
-                  <label for="opponent-multiplayer-radio">Multiplayer</label>
+                  <!-- <input id="opponent-multiplayer-radio" type="radio" name="opponent" value="multiplayer" />
+                  <label for="opponent-multiplayer-radio">Multiplayer</label> -->
                 </div>
               </fieldset>
               <br />
@@ -108,7 +108,7 @@
                 <br />
               </fieldset>
 
-              <fieldset id="multiplayer-radios" class="invisible">
+              <!-- <fieldset id="multiplayer-radios" class="invisible">
                 <legend>Select Multiplayer Role:</legend>
                 <div class="multiplayer-radios">
                   <input id="multiplayer-host" type="radio" name="multiplayer" value="host" checked="checked" disabled />
@@ -118,10 +118,9 @@
                   <input type="text" name="multiplayer" id="join-id" placeholder="Game to Join ID" disabled />
                 </div>
                   <br />
-              </fieldset>
+              </fieldset> -->
             </div>
-
-            <h6 id='save-warning'>NOTE: If you are not logged in, you cannot save or use multiplayer</h6>
+            <h6 id='save-warning'>NOTE: If you are not logged in, you cannot save</h6>
           </form>
         </div>
         <div class="modal-footer">
@@ -184,7 +183,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body">
-          <h5 class="modal-title" id="signOutModal">Sign Out?</h5>
+          <h5 class="modal-title" id="signOutModalTitle">Sign Out?</h5>
           <h3 class="sign-out-message"></h3>
         </div>
         <div class="modal-footer">
@@ -194,6 +193,24 @@
     </div>
   </div>
 </div>
+
+<!-- saveGameModal -->
+  <div class="modal fade sign-view" id="saveGameModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h5 class="modal-title" id="saveGameModalTitle">Save Game?</h5>
+          <h3 class="save-game-message"></h3>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="save-game-cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" id="save-game-submit" class="btn btn-primary">Save</button>
+          <button type="button" id="save-game-okay" class="btn btn-primary invisible" data-dismiss="modal">OK</button>
+        </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- loadConfirmModalModal-->
   <div class="modal fade sign-view" id="loadConfirmModal" role="dialog">

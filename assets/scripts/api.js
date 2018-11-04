@@ -5,24 +5,6 @@ const watcher = require('./watcher.js')
 
 // GAME API actions
 
-const createGameInProgress = () => {
-  // console.log('inside createGameInProgress')
-  // if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
-  //   console.log('there is a game in progress; I should tell the API')
-  //   $.when($.ajax({
-  //     url: config.apiUrl + '/games',
-  //     method: 'POST',
-  //     headers: {
-  //       Authorization: 'Token token=' + store.user.token
-  //     }
-  //   }))
-  //     .then(function (data) { store.game.id = data.game.id })
-  //     .then(updateBoardGameInProgress)
-  //     .then(signInAI)
-  //     .catch(console.log('failed to createGameInProgress'))
-  // }
-}
-
 const createNewGame = () => {
   return $.ajax({
     url: config.apiUrl + '/games',
@@ -59,7 +41,8 @@ const updateGame = data => {
     data.game.over = true
   }
   console.log('Attempting to update game on API')
-  return $.ajax({
+  $.ajax({
+    async: false,
     url: config.apiUrl + '/games/' + store.game.id,
     method: 'PATCH',
     headers: {
@@ -67,11 +50,6 @@ const updateGame = data => {
     },
     data
   })
-}
-
-const updateBoardGameInProgress = () => {
-  console.log('there is a game in progress; I should update all the moves on the API')
-  //blank
 }
 
 // USER API actions
@@ -190,7 +168,8 @@ const createGameWatcher = data => {
   console.log('attempting to create game watcher')
   console.log(data)
   return watcher.resourceWatcher(`${config.apiUrl}/games/${data.game.id}/watch`, {
-    Authorization: 'Token token=' + store.user.token
+    Authorization: 'Token token=' + store.user.token,
+    timeout: 360
   })
 }
 
@@ -207,14 +186,28 @@ const joinMultiplayerGame = id => {
   })
 }
 
+const updateGameASync = data => {
+  (console.log('inside updateGameASync'))
+  if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
+    data.game.over = true
+  }
+  console.log('Attempting to updateGameASync, data is', data)
+  $.ajax({
+    url: config.apiUrl + '/games/' + store.game.id,
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    },
+    data
+  })
+}
+
 module.exports = {
   // GAME API functions
   createNewGame,
-  createGameInProgress,
   getGameList,
   loadThisGame,
   updateGame,
-  updateBoardGameInProgress,
   // USER API functions
   signUp,
   signIn,
@@ -227,5 +220,6 @@ module.exports = {
   joinAI,
   // MULTIPLAYER API functions
   createGameWatcher,
-  joinMultiplayerGame
+  joinMultiplayerGame,
+  updateGameASync
 }

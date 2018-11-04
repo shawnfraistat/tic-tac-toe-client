@@ -12,6 +12,7 @@ const resourceWatcher = function (url, conf) {
   url += conf.timeout ? '&timeout=' + conf.timeout : ''
   let es = new EventSource(url) //jshint ignore: line
   let close = function () {
+    console.log('closing gameWatcher')
     es.close()
   }
 

@@ -71,34 +71,34 @@ const takeHumanTurn = function (event) {
     document.getElementById(i).removeEventListener('click', takeHumanTurn)
     console.log('removing takeHumanTurn eventListeners')
   }
-  // const moveForAPI = {
-  //   "game": {
-  //     "cell": {
-  //       "index": event.srcElement.id,
-  //       "value": ""
-  //     },
-  //     "over": false
-  //   }
-  // }
+  const moveForAPI = {
+    "game": {
+      "cell": {
+        "index": event.srcElement.id,
+        "value": ""
+      },
+      "over": false
+    }
+  }
   if (store.currentPlayer === 'playerOne') {
     store.currentBoard[event.srcElement.id] = 'x'
-    // moveForAPI.game.cell.value = 'x'
+    moveForAPI.game.cell.value = 'x'
   } else if (store.currentPlayer === 'playerTwo') {
     store.currentBoard[event.srcElement.id] = 'o'
-    // moveForAPI.game.cell.value = 'o'
+    moveForAPI.game.cell.value = 'o'
   }
   ui.updateBoardDisplay()
   if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin') {
     console.log('Player One wins!')
     ui.showPlayerWin('playerOne')
-    // moveForAPI.game.over = true
+    moveForAPI.game.over = true
   } else if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie') {
     ui.showPlayerTie()
-    // moveForAPI.game.over = true
+    moveForAPI.game.over = true
   } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin' && store.opponent === 'self') {
     console.log('Player Two wins!')
     ui.showPlayerWin('playerTwo')
-    // moveForAPI.game.over = true
+    moveForAPI.game.over = true
   } else {
     console.log('Next turn')
     // first case: if player one just went, and there's no player two, 'cause the human is playing self
@@ -110,9 +110,11 @@ const takeHumanTurn = function (event) {
       console.log('I think the first player is playing vs. AI')
       store.currentPlayer = 'playerTwo'
       takeAITurn()
-    // third case: player one just went, and player two is not an AI
+    // third case: player is playing against someone online, so push his/her move to the API
     } else if (store.opponent === 'multiplayer') {
       console.log('I think the first player is playing vs. another human online')
+      console.log('moveForAPI is', moveForAPI)
+      api.updateGameASync(moveForAPI)
       if (store.currentPlayer === 'playerOne') {
         store.currentPlayer = 'playerTwo'
       } else {
@@ -134,10 +136,6 @@ const takeHumanTurn = function (event) {
     console.log('about to readyPlayerTurn()')
     readyPlayerTurn()
   }
-  // console.log('moveForAPI is', moveForAPI)
-  // if (store.user.id !== 0 && store.game.id !== 0) {
-  //   api.updateGame(moveForAPI)
-  // }
 }
 
 module.exports = {

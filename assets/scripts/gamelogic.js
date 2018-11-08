@@ -7,24 +7,25 @@ const store = require('./store.js')
 // evaluates the board to see if it won, and readies the game for the human player's move if the game isn't over yet
 
 const takeAITurn = function () {
-  ui.showPlayerTurn()
   const aiMove = ai.getAIMove(store.currentBoard, store.aiDifficulty)
   store.currentBoard[aiMove] = 'o'
-  ui.updateBoardDisplay(store.currentBoard)
-  if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
-    ui.showPlayerWin('playerTwo')
-    for (let i = 0; i < 9; i++) {
-      document.getElementById(i).removeEventListener('click', takeHumanTurn)
+  setTimeout(function () { ui.displayNewMove(aiMove) }, 100)
+  setTimeout(function () {
+    if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
+      ui.showPlayerWin('playerTwo')
+      for (let i = 0; i < 9; i++) {
+        document.getElementById(i).removeEventListener('click', takeHumanTurn)
+      }
+    } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'tie') {
+      ui.showPlayerTie()
+      for (let i = 0; i < 9; i++) {
+        document.getElementById(i).removeEventListener('click', takeHumanTurn)
+      }
+    } else {
+      store.currentPlayer = 'playerOne'
+      readyPlayerTurn()
     }
-  } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'tie') {
-    ui.showPlayerTie()
-    for (let i = 0; i < 9; i++) {
-      document.getElementById(i).removeEventListener('click', takeHumanTurn)
-    }
-  } else {
-    store.currentPlayer = 'playerOne'
-    readyPlayerTurn()
-  }
+  }, 1000)
 }
 
 // readyPlayerTurn() prepares the gameboard for the human player by placing
@@ -66,7 +67,7 @@ const takeHumanTurn = function (event) {
     store.currentBoard[event.srcElement.id] = 'o'
     moveForAPI.game.cell.value = 'o'
   }
-  ui.updateBoardDisplay()
+  ui.displayNewMove(event.srcElement.id)
   if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin') {
     ui.showPlayerWin('playerOne')
     moveForAPI.game.over = true
@@ -83,7 +84,8 @@ const takeHumanTurn = function (event) {
     // second case: player one just went, and player two is an AI
     } else if (store.opponent === 'ai') {
       store.currentPlayer = 'playerTwo'
-      takeAITurn()
+      setTimeout(ui.showPlayerTurn)
+      setTimeout(takeAITurn, 1000)
     // third case: player is playing against someone online, so push his/her move to the API
     } else if (store.opponent === 'multiplayer') {
       console.log('I think the first player is playing vs. another human online')

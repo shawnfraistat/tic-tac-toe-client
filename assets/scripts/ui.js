@@ -125,8 +125,6 @@ const onChooseLoadGame = event => {
   $('#loadConfirmModal').modal('show')
 }
 
-
-
 const setLoadBoardColors = () => {
   const loadDivs = document.getElementsByClassName('load-div')
   for (let i = 0; i < loadDivs.length; i++) {
@@ -341,6 +339,14 @@ const updateHeader = function () {
 //
 //
 
+const displayNewMove = function (move) {
+  if (store.currentBoard[move] === 'x') {
+    document.getElementById(move).innerHTML = `<p class="show-mark" style="color:${store.xColor}">X</p>`
+  } else if (store.currentBoard[move] === 'o') {
+    document.getElementById(move).innerHTML = `<p class="show-mark" style="color:${store.oColor}">O</p>`
+  }
+}
+
 const hideBoard = function () {
   $('.board-plus-message').addClass('invisible')
 }
@@ -458,6 +464,7 @@ module.exports = {
   setLoadBoardColors,
   updateLoadGameTextColor,
   // GAME view UI functions
+  displayNewMove,
   hideBoard,
   showBoard,
   updateBoardDisplay,

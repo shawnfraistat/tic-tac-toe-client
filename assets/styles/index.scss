@@ -9,6 +9,13 @@ $green: #0f0;
 $big-border: 5px solid $black;
 $small-border: 2px solid $black;
 
+@keyframes show-mark {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+
 body {
   font-family: 'Nanum Gothic', sans-serif;
 }
@@ -253,13 +260,13 @@ nav {
 
   > ul {
     align-items: center;
-    height: 50px;
-    justify-content: space-around;
-    width: 50%;
+    justify-content: center;
+    flex-wrap: nowrap;
   }
 
   ul > li {
     list-style: none;
+    margin: 10px 20px;
   }
 
   a {
@@ -314,6 +321,11 @@ scan {
     color: $blue;
     text-decoration: underline;
   }
+}
+
+.show-mark {
+  animation-duration: .5s;
+  animation-name: show-mark;
 }
 
 .x-color {

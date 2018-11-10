@@ -1,16 +1,21 @@
-// Indebted to https://medium.freecodecamp.org/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37 for minimax idea and coding solution
+// ai.js
 
-// getAIMove() is used to calculate a move for the AI. It uses a different logic depending on the difficulty setting.
+// Indebted to https://medium.freecodecamp.org/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37 for minimax idea and coding solution
 
 const store = require('./store')
 
+// getAIMove() is used to calculate a move for the AI. It uses a different logic
+// depending on the difficulty setting.
 const getAIMove = function (boardToEval) {
   let myMove
   switch (store.aiDifficulty) {
+    // easy AI plays randomly
     case '0':
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
       break
+    // medium AI plays randomly unless it has a winning mvoe or the human is
+    // about to win
     case '1':
       myMove = { index: 0 }
       myMove.index = randomChoice(boardToEval)
@@ -20,6 +25,8 @@ const getAIMove = function (boardToEval) {
         myMove.index = impendingDisaster(boardToEval)
       }
       break
+    // impossible AI uses the minimax function to choose its move, although
+    // this function is overriden if it can win immediately
     case '2':
       myMove = minimax(boardToEval, 'playerTwo')
       if (goForKill(boardToEval) != null) {
@@ -29,8 +36,8 @@ const getAIMove = function (boardToEval) {
   return myMove.index
 }
 
-// getAvailableSpaces searches through the board, creates an array filled with the indices of the empty spaces, and returns the array
-
+// getAvailableSpaces() searches through the board, creates an array filled with
+// the indices of the empty spaces, and returns the array
 const getAvailableSpaces = function (boardToEval) {
   const availSpaces = []
   for (let i = 0; i < boardToEval.length; i++) {
@@ -41,8 +48,8 @@ const getAvailableSpaces = function (boardToEval) {
   return availSpaces
 }
 
-// randomChoice() is used as part of the easy and medium difficulty ai logics. It chooses a random spot from among the available spots on the board.
-
+// randomChoice() is used as part of the easy and medium difficulty ai logics.
+// It chooses a random spot from among the available spots on the board.
 const randomChoice = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   const randomNumber = Math.floor(Math.random() * (availSpots.length))
@@ -53,13 +60,21 @@ const randomChoice = function (boardToEval) {
   }
 }
 
-/* goForKill() is used to check whether the computer has a move that will the game for it this turn.
-This is used in two cases: (1) as part of the "medium" difficulty ai logic; (2) to correct a weird behavior with the "impossible" difficulty game logic
-For medium difficulty, the ai just plays randomly unless it sees an immediate winning move for itself or the player. It calls goForKill to  see if it has a winning move.
-For impossible difficulty, the computer evaluates branches on the move tree in such a way as to be indifferent between choosing a move that will make it win
-this turn vs. a move that guarantees it a win in the future.
-To prevent the ai from screwing around with the human player for a few turns, goForKill() checks to see if it has an immediate winning move and forces the computer to take it. */
+/* goForKill() is used to check whether the computer has a move that will the
+game for it this turn. This is used in two cases: (1) as part of the "medium"
+ difficulty AI logic; (2) to correct a weird behavior with the "impossible"
+difficulty game logic.
 
+For medium difficulty, the AI just plays randomly unless it sees an immediate
+winning move for itself or the player. It calls goForKill to see if it has a
+winning move.
+
+For impossible difficulty, the AI evaluates branches on the move tree in such
+a way as to be indifferent between choosing a move that will make it win this
+turn vs. a move that guarantees it a win in the future.
+To prevent the ai from screwing around with the human player for a few turns,
+goForKill() checks to see if it has an immediate winning move and forces the
+AI to take it. */
 const goForKill = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   for (let i = 0; i < availSpots.length; i++) {
@@ -74,8 +89,9 @@ const goForKill = function (boardToEval) {
   return null
 }
 
-// impendingDisaster() is used as part of the "medium" difficulty ai logic. The computer uses it to see if the player has a winning move next turn. If so, it blocks the move.
-
+// impendingDisaster() is used as part of the "medium" difficulty ai logic.
+// The computer uses it to see if the player has a winning move next turn.
+// If so, it blocks the move.
 const impendingDisaster = function (boardToEval) {
   const availSpots = getAvailableSpaces(boardToEval)
   for (let i = 0; i < availSpots.length; i++) {
@@ -90,8 +106,8 @@ const impendingDisaster = function (boardToEval) {
   return null
 }
 
-// the minimax function for the "impossible" difficulty settings, courtesy of freecodecamp; I've adapted it and annotated heavily
-
+// the minimax function for the "impossible" difficulty settings,
+// courtesy of freecodecamp; I've adapted it and annotated heavily
 const minimax = function (boardToEval, player) {
   // declare nextPlayer, which will be set by if-else if statements later in function
   let nextPlayer = ''
@@ -107,31 +123,43 @@ const minimax = function (boardToEval, player) {
   } else if (availSpots.length === 0) {
     return { score: 0 }
   }
-  // if the board isn't already in a terminal state, loop through available spots to create an array of possible move objects with associated score and index values
+  // if the board isn't already in a terminal state, loop through available
+  // spots to create an array of possible move objects
+  // with associated score and index values
   for (let i = 0; i < availSpots.length; i++) {
     // initialize a new move object
     const move = {}
-    // sets the move index to whatever spot the computer's trying out; that way the move object it creates will be associated with the correct space on the board
+    // sets the move index to whatever spot the computer's trying out;
+    // that way the move object it creates will be associated with the
+    // correct space on the board
     move.index = availSpots[i]
-    // if we're considering what would happen if the ai moved here, mark the board spot with an "x"
-    // then prepare to run this function again to see what would happen the turn after; alternate the player and consider the human's possible moves
+    /* if we're considering what would happen if the ai moved here, mark the
+    board spot with an "x."
+    then prepare to run this function again to see what would happen the turn
+    after; alternate the player and consider the human's possible moves */
     if (player === 'playerTwo') {
       boardToEval[availSpots[i]] = 'o'
       nextPlayer = 'playerOne'
     } else if (player === 'playerOne') {
-      // if we're considering what would happen if the human moved here, mark the board spot with an "o"
-      // then prepare to run this function again to see what would happen the turn after; alternate the player and consider the ai's possible moves
+      /* if we're considering what would happen if the human moved here,
+      mark the board spot with an "o," then prepare to run this function
+      again to see what would happen the turn after--
+      alternate the player and consider the AI's possible moves */
       boardToEval[availSpots[i]] = 'x'
       nextPlayer = 'playerTwo'
     }
-    // check what the consequence of moving to availSpots[i] would be; if it ends the game, we'll get an immediate result.
-    // if it doesn't end the game, the computer will go a level deeper, examining what would happen next turn after the next player goes,
-    // and keep alternating till it hits an end game state
+    /* check what the consequence of moving to availSpots[i] would be;
+    if it ends the game, we'll get an immediate result.
+    if it doesn't end the game, the computer will go a level deeper,
+    examining what would happen next turn after the next player goes,
+    and keep alternating till it hits an end game state */
     const result = minimax(boardToEval, nextPlayer)
     // the move object we're preparing now gets whatever score we eventually found.
     move.score = result.score
-    // now we've got a move object with an index corresponding to the available spot and a score coming from the end game state that results from that spot
-    // since we provisionally marked the board to evaluate the consequences, we have to unmark it before we proceed
+    /* now we've got a move object with an index corresponding to the available
+    spot and a score coming from the end game state that results from that spot;
+    since we provisionally marked the board to evaluate the consequences,
+    we have to unmark it before we proceed */
     boardToEval[availSpots[i]] = move.index
     // the moves array will store all the moves on this level and their associated score
     moves.push(move)
@@ -177,8 +205,9 @@ const minimax = function (boardToEval, player) {
   return moves[bestMove]
 }
 
-// terminalCheck() receives a version of the board to check along with the current player; it then returns whether the board has reached an end state (either a tie or player victory)
-
+// terminalCheck() receives a version of the board to check along with the
+// current player; it then returns whether the board has reached an end state
+// (either a tie or player victory)
 const terminalCheck = function (boardToEval, player) {
   const availSpaces = getAvailableSpaces(boardToEval)
   let playerMark

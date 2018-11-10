@@ -64,6 +64,9 @@ const copyNewGameData = data => {
 }
 
 const onLoadGame = () => {
+  if (gameWatcher !== undefined) {
+    gameWatcher.close()
+  }
   api.loadThisGame(store.currentClickEvent)
     .then(setUpLoadedGame)
     .catch(ui.handleLoadGameFailure)
@@ -182,7 +185,7 @@ const onSignIn = event => {
   const target = $('#sign-in')[0]
   const data = getFormFields(target)
   api.signIn(data)
-    .then(api.storeSignInInfo)
+    .then(storeSignInInfo)
     .then(ui.handleSignInSuccess)
     .catch(ui.handleSignInFailure)
 }
@@ -203,7 +206,7 @@ const onSignUp = event => {
   const target = $('#sign-up')[0]
   const data = getFormFields(target)
   if (data.credentials.password === data.credentials.password_confirmation) {
-    api.storeSignUpInfo(data)
+    storeSignUpInfo(data)
     api.signUp(data)
       .then(ui.handleSignUpSuccess)
       .catch(ui.handleSignUpFailure)
@@ -220,7 +223,7 @@ const onSignUpContinue = data => {
     }
   }
   api.signIn(newCredentials)
-    .then(api.storeSignInInfo)
+    .then(storeSignInInfo)
     .then(ui.handleSignInAfterSignUpSuccess)
     .catch(ui.handleSignInAfterSignUpFailure)
 }
@@ -233,6 +236,19 @@ const onSwitchToSignIn = event => {
 const onSwitchToSignUp = event => {
   event.preventDefault()
   ui.switchToSignUp()
+}
+
+const storeSignInInfo = data => {
+  store.user.id = data.user.id
+  store.user.email = data.user.email
+  store.user.token = data.user.token
+  return data
+}
+
+const storeSignUpInfo = data => {
+  store.user.email = data.credentials.email
+  store.user.password = data.credentials.password
+  return data
 }
 
 const resetColors = () => {
@@ -300,7 +316,7 @@ const onUpdateXColorValue = event => {
   xColorValue = event.currentTarget.value
 }
 
-// MULTIPLAYER EventSource
+// MULTIPLAYER Events
 
 const onEstablishLink = (gameData) => {
   copyNewGameData(gameData)
@@ -335,10 +351,10 @@ const onEstablishLink = (gameData) => {
       }
     }
 
-    // this handles what happens when the other player makes a move
+    // this handles what happens when a player makes a move
     console.log(data)
     if (data.game && data.game.cells) {
-      console.log('The other player made a move')
+      console.log('A player made a move')
       const diff = changes => {
         let before = changes[0]
         let after = changes[1]
@@ -353,22 +369,38 @@ const onEstablishLink = (gameData) => {
         return { index: -1, value: '' }
       }
       let cell = diff(data.game.cells)
-
-      // your attempt
+      // the version of the board on the API has been updated, so the local
+      // version of the board in store.js should be updated too
       console.log('in onEstablishLink -- going to modify store at cell index', store.currentBoard[cell.index], cell.value)
       store.currentBoard[cell.index] = cell.value
-      // if (store.currentPlayer === 'playerOne') {
-      //   store.currentPlayer = 'playerTwo'
-      // } else {
-      //   store.currentPlayer = 'playerOne'
-      // }
-      ui.showPlayerTurn()
-      ui.updateBoardDisplay()
-      if (ai.terminalCheck(store.currentBoard, store.currentPlayer) === 'continue') {
+      // update the display to show the move
+      ui.displayNewMove(cell.index)
+      // now evaluate the consequences
+      if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin') {
+        ui.showPlayerWin('playerOne')
+        gameWatcher.close()
+      } else if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie') {
+        ui.showPlayerTie()
+        gameWatcher.close()
+      } else if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
+        ui.showPlayerWin('playerTwo')
+        gameWatcher.close()
+      } else {
         console.log('performed a terminalCheck--found continue')
-        gamelogic.readyPlayerTurn()
+        // flip the currentPlayer
+        gamelogic.flipCurrentPlayer()
+        // show whose turn it is
+        ui.showPlayerTurn()
+        // now that currentPlayer has been flipped, check to see if it's this user's turn
+        if (store.currentPlayer === 'playerOne' && store.multiplayerRole === 'host') {
+          gamelogic.readyPlayerTurn()
+        } else if (store.currentPlayer === 'playerTwo' && store.multiplayerRole === 'join') {
+          gamelogic.readyPlayerTurn()
+        }
       }
-    } else if (data.timeout) { //not an error
+
+    // this handles what happens if the stream times out
+    } else if (data.timeout) {
       gameWatcher.close()
     }
   })

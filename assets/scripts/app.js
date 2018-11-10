@@ -11,22 +11,22 @@ const ui = require('./ui.js')
 
 /* TO DO:
 
-1. Check that AI players don't become bugged when you deploy--you'll be using a
-different API, and your AI players won't exist on it
+1. Handlers are missing for some API actions -- really, for FAILURES
+ -- SPECIFICALLY, need to deal with situation in which a game fails to LOAD
 
-2. Handlers are missing for a lot of API actions -- really, for FAILURES
+2. When the user is logged in, show their email somewhere? Like, "Logged in as"?
 
-5. When the user is logged in, show their email somewhere? Like, "Logged in as"?
+3. Multiplayer? God help me?
 
-6. Multiplayer? God help me?
+4. Sound?
 
-7. Sound?
+5. Check what happens on mobile?
 
-8. Check what happens on mobile?
+6. Fix bug where sign in after sign up fails if user has already done it once
 
-9. STILL have the stupid bug where, if you load too quickly, your game won't
-have been saved properly; create save function?
+7. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
 
+8. Save game button doesn't appear if you log-in while you have a game in progress
 */
 
 $(() => {

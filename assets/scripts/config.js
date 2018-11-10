@@ -1,8 +1,11 @@
+// config.js
+
 'use strict'
 
 let apiUrl
 const apiUrls = {
-  development: 'https://tic-tac-toe-wdi.herokuapp.com',
+  oldDevelopment: 'https://tic-tac-toe-wdi.herokuapp.com',
+  development: 'https://stormy-atoll-66060.herokuapp.com',
   production: 'https://aqueous-atoll-85096.herokuapp.com'
 }
 

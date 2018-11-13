@@ -16,20 +16,33 @@ const ui = require('./ui.js')
 
 2. When the user is logged in, show their email somewhere? Like, "Logged in as"?
 
-3. Multiplayer? God help me?
+4. Check what happens on mobile?
 
-4. Sound?
+5. Fix bug where sign in after sign up fails if user has already done it once
 
-5. Check what happens on mobile?
+6. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
 
-6. Fix bug where sign in after sign up fails if user has already done it once
+7. Save game button doesn't appear if you log-in while you have a game in progress
 
-7. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
-
-8. Save game button doesn't appear if you log-in while you have a game in progress
+8. Have a fail safe that prevents player from joining a multiplayer game no longer in progress? Possible?
 */
 
 $(() => {
+  $('#change-password-submit').on('click', events.onChangePasswordSubmit)
+  $('#confirm-new-colors').on('click', events.onConfirmNewColors)
+  $('#load-game-nav-button').on('click', events.onLoadView)
+  $('#load-game-submit').on('click', events.onLoadGame)
+  $('#logInModal').on('show.bs.modal', ui.resetLogInModal)
+  $('#newGameModal').on('show.bs.modal', ui.showNewGameModal)
+  $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
+  $('#o-color-picker').on('input', events.onUpdateOColorValue)
+  $('#opponent-ai-radio').on('click', ui.aiRadios)
+  $('#opponent-multiplayer-radio').on('click', ui.multiplayerRadios)
+  $('#opponent-self-radio').on('click', ui.selfRadios)
+  $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)
+  $('#saveGameModal').on('show.bs.modal', ui.showSaveGameModel)
+  $('#save-game-nav-button').on('click', events.onSaveGameNavButton)
+  $('#save-game-submit').on('click', events.onSaveGame)
   $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
   $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
   $('#sign-in-submit').on('click', events.onSignIn)
@@ -37,22 +50,7 @@ $(() => {
   $('#sign-up-submit').on('click', events.onSignUp)
   $('#sign-up-continue').on('click', events.onSignUpContinue)
   $('#start-game-button').on('click', events.onNewGame)
-  $('#load-game-nav-button').on('click', events.onLoadView)
-  $('#opponent-self-radio').on('click', ui.selfRadios)
-  $('#opponent-ai-radio').on('click', ui.aiRadios)
-  $('#opponent-multiplayer-radio').on('click', ui.multiplayerRadios)
-  $('#previous-load-page-arrow').on('click', ui.displayPreviousLoadPage)
-  $('#next-load-page-arrow').on('click', ui.displayNextLoadPage)
-  $('#load-game-submit').on('click', events.onLoadGame)
-  $('#logInModal').on('show.bs.modal', ui.resetLogInModal)
-  $('#userViewModal').on('show.bs.modal', ui.showUserView)
-  $('#newGameModal').on('show.bs.modal', ui.showNewGameModal)
-  $('#saveGameModal').on('show.bs.modal', ui.showSaveGameModel)
   $('#user-view-done').on('click', ui.clearForms)
-  $('#change-password-submit').on('click', events.onChangePasswordSubmit)
-  $('#confirm-new-colors').on('click', events.onConfirmNewColors)
-  $('#o-color-picker').on('input', events.onUpdateOColorValue)
+  $('#userViewModal').on('show.bs.modal', ui.showUserView)
   $('#x-color-picker').on('input', events.onUpdateXColorValue)
-  $('#save-game-nav-button').on('click', events.onSaveGameNavButton)
-  $('#save-game-submit').on('click', events.onSaveGame)
 })

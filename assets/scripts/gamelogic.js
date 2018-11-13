@@ -37,7 +37,7 @@ const readyPlayerTurn = function () {
 const takeAITurn = function () {
   const aiMove = ai.getAIMove(store.currentBoard, store.aiDifficulty)
   store.currentBoard[aiMove] = 'o'
-  setTimeout(function () { ui.displayNewMove(aiMove) }, 100)
+  setTimeout(function () { ui.displayNewMove(aiMove) }, 300)
   setTimeout(function () {
     if (ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
       ui.showPlayerWin('playerTwo')
@@ -49,7 +49,7 @@ const takeAITurn = function () {
       flipCurrentPlayer()
       readyPlayerTurn()
     }
-  }, 300)
+  }, 500)
 }
 
 // takeHumanTurn() is activated when a human player clicks on a available spot.

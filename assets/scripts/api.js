@@ -80,7 +80,6 @@ const signInAI = () => {
 //                    //
 ////////////////////////
 
-
 // createNewGame() creates a new game on the API; it's called when a new multiplayer
 // game is created, or the user tries to save a game they haven't saved before
 const createNewGame = () => {
@@ -120,9 +119,6 @@ const loadThisGame = event => {
 // is synchronous so as to avoid errors that pop up if the user tries to do
 // things before the API is caught up
 const updateGame = data => {
-  if (ai.terminalCheck(store.currentBoard, 'playerOne') === 'playerOneWin' || ai.terminalCheck(store.currentBoard, 'playerOne') === 'tie' || ai.terminalCheck(store.currentBoard, 'playerTwo') === 'playerTwoWin') {
-    data.game.over = true
-  }
   $.ajax({
     async: false,
     url: config.apiUrl + '/games/' + store.game.id,

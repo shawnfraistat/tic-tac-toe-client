@@ -22,8 +22,6 @@ const ui = require('./ui.js')
 
 6. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
 
-7. Save game button doesn't appear if you log-in while you have a game in progress
-
 8. Have a fail safe that prevents player from joining a multiplayer game no longer in progress? Possible?
 */
 

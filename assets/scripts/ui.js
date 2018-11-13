@@ -394,6 +394,9 @@ const showSaveGameModel = () => {
 
 // handleSignInSuccess() transforms the logInModal to display a confirmation that the user signed in successfully
 const handleSignInSuccess = event => {
+  if (store.currentBoard.includes('x') || store.currentBoard.includes('o')) {
+    $('#save-game-nav-button').removeClass('invisible')
+  }
   $('#logInModalHeader').addClass('invisible')
   $('.sign-in-message').html(`<h4 class="sign-in-message">Signed in as <scan class="blue">${store.user.email}</scan></h4>`)
   $('#load-game-nav-button').toggleClass('invisible')

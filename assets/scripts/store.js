@@ -1,6 +1,12 @@
+// store.js
+
 'use strict'
 
-// current user data
+/////////////////////////
+//                     //
+//  Current User Data  //
+//                     //
+/////////////////////////
 
 let currentLoadPage = 0
 let totalLoadPages = 0
@@ -26,19 +32,31 @@ const user = {
   games: []
 }
 
-// current game state
+///////////////////////////////
+//                           //
+//  Current Game State Data  //
+//                           //
+///////////////////////////////
 
 let currentBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 let currentPlayer = ''
 
-// current game settings
+/////////////////////////////
+//                         //
+//  Current Game Settings  //
+//                         //
+/////////////////////////////
 
 let firstPlayer = ''
 let opponent = ''
 let aiDifficulty = '0'
 let multiplayerRole = ''
 
-// misc globals
+/////////////////////
+//                 //
+//  Misc. Globals  //
+//                 //
+/////////////////////
 
 let currentClickEvent
 

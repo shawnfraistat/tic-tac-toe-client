@@ -1,5 +1,10 @@
+// watcher.js
+
 'use strict'
 
+// resourceWatcher() is a constructor function for a resourceWatcher class that
+// will enable multiplayer to work; it is borrowed from code provided by
+// General Assembly
 const resourceWatcher = function (url, conf) {
   let token = function (conf) {
     return conf && (conf = conf.Authorization) &&

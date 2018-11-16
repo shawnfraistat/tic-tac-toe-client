@@ -56,9 +56,7 @@ This project makes use of HTML, CSS, Javascript, JQuery, and AJAX.
 
 Unsolved Problems:
 
-I would like to go back to clean up and comment the code. There is also a bug
-I'd like to track down that occurs sporadically when new users try to sign up.
-I also need to go through methodically and make sure the game is displaying
-sufficiently informative error messages when things go wrong.
-I'd also like to add sound, the ability to customize player marks further, and
-the capacity to play against human opponents online.
+There's a bug I'd like to track down that occurs sporadically when new users try
+to sign up. I also need to go through methodically and make sure the game is
+displaying sufficiently informative error messages when things go wrong.
+I'd also like to add sound and the ability to customize player marks further.

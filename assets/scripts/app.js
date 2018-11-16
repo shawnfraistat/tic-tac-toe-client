@@ -14,15 +14,10 @@ const ui = require('./ui.js')
 1. Handlers are missing for some API actions -- really, for FAILURES
  -- SPECIFICALLY, need to deal with situation in which a game fails to LOAD
 
-2. When the user is logged in, show their email somewhere? Like, "Logged in as"?
+2. Fix bug where sign in after sign up fails if user has already done it once
 
-4. Check what happens on mobile?
+3. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
 
-5. Fix bug where sign in after sign up fails if user has already done it once
-
-6. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
-
-8. Have a fail safe that prevents player from joining a multiplayer game no longer in progress? Possible?
 */
 
 $(() => {
@@ -41,13 +36,13 @@ $(() => {
   $('#saveGameModal').on('show.bs.modal', ui.showSaveGameModel)
   $('#save-game-nav-button').on('click', events.onSaveGameNavButton)
   $('#save-game-submit').on('click', events.onSaveGame)
-  $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
-  $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
   $('#sign-in-submit').on('click', events.onSignIn)
   $('#sign-out-submit').on('click', events.onSignOut)
   $('#sign-up-submit').on('click', events.onSignUp)
   $('#sign-up-continue').on('click', events.onSignUpContinue)
   $('#start-game-button').on('click', events.onNewGame)
+  $('.switch-to-sign-in').on('click', events.onSwitchToSignIn)
+  $('.switch-to-sign-up').on('click', events.onSwitchToSignUp)
   $('#user-view-done').on('click', ui.clearForms)
   $('#userViewModal').on('show.bs.modal', ui.showUserView)
   $('#x-color-picker').on('input', events.onUpdateXColorValue)

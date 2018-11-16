@@ -175,10 +175,9 @@ const joinGameSuccess = () => {
 const onEstablishLink = (gameData) => {
   copyNewGameData(gameData)
   gameWatcher = api.createGameWatcher(gameData)
-  gameWatcher.on('connect', function (data) {
-    console.log('connection made!')
-    console.log(data)
-  })
+  // gameWatcher.on('connect', function (data) {
+  //   console.log(data)
+  // })
 
   gameWatcher.on('change', function (data) {
     // this handles what happens when the other player joins
@@ -200,15 +199,12 @@ const onEstablishLink = (gameData) => {
       ui.updateBoardDisplay()
       ui.showPlayerTurn()
       if (store.multiplayerRole === 'host') {
-        console.log('I think this user is Player One')
         gamelogic.readyPlayerTurn()
       }
     }
 
     // this handles what happens when a player makes a move
-    console.log(data)
     if (data.game && data.game.cells) {
-      console.log('A player made a move')
       const diff = changes => {
         let before = changes[0]
         let after = changes[1]
@@ -225,7 +221,6 @@ const onEstablishLink = (gameData) => {
       let cell = diff(data.game.cells)
       // the version of the board on the API has been updated, so the local
       // version of the board in store.js should be updated too
-      console.log('in onEstablishLink -- going to modify store at cell index', store.currentBoard[cell.index], cell.value)
       store.currentBoard[cell.index] = cell.value
       // update the display to show the move
       ui.displayNewMove(cell.index)
@@ -240,7 +235,6 @@ const onEstablishLink = (gameData) => {
         ui.showPlayerWin('playerTwo')
         gameWatcher.close()
       } else {
-        console.log('performed a terminalCheck--found continue')
         // flip the currentPlayer
         gamelogic.flipCurrentPlayer()
         // show whose turn it is

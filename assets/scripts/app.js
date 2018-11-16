@@ -11,24 +11,12 @@ const ui = require('./ui.js')
 
 /* TO DO:
 
-<<<<<<< HEAD
-1. Check handlers for API failures
-
-2. When the user is logged in, show their email somewhere? Like, "Logged in as"?
-
-3. Multiplayer?
-
-4. Sound?
-
-5. Check what happens on mobile?
-=======
 1. Handlers are missing for some API actions -- really, for FAILURES
  -- SPECIFICALLY, need to deal with situation in which a game fails to LOAD
 
 2. Fix bug where sign in after sign up fails if user has already done it once
 
 3. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
->>>>>>> development
 
 */
 

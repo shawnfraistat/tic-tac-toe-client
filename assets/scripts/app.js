@@ -18,6 +18,8 @@ const ui = require('./ui.js')
 
 3. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
 
+4. Fix issue where multiplayer button optiuon appears even if user is not logged in
+
 */
 
 $(() => {

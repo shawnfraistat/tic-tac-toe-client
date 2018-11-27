@@ -141,7 +141,7 @@ const setUpLoadedGame = data => {
   }
 }
 
-// storeLoadedGames() filers the list of all the games the user has played to rule out multiplayer games and sort the remaining games by id number
+// storeLoadedGames() filters the list of all the games the user has played to rule out multiplayer games and sort the remaining games by id number
 const storeLoadedGames = data => {
   store.user.games = []
   for (let i = 0; i < data.games.length; i++) {

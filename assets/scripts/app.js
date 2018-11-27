@@ -14,11 +14,11 @@ const ui = require('./ui.js')
 1. Handlers are missing for some API actions -- really, for FAILURES
  -- SPECIFICALLY, need to deal with situation in which a game fails to LOAD
 
-2. Fix bug where sign in after sign up fails if user has already done it once
+2. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
 
-3. Weird bug where sign-in attempt lags, and seems to go through, but doesn't actually (at least, the nav buttons don't update)
+3. Fix issue where multiplayer button optiuon appears even if user is not logged in
 
-4. Fix issue where multiplayer button optiuon appears even if user is not logged in
+4. Fix bug where host can save multiplayer game (possibly only if host has already created game?)
 
 */
 

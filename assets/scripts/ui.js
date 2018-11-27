@@ -426,6 +426,8 @@ const handleSignInAfterSignUpFailure = event => {
 // to sign the user in automatically following a successful sign up
 const handleSignInAfterSignUpSuccess = event => {
   $('#logInModal').modal('hide')
+  $('#sign-up-continue').addClass('invisible')
+  $('#sign-up-submit').removeClass('invisible')
 }
 
 // handleSignOutSuccess() clears local data in store.js and resets the view if
